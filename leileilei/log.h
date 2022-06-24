@@ -2,7 +2,7 @@
 /*** 
  * @Author: leileilei
  * @Date: 2022-06-22 16:23:37
- * @LastEditTime: 2022-06-23 17:04:26
+ * @LastEditTime: 2022-06-24 20:39:18
  * @LastEditors: Please set LastEditors
  * @Description: 日志模块的头文件
  *  顶层 ： LogManager日志器管理者    以map的形式管理数个Logger，可以删除、添加、获取某个日志器，默认生成主日志器
@@ -25,6 +25,8 @@
 
 namespace leileilei{
 
+class Logger;
+
 /*** 
  * @description: 日志级别
  */
@@ -40,9 +42,9 @@ public:
         FATAL,
     };
     //将level类型转为对应的字符串
-    std::string levelToString(LogLevel::level level);
+    static std::string levelToString(LogLevel::level level);
     //将字符串转化为对应的level类型
-    LogLevel::level stringToLevel(const std::string& str);
+    static LogLevel::level stringToLevel(const std::string& str);
 };
 
 /*** 
@@ -97,10 +99,14 @@ public:
     //日志流内容操作
     void setSS(std::stringstream ss) {ss_ << ss;}
     std::stringstream& getSS() {return ss_;}
+    //返回日志内容
+    std::string getContent() { return ss_.str();}
     //日志级别操作
     void setLevel(LogLevel::level level) { level_ = level;}
     LogLevel::level getLevel() const {return level_;}
-
+    //线程名称操作
+    void setThreadID(std::string thread_name) {thread_name_ = thread_name;}
+    std::string getThreadName() {return thread_name_;}
 private:
     //文件名称
     const char* file_name_;
@@ -137,9 +143,9 @@ public:
     //在构造时被调用，解析格式
     void init();
     //生成日志，将产生的日志事件按照所存储的格式解析，将解析后的结果以字符串的形式返回
-    std::string doFormat(LogEvent event);
+    std::string doFormat(std::shared_ptr<Logger> logger, LogEvent::ptr event);
     //生成日志，将产生的日志事件按照所存储的格式解析，将解析后的结果以流的形式返回
-    std::ostream doFormat(std::ostream& os, LogEvent event);
+    std::ostream& doFormat(std::ostream& os, std::shared_ptr<Logger> logger, LogEvent::ptr event);
     //重新设置解析模板
     bool resetFormat(std::string format);
     //得到模板
@@ -150,8 +156,9 @@ public:
     {   
     public:
         typedef std::shared_ptr<FormatItem> ptr;
+        virtual ~FormatItem() {}
         //纯虚函数需要子类实现
-        virtual void formart(LogEvent event) = 0;
+        virtual void format(std::ostream& os, std::shared_ptr<Logger> logger, LogEvent::ptr event) = 0;
     };
 private:
     std::string format_;
