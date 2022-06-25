@@ -2,7 +2,7 @@
 /*** 
  * @Author: leileilei
  * @Date: 2022-06-22 16:23:37
- * @LastEditTime: 2022-06-24 20:39:18
+ * @LastEditTime: 2022-06-25 18:13:43
  * @LastEditors: Please set LastEditors
  * @Description: 日志模块的头文件
  *  顶层 ： LogManager日志器管理者    以map的形式管理数个Logger，可以删除、添加、获取某个日志器，默认生成主日志器
@@ -20,7 +20,9 @@
 #include<memory>//智能指针的头文件
 #include<string>
 #include<sstream>
+#include<fstream>
 #include<vector>
+#include<iostream>
 #include<map>
 
 namespace leileilei{
@@ -176,9 +178,9 @@ public:
     typedef std::shared_ptr<LogAppender> ptr;
 
     //设置默认的日志级别
-    LogAppender(LogLevel::level level):level_(LogLevel::level::DEBUG){}
+    LogAppender(LogLevel::level level = LogLevel::level::DEBUG){}
     //生成日志，纯虚函数需要子类实现
-    virtual void doLog(LogEvent event) = 0;
+    virtual void doLog(std::shared_ptr<Logger> logger, LogEvent::ptr event) = 0;
     //重新设置formatter
     void resetFormat(std::string format);
     void resetFormat(LogFormatter::ptr formart);
@@ -202,31 +204,44 @@ public:
     typedef std::shared_ptr<StdoutLogAppender> ptr;
 
     //重写父类的纯虚函数
-    void doLog(LogEvent event) override;
+    void doLog(std::shared_ptr<Logger> logger, LogEvent::ptr event) override;
 };
 
 /*** 
  * @description: 输出到文件
+ * 还有待完成
  */
 class FileLogAppender : public LogAppender
 {
     typedef std::shared_ptr<FileLogAppender> ptr;
-
+    FileLogAppender(const std::string& fliename);
     //重写父类的纯虚函数
-    void doLog(LogEvent event) override;
+    void doLog(std::shared_ptr<Logger> logger, LogEvent::ptr event) override;
+    //重新打开
+    bool reopen();
+private:
+    //文件名 含路径
+    std::string filename_;
+    //文件流
+    std::ofstream filestream_;
+    //上次打开的时间
+    uint64_t last_time_;
 };
 
 /*** 
  * @description:日志器
  * 日志器中应该包含1个或者多个Appender 
+ * 
  */
-class Logger
+static uint64_t logger_default_name_ = 0;
+class Logger : public std::enable_shared_from_this<Logger>
 {
 public:
     typedef std::shared_ptr<Logger> ptr;
-    
+    //构造函数中自动生成一个名称
+    Logger();
     //写日志
-    void doLog(LogLevel::level level, LogEvent::ptr event);
+    void doLog(LogEvent::ptr event);
     //设置日志器名称
     void setLoggerName(std::string name) { name_ = name;}
     //获取日志器名称
@@ -235,6 +250,8 @@ public:
     void addAppender(LogAppender::ptr appender);
     //删除一个appender
     void delAppender(LogAppender::ptr appender);
+    //获取某个appender
+    LogAppender::ptr getAppender(int index);
 private:
     //日志器的名称
     std::string name_;

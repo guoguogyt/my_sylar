@@ -1,7 +1,7 @@
 /*** 
  * @Author: leileilei
  * @Date: 2022-06-22 16:23:43
- * @LastEditTime: 2022-06-24 20:51:41
+ * @LastEditTime: 2022-06-25 18:14:01
  * @LastEditors: Please set LastEditors
  * @Description: 日志模块的具体实现
  * @FilePath: \my_sylar\leileilei\log.cpp
@@ -305,6 +305,8 @@ void LogFormatter::init()
 #undef XX
     };
     
+    //放入之前保证items_是干净的
+    std::vector<FormatItem::ptr>().swap(items_);
     //将解析到的格式放入items_中，这样使用时只需要便利items_中的format函数即可拼接成完整的日志格式
     for(int i=0;i<vec.size();i++)
     {
@@ -344,5 +346,103 @@ std::ostream& LogFormatter::doFormat(std::ostream& os, std::shared_ptr<Logger> l
     return os;
 }
 
+bool LogFormatter::resetFormat(std::string format)
+{
+    format_ = format;
+    init();
+}
+
+void LogAppender::resetFormat(std::string format)
+{
+    LogFormatter::ptr format_ptr(new LogFormatter(format));
+    resetFormat(format_ptr);
+}
+
+void LogAppender::resetFormat(LogFormatter::ptr formart)
+{
+    if(formart)
+    {
+        format_ptr_ = formart;
+    }
+}
+
+void StdoutLogAppender::doLog(Logger::ptr logger, LogEvent::ptr event)
+{
+    //是否有格式
+    if(getFormat())
+    {
+        //是否达到了日志输出级别限制
+        if(event->getLevel() >= getLevel())
+            getFormat()->doFormat(std::cout, logger, event);
+    }
+    else 
+        std::cout<<"日志模板器为空，无法生成日志！"<<std::endl;
+}
+
+FileLogAppender::FileLogAppender(const std::string& fliename)
+{
+    filename_ = fliename;
+    reopen();
+}
+
+bool FileLogAppender::reopen()
+{
+    if(filestream_) {
+        filestream_.close();
+    }
+    //这里将文件的相关操作封装到until类中，暂时先空
+    return true;
+}
+
+void FileLogAppender::doLog(std::shared_ptr<Logger> logger, LogEvent::ptr event)
+{
+    //是否有格式
+    if(getFormat())
+    {
+        //是否达到了日志输出级别限制
+        if(event->getLevel() >= getLevel())
+        {
+            uint64_t now_time = event->getTime();
+            if(now_time > last_time_ + 3)
+            {
+                reopen();
+                last_time_ = now_time;
+            }            
+            getFormat()->doFormat(filestream_, logger, event);
+        }
+    }
+    else 
+        std::cout<<"日志模板器为空，无法生成日志！"<<std::endl;
+}
+
+Logger::Logger()
+{
+    logger_default_name_++;
+    // name_ = std::string(default_name_);
+}
+
+void Logger::doLog(LogEvent::ptr event)
+{
+    auto self = shared_from_this();
+    for(int i=0; i<appenders_.size(); i++)
+    {
+        appenders_[i]->doLog(self, event);
+    }
+}
+
+void Logger::addAppender(LogAppender::ptr appender)
+{
+    
+}
+
+void Logger::delAppender(LogAppender::ptr appender)
+{
+
+}
+
+LogAppender::ptr Logger::getAppender(int index)
+{
+
+}
 
 }
