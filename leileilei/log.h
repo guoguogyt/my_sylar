@@ -2,7 +2,7 @@
 /*** 
  * @Author: leileilei
  * @Date: 2022-06-22 16:23:37
- * @LastEditTime: 2022-06-25 18:13:43
+ * @LastEditTime: 2022-06-26 16:28:33
  * @LastEditors: Please set LastEditors
  * @Description: 日志模块的头文件
  *  顶层 ： LogManager日志器管理者    以map的形式管理数个Logger，可以删除、添加、获取某个日志器，默认生成主日志器
@@ -24,6 +24,37 @@
 #include<vector>
 #include<iostream>
 #include<map>
+
+
+#define LEI_LOG_LEVEL(logger, level) \
+    leileilei::LogEventWrap(logger, leileilei::LogEvent::ptr(new leileilei::LogEvent(__FILE__, \
+                                __LINE__, 0, 1, 2, time(0), "threadName", level))).getSS()
+
+/**
+ * @brief 使用流式方式将日志级别debug的日志写入到logger
+ */
+#define LEI_LOG_DEBUG(logger) LEI_LOG_LEVEL(logger, leileilei::LogLevel::DEBUG)
+
+/**
+ * @brief 使用流式方式将日志级别info的日志写入到logger
+ */
+#define LEI_LOG_INFO(logger) LEI_LOG_LEVEL(logger, leileilei::LogLevel::INFO)
+
+/**
+ * @brief 使用流式方式将日志级别warn的日志写入到logger
+ */
+#define LEI_LOG_WARN(logger) LEI_LOG_LEVEL(logger, leileilei::LogLevel::WARN)
+
+/**
+ * @brief 使用流式方式将日志级别error的日志写入到logger
+ */
+#define LEI_LOG_ERROR(logger) LEI_LOG_LEVEL(logger, leileilei::LogLevel::ERROR)
+
+/**
+ * @brief 使用流式方式将日志级别fatal的日志写入到logger
+ */
+#define LEI_LOG_FATAL(logger) LEI_LOG_LEVEL(logger, leileilei::LogLevel::FATAL)
+
 
 namespace leileilei{
 
@@ -76,6 +107,7 @@ public:
      *  %N 线程名称
      *
      *  默认格式 "%d{%Y-%m-%d %H:%M:%S}%T%t%T%N%T%F%T[%p]%T[%c]%T%f:%l%T%m%n"
+     *              时间    线程id  线程名称   协程id   [日志级别]  [日志名称]  文件名:行号 消息\n 
      */
     LogEvent(const char* file_name, int32_t line, uint32_t elapse, 
             uint32_t thread_id, uint32_t fiber_id, uint64_t time, 
@@ -274,7 +306,7 @@ public:
     //构造函数
     LogManager();
     //按名称获取logger，如果没有则创建
-    Logger::ptr getLogger(std::string);
+    Logger::ptr getLogger(std::string name);
     //获取主日志器
     Logger::ptr getRootLogger() {   return root_logger_;}
     //删除某个日志器
@@ -282,6 +314,24 @@ public:
 private:
     std::map<std::string, Logger::ptr> name_logger_;
     Logger::ptr root_logger_;
+};
+
+class LogEventWrap
+{
+public:
+    //构造函数
+    LogEventWrap(Logger::ptr logger , LogEvent::ptr e);
+    //西沟函数
+    ~LogEventWrap();
+    //获取日志事件
+    LogEvent::ptr getLogEvent() { return event_;}
+    //获取日志器
+    Logger::ptr grtLogger() { return logger_;}
+    //获取日志事件流
+    std::stringstream& getSS() { return event_->getSS();}
+private:
+    LogEvent::ptr event_;
+    Logger::ptr logger_;
 };
 
 }

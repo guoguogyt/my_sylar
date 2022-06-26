@@ -19,7 +19,7 @@ sylar配套视频地址：`https://www.bilibili.com/video/BV184411s7qF?p=6&spm_i
 | 2022-06-23 | 写完了log.h文件，log.cpp开了个头。代码不是原封不动按照sylar源码写的，可能有些地方会有偏差，但是会以实现相同的功能为目标。结构如下：<br /> 顶层 ： LogManager日志器管理者    以map的形式管理数个Logger，可以删除、添加、获取某个日志器，默认生成主日志器<br/>              Logger日志器             以vector管理数个appender，可以添加删除appender，有写日志的方法<br/>              Appender输出器           输出器控制输出的地方，控制某个日志级别是否可以输出，控制输出的格式(控制LogFormatter)<br/>              LogFormatter格式器       以某种格式输出日志 可以修改格式<br/> 底层：  LogEvent日志事件          事件中有日志的所有信息，但是经过LogFormatter之后信息并不会全部输出，会按照指定的格式进行输出 |
 | 2022-6-24  | log.cpp从底层写起，写完了LogLevel、LogEvent、LogFormat。<br /> 其中LogFormat的init方法算是日志模块中的难点，这里用了一种另一套算法去解析格式。 <br /> 注意使用std::ostream时的引用 |
 | 2022-06-25 | 写完了LogAppender以及其拓展类的实现，以及一部分Logger的实现  |
-|            |                                                              |
+| 2022-06-26 | 基本完成日志模块，剩下一些细节需要打磨。                     |
 |            |                                                              |
 |            |                                                              |
 |            |                                                              |

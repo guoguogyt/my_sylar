@@ -1,7 +1,7 @@
 /*** 
  * @Author: leileilei
  * @Date: 2022-06-22 16:23:43
- * @LastEditTime: 2022-06-25 18:14:01
+ * @LastEditTime: 2022-06-26 16:11:18
  * @LastEditors: Please set LastEditors
  * @Description: 日志模块的具体实现
  * @FilePath: \my_sylar\leileilei\log.cpp
@@ -339,6 +339,7 @@ std::string LogFormatter::doFormat(std::shared_ptr<Logger> logger, LogEvent::ptr
 //注意引用
 std::ostream& LogFormatter::doFormat(std::ostream& os, std::shared_ptr<Logger> logger, LogEvent::ptr event)
 {
+    std::cout<<"LogFormatter --> doFormat"<<std::endl;
     for(auto& it : items_)
     {
         it->format(os, logger, event);
@@ -368,6 +369,7 @@ void LogAppender::resetFormat(LogFormatter::ptr formart)
 
 void StdoutLogAppender::doLog(Logger::ptr logger, LogEvent::ptr event)
 {
+    std::cout<<"StdoutLogAppender ---> doLog"<<std::endl;
     //是否有格式
     if(getFormat())
     {
@@ -424,6 +426,7 @@ Logger::Logger()
 void Logger::doLog(LogEvent::ptr event)
 {
     auto self = shared_from_this();
+    std::cout<<"Logger ---->  doLog"<<std::endl;
     for(int i=0; i<appenders_.size(); i++)
     {
         appenders_[i]->doLog(self, event);
@@ -432,17 +435,86 @@ void Logger::doLog(LogEvent::ptr event)
 
 void Logger::addAppender(LogAppender::ptr appender)
 {
-    
+    if(appender)
+    {
+        appenders_.push_back(appender);
+    }
 }
 
 void Logger::delAppender(LogAppender::ptr appender)
 {
-
+    for(auto it=appenders_.begin();it!=appenders_.end();it++)
+    {
+        if(*it == appender)
+        {
+            appenders_.erase(it);
+        }
+    }
 }
 
 LogAppender::ptr Logger::getAppender(int index)
 {
+    if(index >= appenders_.size())
+    {
+        return nullptr;
+    }
+    return appenders_[index];
+}
 
+LogManager::LogManager()
+{
+    //初始化时创建一个主的日志器
+    root_logger_.reset(new Logger);
+    //设置日志器名称
+    root_logger_->setLoggerName("root");
+    //设置默认输出到控制台
+    LogAppender::ptr default_append(new StdoutLogAppender);
+    //设置输出日志级别
+    default_append->setLevel(LogLevel::DEBUG);
+    //设置解析格式
+    default_append->resetFormat("%d{%Y-%m-%d %H:%M:%S}%T%t%T%N%T%F%T[%p]%T[%c]%T%f:%l%T%m%n");
+
+    root_logger_->addAppender(default_append);
+
+    name_logger_["root"] =  root_logger_;
+}
+
+Logger::ptr LogManager::getLogger(std::string name)
+{
+    auto it = name_logger_.find(name);
+    if(it == name_logger_.end())
+    {
+        Logger::ptr logger(new Logger);
+        logger->setLoggerName(name);
+        LogAppender::ptr default_append(new StdoutLogAppender);
+        //设置输出日志级别
+        default_append->setLevel(LogLevel::DEBUG);
+        //设置解析格式
+        default_append->resetFormat("%d{%Y-%m-%d %H:%M:%S}%T%t%T%N%T%F%T[%p]%T[%c]%T%f:%l%T%m%n");
+
+        logger->addAppender(default_append);
+        name_logger_[name] = logger;
+    }
+    return it->second;
+}
+
+void LogManager::delLogger(std::string name)
+{
+    auto it = name_logger_.find(name);
+    if(it == name_logger_.end()) 
+        return ;
+    name_logger_.erase(it);
+}
+
+LogEventWrap::LogEventWrap(Logger::ptr logger , LogEvent::ptr e)
+{
+    event_ = e;
+    logger_ = logger;
+}
+
+LogEventWrap::~LogEventWrap()
+{
+    logger_->doLog(event_);
 }
 
 }
