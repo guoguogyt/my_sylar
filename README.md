@@ -20,7 +20,7 @@ sylar配套视频地址：`https://www.bilibili.com/video/BV184411s7qF?p=6&spm_i
 | 2022-6-24  | log.cpp从底层写起，写完了LogLevel、LogEvent、LogFormat。<br /> 其中LogFormat的init方法算是日志模块中的难点，这里用了一种另一套算法去解析格式。 <br /> 注意使用std::ostream时的引用 |
 | 2022-06-25 | 写完了LogAppender以及其拓展类的实现，以及一部分Logger的实现  |
 | 2022-06-26 | 基本完成日志模块，剩下一些细节需要打磨。                     |
-|            |                                                              |
+| 2022-06-27 | 完善日志模块宏定义，可以利用宏写流式日志或格式化日志         |
 |            |                                                              |
 |            |                                                              |
 

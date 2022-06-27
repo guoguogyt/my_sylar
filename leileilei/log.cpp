@@ -1,7 +1,7 @@
 /*** 
  * @Author: leileilei
  * @Date: 2022-06-22 16:23:43
- * @LastEditTime: 2022-06-26 16:11:18
+ * @LastEditTime: 2022-06-27 21:23:19
  * @LastEditors: Please set LastEditors
  * @Description: 日志模块的具体实现
  * @FilePath: \my_sylar\leileilei\log.cpp
@@ -74,6 +74,24 @@ LogEvent::LogEvent(const char* file_name, int32_t line, uint32_t elapse,
     time_ = time;
     thread_name_ = thread_name;
     level_ = level;
+}
+
+void LogEvent::format(const char* fmt, ...)
+{
+    va_list al;
+    va_start(al, fmt);
+    format(fmt, al);
+    va_end(al);
+}
+
+void LogEvent::format(const char* fmt, va_list al)
+{
+    char* buf = nullptr;
+    int len = vasprintf(&buf, fmt, al);
+    if(len != -1) {
+        ss_ << std::string(buf, len);
+        free(buf);
+    }
 }
 
 //LogFormatter
@@ -339,7 +357,7 @@ std::string LogFormatter::doFormat(std::shared_ptr<Logger> logger, LogEvent::ptr
 //注意引用
 std::ostream& LogFormatter::doFormat(std::ostream& os, std::shared_ptr<Logger> logger, LogEvent::ptr event)
 {
-    std::cout<<"LogFormatter --> doFormat"<<std::endl;
+    // std::cout<<"LogFormatter --> doFormat"<<std::endl;
     for(auto& it : items_)
     {
         it->format(os, logger, event);
@@ -369,7 +387,7 @@ void LogAppender::resetFormat(LogFormatter::ptr formart)
 
 void StdoutLogAppender::doLog(Logger::ptr logger, LogEvent::ptr event)
 {
-    std::cout<<"StdoutLogAppender ---> doLog"<<std::endl;
+    // std::cout<<"StdoutLogAppender ---> doLog"<<std::endl;
     //是否有格式
     if(getFormat())
     {
@@ -426,7 +444,7 @@ Logger::Logger()
 void Logger::doLog(LogEvent::ptr event)
 {
     auto self = shared_from_this();
-    std::cout<<"Logger ---->  doLog"<<std::endl;
+    // std::cout<<"Logger ---->  doLog"<<std::endl;
     for(int i=0; i<appenders_.size(); i++)
     {
         appenders_[i]->doLog(self, event);

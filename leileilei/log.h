@@ -2,7 +2,7 @@
 /*** 
  * @Author: leileilei
  * @Date: 2022-06-22 16:23:37
- * @LastEditTime: 2022-06-26 16:28:33
+ * @LastEditTime: 2022-06-27 21:21:08
  * @LastEditors: Please set LastEditors
  * @Description: 日志模块的头文件
  *  顶层 ： LogManager日志器管理者    以map的形式管理数个Logger，可以删除、添加、获取某个日志器，默认生成主日志器
@@ -24,8 +24,11 @@
 #include<vector>
 #include<iostream>
 #include<map>
+#include<stdarg.h>
 
-
+/*
+    流式输出日志
+*/
 #define LEI_LOG_LEVEL(logger, level) \
     leileilei::LogEventWrap(logger, leileilei::LogEvent::ptr(new leileilei::LogEvent(__FILE__, \
                                 __LINE__, 0, 1, 2, time(0), "threadName", level))).getSS()
@@ -54,6 +57,39 @@
  * @brief 使用流式方式将日志级别fatal的日志写入到logger
  */
 #define LEI_LOG_FATAL(logger) LEI_LOG_LEVEL(logger, leileilei::LogLevel::FATAL)
+
+/*
+    格式化式输出日志
+*/
+#define LEI_LOG_FMT_LEVEL(logger, level, fmt, ...) \
+    leileilei::LogEventWrap(logger, leileilei::LogEvent::ptr(new leileilei::LogEvent(__FILE__, \
+                                __LINE__, 0, 1, 2, time(0), "threadName", level))).getLogEvent()->format(fmt, __VA_ARGS__)
+
+/**
+ * @brief 使用格式化式方式将日志级别debug的日志写入到logger
+ */
+#define LEI_FMt_LOG_DEBUG(logger, fmt, ...) LEI_LOG_FMT_LEVEL(logger, leileilei::LogLevel::DEBUG, fmt, __VA_ARGS__)
+
+/**
+ * @brief 使用格式化式方式将日志级别info的日志写入到logger
+ */
+#define LEI_FMT_LOG_INFO(logger, fmt, ...) LEI_LOG_FMT_LEVEL(logger, leileilei::LogLevel::INFO, fmt, __VA_ARGS__)
+
+/**
+ * @brief 使用格式化式方式将日志级别warn的日志写入到logger
+ */
+#define LEI_FMT_LOG_WARN(logger, fmt, ...) LEI_LOG_FMT_LEVEL(logger, leileilei::LogLevel::WARN, fmt, __VA_ARGS__)
+
+/**
+ * @brief 使用格式化式方式将日志级别error的日志写入到logger
+ */
+#define LEI_FMT_LOG_ERROR(logger, fmt, ...) LEI_LOG_FMT_LEVEL(logger, leileilei::LogLevel::ERROR, fmt, __VA_ARGS__)
+
+/**
+ * @brief 使用格式化式方式将日志级别fatal的日志写入到logger
+ */
+#define LEI_FMT_LOG_FATAL(logger, fmt, ...) LEI_LOG_FMT_LEVEL(logger, leileilei::LogLevel::FATAL, fmt ,__VA_ARGS__)
+
 
 
 namespace leileilei{
@@ -141,6 +177,11 @@ public:
     //线程名称操作
     void setThreadID(std::string thread_name) {thread_name_ = thread_name;}
     std::string getThreadName() {return thread_name_;}
+
+    //格式化方式写入日志
+    void format(const char* fmt, ...);
+    void format(const char* fmt, va_list al);
+
 private:
     //文件名称
     const char* file_name_;
@@ -190,6 +231,14 @@ public:
     {   
     public:
         typedef std::shared_ptr<FormatItem> ptr;
+        /*
+            析构函数为虚函数
+            class A{};
+            class B:public A
+            当：
+                A* a = new B;
+            当a被释放时，执行了a的析构函数。假如b中有new出的变量，则变量不会被清除，导致内存泄漏
+        */
         virtual ~FormatItem() {}
         //纯虚函数需要子类实现
         virtual void format(std::ostream& os, std::shared_ptr<Logger> logger, LogEvent::ptr event) = 0;
@@ -320,7 +369,7 @@ class LogEventWrap
 {
 public:
     //构造函数
-    LogEventWrap(Logger::ptr logger , LogEvent::ptr e);
+    LogEventWrap(Logger::ptr logger, LogEvent::ptr e);
     //西沟函数
     ~LogEventWrap();
     //获取日志事件

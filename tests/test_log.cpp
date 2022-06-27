@@ -11,6 +11,7 @@ int main(int argc, char* argv[])
 
     leileilei::LogManager lm;
     LEI_LOG_DEBUG(lm.getRootLogger())<<"test log";
+    LEI_FMT_LOG_INFO(lm.getRootLogger(), "%s", "format log");
     return 0;
 }
 
