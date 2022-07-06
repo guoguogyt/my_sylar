@@ -1,9 +1,12 @@
 #pragma once
 
 #include <string>
+#include <boost/lexical_cast.hpp>
 #include "log.h"
 
 namespace leileilei{
+
+static leileilei::Logger::ptr logger_system = LEI_GET_LOGGER("system")
 
 /*
     配置项的基础类   
@@ -20,6 +23,7 @@ namespace leileilei{
 class ConfigVarBase
 {
 public:
+    typedef std::shared_ptr<ConfigVarBase> ptr;
     ConfigVarBase(const std::string& name, const std::string& desc = "")
         :var_name_(name),var_desc_(desc)
     {
@@ -42,22 +46,59 @@ private:
     std::string var_desc_;//配置项说明
 };
 
+/**
+ * @brief 这个是一个最基础的类型T转换为V的类
+            转化利用了boost库的中方法
+        对运算符进行了重载，重载了操作符()
+ *  之后会对这个类版本进行偏特化，使其可以支持常用的stl库类型
+ * @tparam T 
+ * @tparam V 
+ */
+template<class T, class V>
+class LexicalCast
+{
+public:
+    V operator()(const T& t)
+    {
+        /**
+         * @brief 这个boost中的函数功能主要将   不同类型转换为对应的string类型，或者将string转化为T类型
+         * 
+         * @return return 
+         */
+        return boost::lexical_cast<V>(t);
+    }
+};
 
 
 /*
-
+    具体执行配置项值转对应类型，或者从string还原一个T类的配置项值
+    这里偏特化两个LexicalCast类
 */
-template<class T>
+template<class T, class toStr = LexicalCast<T, std::string>, class fromStr = LexicalCast<std::string, T> >
 class ConfigVar : public ConfigVarBase
 {
 public:
+    typedef std::shared_ptr<ConfigVar> ptr;
     ConfigVar(const std::strng& name, const T& value, const std::string& desc)
         : ConfigVarBase(name, desc), var_value_(value)
     {}
 
+    /**
+     * @brief 转为string
+     *      利用boost库转为string
+     * @return std::string 
+     */
     std::string toString() override
-    {
-
+    { 
+        try
+        {
+            return toStr()(var_value_);
+        }
+        catch(std::exception& e)
+        {
+            LEI_LOG_ERROR(logger_system) << "ConfigVar::toString exception" << e.what() << "convert:" << TypeToName<T>() << "to string" << " name=" << var_name_;
+        }
+        return "";
     }
 
     bool fromString() override
@@ -65,10 +106,12 @@ public:
 
     }
 
-    std::string getConfName override
+    std::string getConfName() override
     {
 
     }
+
+    const T getValue()  {   return var_value_;}
 private:
     T var_value_;
 };
