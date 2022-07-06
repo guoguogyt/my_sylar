@@ -512,6 +512,7 @@ Logger::ptr LogManager::getLogger(std::string name)
 
         logger->addAppender(default_append);
         name_logger_[name] = logger;
+        return logger;
     }
     return it->second;
 }
