@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
     // LEI_LOG_DEBUG(system) << root;
     // print_yaml(root, 0);
 
-    leileilei::ConfigVar<int>::ptr g_int_value_config(new ConfigVar<int>("system.port", (int)8080, "this is system port"));
+    leileilei::ConfigVar<int>::ptr g_int_value_config(new leileilei::ConfigVar<int>("system.port", (int)8080, "this is system port"));
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getName();
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getValue();
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getDesc();

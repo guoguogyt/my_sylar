@@ -57,7 +57,7 @@ public:
     virtual std::string toString() = 0;
     virtual bool fromString() = 0;
     virtual std::string getConfName() = 0;
-private:
+protected:
     std::string var_name_;//配置项名称
     std::string var_desc_;//配置项说明
 };
