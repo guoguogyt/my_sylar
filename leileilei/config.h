@@ -2,11 +2,27 @@
 
 #include <string>
 #include <boost/lexical_cast.hpp>
+#include <cxxabi.h>
+#include <typeinfo>
 #include "log.h"
 
 namespace leileilei{
 
-static leileilei::Logger::ptr logger_system = LEI_GET_LOGGER("system")
+static leileilei::Logger::ptr logger_system = LEI_GET_LOGGER("system");
+
+/**
+ * @brief 获取泛型的名称
+ * 
+ * @tparam T 
+ * @return const char* 
+ */
+template<class T>
+const char* TypeToName()
+{
+    static const char* type_name = abi::__cxa_demangle(typeid(T).name(), nullptr, nullptr, nullptr);
+    return type_name;
+}
+
 
 /*
     配置项的基础类   
@@ -79,7 +95,7 @@ class ConfigVar : public ConfigVarBase
 {
 public:
     typedef std::shared_ptr<ConfigVar> ptr;
-    ConfigVar(const std::strng& name, const T& value, const std::string& desc)
+    ConfigVar(const std::string& name, const T& value, const std::string& desc)
         : ConfigVarBase(name, desc), var_value_(value)
     {}
 
