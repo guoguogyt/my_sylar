@@ -15,8 +15,11 @@ int main(int argc, char* argv[])
 
 
     YAML::Node root = YAML::LoadFile("/root/share/my_sylar/bin/config/test.yml");
+    //输出 0或1
     LEI_LOG_DEBUG(system) << root["logs"].IsDefined();
+    //输出配置名称为name 的值
     LEI_LOG_DEBUG(system) << root["logs"];
+    //输出整个root表示的配置或配置组
     LEI_LOG_DEBUG(system) << root;
     // print_yaml(root, 0);
     return 0;

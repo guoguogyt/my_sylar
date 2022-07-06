@@ -25,6 +25,7 @@
 #include<iostream>
 #include<map>
 #include<stdarg.h>
+#include"singleton.h"
 
 /*
     流式输出日志
@@ -90,7 +91,15 @@
  */
 #define LEI_FMT_LOG_FATAL(logger, fmt, ...) LEI_LOG_FMT_LEVEL(logger, leileilei::LogLevel::FATAL, fmt ,__VA_ARGS__)
 
+/**
+ * @brief 获取主日志器
+ */
+ #define LEI_LOG_GETROOTOR()    leileilei::SingLogMar::GetInstance()->getRootLogger()
 
+/**
+ * @brief 按照name获取日志器
+ */
+#define LEI_GET_LOGGER(name)    leileilei::SingLogMar::GetInstance()->getLogger(name)
 
 namespace leileilei{
 
@@ -382,6 +391,9 @@ private:
     LogEvent::ptr event_;
     Logger::ptr logger_;
 };
+
+
+typedef leileilei::Singleton<LogManager> SingLogMar;
 
 }
 
