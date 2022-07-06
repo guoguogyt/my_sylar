@@ -11,9 +11,9 @@ void print_yaml(const YAML::Node& node, int level)
 int main(int argc, char* argv[])
 {
     leileilei::LogManager lm;
-    leileilei::Logger system = lm.getLogger("system");
+    leileilei::Logger::ptr system = lm.getLogger("system");
 
-    
+
     YAML::Node root = YAML::LoadFile("/root/share/my_sylar/bin/config/test.yml");
     LEI_LOG_DEBUG(system) << root["logs"].IsDefined();
     // print_yaml(root, 0);
