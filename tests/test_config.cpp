@@ -16,6 +16,8 @@ int main(int argc, char* argv[])
 
     YAML::Node root = YAML::LoadFile("/root/share/my_sylar/bin/config/test.yml");
     LEI_LOG_DEBUG(system) << root["logs"].IsDefined();
+    LEI_LOG_DEBUG(system) << root["logs"];
+    LEI_LOG_DEBUG(system) << root;
     // print_yaml(root, 0);
     return 0;
 }
