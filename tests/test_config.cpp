@@ -1,6 +1,7 @@
 #include <iostream>
 #include <yaml-cpp/yaml.h>
 #include "../leileilei/log.h"
+#include "../leileilei/config.h"
 
 //加载一个yaml
 void print_yaml(const YAML::Node& node, int level)
