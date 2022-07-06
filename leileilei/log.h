@@ -370,7 +370,7 @@ class LogEventWrap
 public:
     //构造函数
     LogEventWrap(Logger::ptr logger, LogEvent::ptr e);
-    //西沟函数
+    //析构函数
     ~LogEventWrap();
     //获取日志事件
     LogEvent::ptr getLogEvent() { return event_;}
