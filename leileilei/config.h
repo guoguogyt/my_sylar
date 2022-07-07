@@ -218,6 +218,7 @@ public:
      * @param name 
      * @return ConfigVar<T>::ptr 
      */
+    template<class T>
     static typename ConfigVar<T>::ptr LookUp(const std::string& name)
     {
         auto it = name_config_.find(name);
