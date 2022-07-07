@@ -24,14 +24,24 @@ int main(int argc, char* argv[])
     // LEI_LOG_DEBUG(system) << root;
     // print_yaml(root, 0);
 
-    leileilei::ConfigVar<int>::ptr g_int_value_config(new leileilei::ConfigVar<int>("system.port", (int)8080, "this is system port"));
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getName();
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getValue();
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getDesc();
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->toString();
+    // leileilei::ConfigVar<int>::ptr g_int_value_config(new leileilei::ConfigVar<int>("system.port", (int)8080, "this is system port"));
+    // LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getName();
+    // LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getValue();
+    // LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getDesc();
+    // LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->toString();
     //修改int类型的值
-    g_int_value_config->fromString("8090");
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getValue();
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getConfType();
+    // g_int_value_config->fromString("8090");
+    // LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getValue();
+    // LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getConfType();
+
+
+    leileilei::ConfigVar<int> g_int_value_config = leileilei::ConfigManager::LookUp("system.port", (int)8080, "this is system port");
+    leileilei::ConfigVar<float> g_float_value_config = leileilei::ConfigManager::LookUp("system.value", (float)3.1415, "this is system value");
+
+
+
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getDesc() << "before:" << g_int_value_config->toString();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_float_value_config->getDesc() << "before:" << g_float_value_config->toString();
+
     return 0;
 }
