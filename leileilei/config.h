@@ -55,7 +55,7 @@ public:
     std::string getDesc()   {   return var_desc_;}
 
     virtual std::string toString() = 0;
-    virtual bool fromString() = 0;
+    virtual bool fromString(std::string str) = 0;
     virtual std::string getConfName() = 0;
 protected:
     std::string var_name_;//配置项名称
@@ -117,14 +117,23 @@ public:
         return "";
     }
 
-    bool fromString() override
+    bool fromString(std::string str) override
     {
-
+        try
+        {
+            var_value_ = fromStr()(str);
+        }
+        catch(std::exception& e)
+        {
+            LEI_LOG_ERROR(logger_system) << "ConfigVar::fromString exception" << e.what() << "convert:" << "string to" << TypeToName<T>()  << " name=" << var_name_;
+            return false;
+        }
+        return true;
     }
 
     std::string getConfName() override
     {
-
+        return TypeToName<T>();
     }
 
     const T getValue()  {   return var_value_;}

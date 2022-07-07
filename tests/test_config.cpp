@@ -29,5 +29,9 @@ int main(int argc, char* argv[])
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getValue();
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getDesc();
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->toString();
+    //修改int类型的值
+    g_int_value_config->fromString("8090");
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getValue();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getConfName();
     return 0;
 }
