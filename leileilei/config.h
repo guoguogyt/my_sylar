@@ -189,13 +189,13 @@ public:
             if(temp)
             {
                 //转换成功
-                LEI_LOG_DEBUG(logger_system) << "find config, named " << var_name_;
+                LEI_LOG_DEBUG(logger_system) << "find config, named " << name;
                 return temp;
             }
             else
             {
                 //转换失败
-                LEI_LOG_ERROR(logger_system) << "find config, named" << var_name_ << "  but this type[" << TypeToName<T>() << "] is not equal type[" << it->second->getConfType() << "]";
+                LEI_LOG_ERROR(logger_system) << "find config, named" << name << "  ,but this type[" << TypeToName<T>() << "] is not equal type[" << it->second->getConfType() << "]";
                 return nullptr;
             }
         }
