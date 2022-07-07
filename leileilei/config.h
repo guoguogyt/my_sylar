@@ -49,7 +49,7 @@ public:
         */
         std::transform(var_name_.begin(), var_name_.end(), var_name_.begin(), ::tolower);
     }
-    virtual ~ConfigVarBase();//虚的析构函数
+    virtual ~ConfigVarBase() {}; //虚的析构函数
 
     std::string getName()   {   return var_name_;}
     std::string getDesc()   {   return var_desc_;}
