@@ -178,8 +178,8 @@ public:
     template<class T>
     static typename ConfigVar<T>::ptr LookUp(const std::string& name, const T& t, const std::string& desc = "")
     {
-        auto it = name_config_.find(name);
-        if(it != name_config_.end())//如果可以找到这个配置
+        auto it = getConfigMap().find(name);
+        if(it != getConfigMap().end())//如果可以找到这个配置
         {
             /**
              * @brief 这个函数可以将基类转换为派生类    只适用于智能指针
@@ -208,7 +208,7 @@ public:
 
         //如果没有找到这个配置，则新生成一个配置
         typename ConfigVar<T>::ptr  cf(new ConfigVar<T>(name, t, desc));
-        name_config_[name] = cf;
+        getConfigMap()[name] = cf;
         return cf;
     }
 
@@ -221,8 +221,8 @@ public:
     template<class T>
     static typename ConfigVar<T>::ptr LookUp(const std::string& name)
     {
-        auto it = name_config_.find(name);
-        if(it == name_config_.end())
+        auto it = getConfigMap().find(name);
+        if(it == getConfigMap().end())
         {
             return nullptr;
         }
@@ -230,8 +230,12 @@ public:
     }
 
 private:
-    //存放已有的配置项
-    std::unordered_map<std::string, ConfigVarBase::ptr>  name_config_;
+    //存放已有的配置项,这个属性因为在静态方法LookUp中被使用到，所以将这个属性封装成一个静态函数进行获取
+    static std::unordered_map<std::string, ConfigVarBase::ptr> getConfigMap()
+    {
+        static std::unordered_map<std::string, ConfigVarBase::ptr>  name_config_;
+        return name_config_;
+    }
 };
 
 }
