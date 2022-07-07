@@ -3,6 +3,8 @@
 #include <string>
 #include <boost/lexical_cast.hpp>
 #include <cxxabi.h>
+#include <map>
+#include <unordered_map>
 #include <typeinfo>
 #include "log.h"
 
@@ -48,6 +50,11 @@ public:
             这里转小写之后要注意，次系统的配置名是不区分大小写的，注意使用，否则会导致配置覆盖
         */
         std::transform(var_name_.begin(), var_name_.end(), var_name_.begin(), ::tolower);
+        //检查名称是否是符合规则的
+        if(var_name_.find_first_not_of("qazwsxedcrfvtgbyhnujmikopl._0123456789") != std::string::npos)
+        {
+            LEI_LOG_ERROR(logger_system) << "ConfigVarBase::ConfigVarBase config name is error";
+        }
     }
     virtual ~ConfigVarBase() {}; //虚的析构函数
 
@@ -56,7 +63,7 @@ public:
 
     virtual std::string toString() = 0;
     virtual bool fromString(std::string str) = 0;
-    virtual std::string getConfName() = 0;
+    virtual std::string getConfType() = 0;
 protected:
     std::string var_name_;//配置项名称
     std::string var_desc_;//配置项说明
@@ -78,7 +85,7 @@ public:
     {
         /**
          * @brief 这个boost中的函数功能主要将   不同类型转换为对应的string类型，或者将string转化为T类型
-         * 
+         *  boost::lexical_cast是实现配置系统的主力函数
          * @return return 
          */
         return boost::lexical_cast<V>(t);
@@ -117,6 +124,13 @@ public:
         return "";
     }
 
+    /**
+     * @brief 将字符串转换为对应的类型
+     * 
+     * @param str 
+     * @return true 
+     * @return false 
+     */
     bool fromString(std::string str) override
     {
         try
@@ -131,7 +145,7 @@ public:
         return true;
     }
 
-    std::string getConfName() override
+    std::string getConfType() override
     {
         return TypeToName<T>();
     }
@@ -141,5 +155,82 @@ private:
     T var_value_;
 };
 
+
+/**
+ * @brief 管理ConfigVar类
+    提供方法可以创建/访问ConfigVar类
+ * 
+ */
+class ConfigManager
+{
+public:
+    /**
+     * @brief 根据配置项名称，找到其对应的配置项信息
+     *          如果没有找到，则生成对应的配置项 
+
+            只利用这个方法+偏特化LexicalCast类---可以实现部分配置功能(即不靠配置文件加载配置)
+     * @tparam T 
+     * @param name 
+     * @param t 
+     * @param desc 
+     * @return ConfigVar<T>::ptr 
+     */
+    template<class T>
+    static typename ConfigVar<T>::ptr LookUp(const std::string& name, const T& t, const std::string& desc = "")
+    {
+        auto it = name_config_.find(name);
+        if(it != name_config_.end())//如果可以找到这个配置
+        {
+            /**
+             * @brief 这个函数可以将基类转换为派生类    只适用于智能指针
+             * 
+             */
+            auto temp = std::dynamic_pointer_cast<ConfigVar<T> >(it->second);
+            if(temp)
+            {
+                //转换成功
+                LEI_LOG_DEBUG(logger_system) << "find config, named " << var_name_;
+                return temp;
+            }
+            else
+            {
+                //转换失败
+                LEI_LOG_ERROR(logger_system) << "find config, named" << var_name_ << "  but this type[" << TypeToName<T>() << "] is not equal type[" << it->second->getConfType() << "]";
+                return nullptr;
+            }
+        }
+
+        //创建新的配置项之前，判断配置项名称是否符合要求
+        if(name.find_first_not_of("qazwsxedcrfvtgbyhnujmikolp._0123456789") != std::string::npos)
+        {
+            return nullptr;
+        }
+
+        //如果没有找到这个配置，则新生成一个配置
+        typename ConfigVar<T>::ptr  cf(new ConfigVar<T>(name, t, desc));
+        name_config_[name] = cf;
+        return cf;
+    }
+
+    /**
+     * @brief 
+     *  根据配置项名称找到对应的配置项
+     * @param name 
+     * @return ConfigVar<T>::ptr 
+     */
+    static typename ConfigVar<T>::ptr LookUp(const std::string& name)
+    {
+        auto it = name_config_.find(name);
+        if(it == name_config_.end())
+        {
+            return nullptr;
+        }
+        return std::dynamic_pointer_cast<ConfigVar<T> >(it->second);
+    }
+
+private:
+    //存放已有的配置项
+    std::unordered_map<std::string, ConfigVarBase::ptr>  name_config_;
+};
 
 }

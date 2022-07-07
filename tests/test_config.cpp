@@ -32,6 +32,6 @@ int main(int argc, char* argv[])
     //修改int类型的值
     g_int_value_config->fromString("8090");
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getValue();
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getConfName();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getConfType();
     return 0;
 }
