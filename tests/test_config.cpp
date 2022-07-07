@@ -35,8 +35,8 @@ int main(int argc, char* argv[])
     // LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getConfType();
 
 
-    leileilei::ConfigVar<int> g_int_value_config = leileilei::ConfigManager::LookUp("system.port", (int)8080, "this is system port");
-    leileilei::ConfigVar<float> g_float_value_config = leileilei::ConfigManager::LookUp("system.value", (float)3.1415, "this is system value");
+    leileilei::ConfigVar<int>::ptr g_int_value_config = leileilei::ConfigManager::LookUp("system.port", (int)8080, "this is system port");
+    leileilei::ConfigVar<float>::ptr g_float_value_config = leileilei::ConfigManager::LookUp("system.value", (float)3.1415, "this is system value");
 
 
 
