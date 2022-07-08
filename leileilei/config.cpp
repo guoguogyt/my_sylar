@@ -1,5 +1,6 @@
 #include "config.h"
 
+//不加需要在用类名时加，否则会报找不到定义的错误
 namespace leileilei
 {
 
@@ -20,7 +21,6 @@ static void ListAllYamlNode(const std::string& prefix, const YAML::Node& node,
         LEI_LOG_ERROR(LEI_GET_LOGGER("system")) << "prefix[" << prefix << "] is not available"; 
     }
     all_node.push_back(std::make_pair(prefix, node));
-    LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "prefix = " << prefix << "--- node =" << node;
 
     if(node.IsMap())
     {
@@ -38,6 +38,10 @@ void ConfigManager::LoadConfigFromYaml(const YAML::Node& node)
 {
     std::list<std::pair<std::string, const YAML::Node> > all_node;
     ListAllYamlNode("", node, all_node);
+    for(auto it = all_node.begin(); it!=all_node.end(); it++)
+    {
+        LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "prefix[" << *(it)->first << "]-----node[" << *(it)->second << "]";
+    }
 }
 
 
