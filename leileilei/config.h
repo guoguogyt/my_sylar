@@ -265,7 +265,7 @@ public:
 
 private:
     //存放已有的配置项,这个属性因为在静态方法LookUp中被使用到，所以将这个属性封装成一个静态函数进行获取
-    static std::unordered_map<std::string, ConfigVarBase::ptr> getConfigMap()
+    static std::unordered_map<std::string, ConfigVarBase::ptr>& getConfigMap()
     {
         static std::unordered_map<std::string, ConfigVarBase::ptr>  name_config_;
         return name_config_;

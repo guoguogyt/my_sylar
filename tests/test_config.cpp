@@ -38,7 +38,6 @@ int main(int argc, char* argv[])
     leileilei::ConfigVar<int>::ptr g_int_value_config = leileilei::ConfigManager::LookUp("system.port", (int)8080, "this is system port");
     leileilei::ConfigVar<float>::ptr g_float_value_config = leileilei::ConfigManager::LookUp("system.value", (float)3.1415, "this is system value");
 
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "map size[" << leileilei::ConfigManager::getConfigMap().size() << "]";
 
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getDesc() << "    before:" << g_int_value_config->toString();
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_float_value_config->getDesc() << "  before:" << g_float_value_config->toString();
