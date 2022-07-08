@@ -39,8 +39,8 @@ int main(int argc, char* argv[])
                             leileilei::ConfigManager::LookUp("system.port", (int)8080, "this is system port");
     leileilei::ConfigVar<float>::ptr g_float_value_config = 
                             leileilei::ConfigManager::LookUp("system.value", (float)3.1415, "this is system value");
-    leileilei::ConfigVar<std::vector<int> >::ptr g_vector_value_config = 
-                            leileilei::ConfigManager::LookUp("system.vector", std::vector<int>{1,2}, "this is system vector");
+    // leileilei::ConfigVar<std::vector<int> >::ptr g_vector_value_config = 
+    //                         leileilei::ConfigManager::LookUp("system.vector", std::vector<int>{1,2}, "this is system vector");
     // leileilei::ConfigVar<std::list<int> >::ptr g_list_value_config = 
     //                         leileilei::ConfigManager::LookUp("system.list", std::list<int>{3,4}, "this is system list");
     // leileilei::ConfigVar<std::set<int> >::ptr g_set_value_config = 

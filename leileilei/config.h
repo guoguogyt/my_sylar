@@ -86,11 +86,15 @@ protected:
     std::string var_desc_;//配置项说明
 };
 
+
+
+
 /**
  * @brief 这个是一个最基础的类型T转换为V的类
             转化利用了boost库的中方法
         对运算符进行了重载，重载了操作符()
- *  之后会对这个类版本进行偏特化，使其可以支持常用的stl库类型
+    之后会对这个类版本进行偏特化，使其可以支持常用的stl库类型
+    在 偏特化 的过程中使用了 YAML库 进行 中间转化
  * @tparam T 
  * @tparam V 
  */
@@ -108,6 +112,44 @@ public:
         return boost::lexical_cast<V>(t);
     }
 };
+
+//偏特化类   std::string ---- std::vector<int>
+template<class T>
+class LexicalCast<std::string, std::vector<T> >
+{
+public:
+    std::vector<T> operator()(const std::string& str)
+    {
+        YAML::Node node = YAML::Load(str);
+        typename std::vector<T> vec;
+        std::stringstream ss;
+        for(int i=0;i<node.size();i++)
+        {
+            ss.str("");
+            ss << node[i];
+            vec.push_back(LexicalCast<std::string, T>()(ss.str()));
+        }
+        return vec;
+    }
+};
+//偏特化类   std::vector<int> ---- std::string
+template<class T>
+class LexicalCast<std::vector<T>, std::string>
+{
+public:
+    std::string operator()(const std::vector<T>& var)
+    {
+        YAML::Node node(YAML::NodeType::Sequence);
+        for(auto& it : var)
+        {
+            node.push_back(YAML::Load(LexicalCast<T, std::string>()(it)));
+        }
+        std::stringstream ss;
+        ss << node;
+        return ss.str();
+    }
+};
+
 
 
 /*
