@@ -39,8 +39,8 @@ int main(int argc, char* argv[])
                             leileilei::ConfigManager::LookUp("system.port", (int)8080, "this is system port");
     leileilei::ConfigVar<float>::ptr g_float_value_config = 
                             leileilei::ConfigManager::LookUp("system.value", (float)3.1415, "this is system value");
-    // leileilei::ConfigVar<std::vector<int> >::ptr g_vector_value_config = 
-    //                         leileilei::ConfigManager::LookUp("system.vector", std::vector<int>{1,2}, "this is system vector");
+    leileilei::ConfigVar<std::vector<int> >::ptr g_vector_value_config = 
+                            leileilei::ConfigManager::LookUp("system.vector", std::vector<int>{1,2}, "this is system vector");
     // leileilei::ConfigVar<std::list<int> >::ptr g_list_value_config = 
     //                         leileilei::ConfigManager::LookUp("system.list", std::list<int>{3,4}, "this is system list");
     // leileilei::ConfigVar<std::set<int> >::ptr g_set_value_config = 
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         } \
     }
 
-    // XX(g_vector_value_config, before);
+    XX(g_vector_value_config, before);
     // XX(g_list_value_config, before);
     // XX(g_set_value_config, before);
     // XX(g_unset_value_config, before);
@@ -82,10 +82,10 @@ int main(int argc, char* argv[])
     // XXM(g_unmap_value_config, before);
 
 
-    // leileilei::ConfigManager::LoadConfigFromYaml(root);
+    leileilei::ConfigManager::LoadConfigFromYaml(root);
 
-    // LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getDesc() << "    after:" << g_int_value_config->toString();
-    // LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_float_value_config->getDesc() << "  after:" << g_float_value_config->toString();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getDesc() << "    after:" << g_int_value_config->toString();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_float_value_config->getDesc() << "  after:" << g_float_value_config->toString();
 
 
 
