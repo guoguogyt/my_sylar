@@ -93,7 +93,8 @@ int main(int argc, char* argv[])
 
 
 
-#endif
+#undef XX
+#undef XXM
 
     return 0;
 }
