@@ -202,7 +202,7 @@ public:
         {
             ss.str("");
             ss << node[i];
-            vec.push_back(LexicalCast<std::string, T>()(ss.str()));
+            vec.insert(LexicalCast<std::string, T>()(ss.str()));
         }
         return vec;
     }
@@ -239,7 +239,7 @@ public:
         {
             ss.str("");
             ss << node[i];
-            vec.push_back(LexicalCast<std::string, T>()(ss.str()));
+            vec.insert(LexicalCast<std::string, T>()(ss.str()));
         }
         return vec;
     }
