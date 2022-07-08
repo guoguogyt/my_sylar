@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
         auto& value = g_var->getValue(); \
         for(auto it : value) \
         { \
-            LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_var->getDesc() << "    " << #prefix << "     value=" << it; \
+            LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_var->getDesc() << "    " #prefix  "     value=" << it; \
         } \
     }
 
@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
         auto& value = g_var->getValue(); \
         for(auto it : value) \
         { \
-            LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_var->getDesc() << "    " << #prefix << "       key=" << it.first << "  value=" << it.second; \
+            LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_var->getDesc() << "    " #prefix  "       key=" << it.first << "  value=" << it.second; \
         } \
     }
 

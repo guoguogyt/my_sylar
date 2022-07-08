@@ -5,6 +5,7 @@
 #include <yaml-cpp/yaml.h>
 #include <cxxabi.h>
 #include <map>
+#include <set>
 #include <vector>
 #include <list>
 #include <unordered_map>
