@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
     { \
         auto& value = g_var->getValue(); \
         for(auto it : value) \
-        {
+        { \
             LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_var->getDesc() << "    " << #prefix << "     value=" << it; \
         } \
     }
@@ -78,8 +78,8 @@ int main(int argc, char* argv[])
     XX(g_list_value_config, before);
     XX(g_set_value_config, before);
     XX(g_unset_value_config, before);
-    XX(g_map_value_config, before);
-    XX(g_unmap_value_config, before);
+    XXM(g_map_value_config, before);
+    XXM(g_unmap_value_config, before);
 
 
     leileilei::ConfigManager::LoadConfigFromYaml(root);
