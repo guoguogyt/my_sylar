@@ -2,6 +2,7 @@
 
 #include <string>
 #include <boost/lexical_cast.hpp>
+#include <yaml-cpp/yaml.h>
 #include <cxxabi.h>
 #include <map>
 #include <vector>
