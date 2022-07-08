@@ -14,10 +14,10 @@ static void ListAllYamlNode(const std::string& prefix, const YAML::Node& node,
     //前缀名称规范检查
     if(prefix.find_first_not_of("qazwsxedcrfvtgbyhnujmikolp._1234567890") != std::string::npos)
     {
-        LEI_LOG_ERROR(logger_system) << "prefix[" << prefix << "] is not available"; 
+        LEI_LOG_ERROR(LEI_GET_LOGGER("system")) << "prefix[" << prefix << "] is not available"; 
     }
     all_node.push_back(std::make_pair(prefix, node));
-    LEI_LOG_DEBUG(logger_system) << "prefix = " << prefix << "--- node =" << node;
+    LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "prefix = " << prefix << "--- node =" << node;
 
     if(node.IsMap())
     {
