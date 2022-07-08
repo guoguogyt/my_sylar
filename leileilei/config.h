@@ -246,7 +246,7 @@ public:
      * @param name 
      * @return ConfigVarBase 
      */
-    static ConfigVarBase LookUpBase(const std::string& name);
+    static ConfigVarBase::ptr LookUpBase(const std::string& name);
 
 
 private:

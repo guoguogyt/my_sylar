@@ -40,7 +40,7 @@ void ConfigManager::LoadConfigFromYaml(const YAML::Node& node)
 
 
 
-ConfigVarBase ConfigManager::LookUpBase(const std::string& name)
+ConfigVarBase::ptr ConfigManager::LookUpBase(const std::string& name)
 {
     auto it = getConfigMap().find(name);
     if(it == getConfigMap().end())
