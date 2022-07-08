@@ -57,7 +57,7 @@ void ConfigManager::LoadConfigFromYaml(const YAML::Node& node)
         {
             if(it.second.IsScalar())
             {
-                cf->fromString(it.second.IsScalar());
+                cf->fromString(it.second.Scalar());
             }
             else
             {
