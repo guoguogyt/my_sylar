@@ -46,5 +46,8 @@ int main(int argc, char* argv[])
 
     leileilei::ConfigManager::LoadConfigFromYaml(root);
 
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getDesc() << "    after:" << g_int_value_config->toString();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_float_value_config->getDesc() << "  after:" << g_float_value_config->toString();
+
     return 0;
 }

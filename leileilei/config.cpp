@@ -38,9 +38,34 @@ void ConfigManager::LoadConfigFromYaml(const YAML::Node& node)
 {
     std::list<std::pair<std::string, const YAML::Node> > all_node;
     ListAllYamlNode("", node, all_node);
+    // for(auto& it : all_node)
+    // {
+    //     LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "prefix[" << it.first << "]-----node[" << it.second << "]";
+    // }
+
     for(auto& it : all_node)
     {
-        LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "prefix[" << it.first << "]-----node[" << it.second << "]";
+        std::string key = it.first;
+        if(key.empty()) continue;
+
+        /**
+         * @brief 
+         *      约定大于配置，如果没有约定则直接舍弃
+         */
+        ConfigVarBase::ptr cf = LookUpBase(key);
+        if(cf)
+        {
+            if(it.second.IsScalar())
+            {
+                cf->fromString(it.second.IsScalar());
+            }
+            else
+            {
+                std::stringstream ss;
+                ss << it.second;
+                cf->fromString(ss.str());
+            }
+        }
     }
 }
 
