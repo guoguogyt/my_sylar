@@ -75,11 +75,11 @@ int main(int argc, char* argv[])
     }
 
     XX(g_vector_value_config, before);
-    XX(g_list_value_config, before);
-    XX(g_set_value_config, before);
-    XX(g_unset_value_config, before);
-    XXM(g_map_value_config, before);
-    XXM(g_unmap_value_config, before);
+    // XX(g_list_value_config, before);
+    // XX(g_set_value_config, before);
+    // XX(g_unset_value_config, before);
+    // XXM(g_map_value_config, before);
+    // XXM(g_unmap_value_config, before);
 
 
     leileilei::ConfigManager::LoadConfigFromYaml(root);
