@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         } \
     }
 
-    XX(g_vector_value_config, before);
+    // XX(g_vector_value_config, before);
     // XX(g_list_value_config, before);
     // XX(g_set_value_config, before);
     // XX(g_unset_value_config, before);
