@@ -21,7 +21,7 @@ static void ListAllYamlNode(const std::string& prefix, const YAML::Node& node,
         LEI_LOG_ERROR(LEI_GET_LOGGER("system")) << "prefix[" << prefix << "] is not available"; 
         return ;
     }
-    
+
     all_node.push_back(std::make_pair(prefix, node));
 
     if(node.IsMap())
@@ -48,7 +48,6 @@ void ConfigManager::LoadConfigFromYaml(const YAML::Node& node)
     for(auto& it : all_node)
     {
         std::string key = it.first;
-        LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "key[" << key << "]";
         if(key.empty()) continue;
 
         /**
@@ -57,7 +56,8 @@ void ConfigManager::LoadConfigFromYaml(const YAML::Node& node)
          */
         ConfigVarBase::ptr cf = LookUpBase(key);
         if(cf)
-        {
+        {   
+            LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "key[" << key << "]";
             if(it.second.IsScalar())
             {
                 cf->fromString(it.second.Scalar());
