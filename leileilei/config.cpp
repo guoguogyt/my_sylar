@@ -1,5 +1,8 @@
 #include "config.h"
 
+namespace leileilei
+{
+
 
 /**
  * @brief 因为yaml的数据格式不是简单的字符串
@@ -48,4 +51,8 @@ ConfigVarBase::ptr ConfigManager::LookUpBase(const std::string& name)
         return nullptr;
     }
     return it->second;
+}
+
+
+
 }
