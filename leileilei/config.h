@@ -224,7 +224,7 @@ public:
         //如果没有找到这个配置，则新生成一个配置
         typename ConfigVar<T>::ptr  cf(new ConfigVar<T>(name, t, desc));
         getConfigMap()[name] = cf;
-        LEI_LOG_DEBUG(logger_system) << "map size[" << getConfigMap().size() << "]";
+        // LEI_LOG_DEBUG(logger_system) << "map size[" << getConfigMap().size() << "]";
         return cf;
     }
 
@@ -264,7 +264,12 @@ public:
 
 
 private:
-    //存放已有的配置项,这个属性因为在静态方法LookUp中被使用到，所以将这个属性封装成一个静态函数进行获取
+    /**
+     * @brief Get the Config Map object
+     * 存放已有的配置项,这个属性因为在静态方法LookUp中被使用到，所以将这个属性封装成一个静态函数进行获取
+     * 这里注意返回值应该是引用类型，否则相当于没有对name_config_进行修改
+     * @return std::unordered_map<std::string, ConfigVarBase::ptr>& 
+     */
     static std::unordered_map<std::string, ConfigVarBase::ptr>& getConfigMap()
     {
         static std::unordered_map<std::string, ConfigVarBase::ptr>  name_config_;

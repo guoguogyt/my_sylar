@@ -45,10 +45,10 @@ void ConfigManager::LoadConfigFromYaml(const YAML::Node& node)
     //     LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "prefix[" << it.first << "]-----node[" << it.second << "]";
     // }
 
-    for(auto it : getConfigMap())
-    {
-        LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "map_key[" << it.first << "]";
-    }
+    // for(auto it : getConfigMap())
+    // {
+    //     LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "map_key[" << it.first << "]";
+    // }
 
     for(auto& it : all_node)
     {
