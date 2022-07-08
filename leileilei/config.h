@@ -224,6 +224,7 @@ public:
         //如果没有找到这个配置，则新生成一个配置
         typename ConfigVar<T>::ptr  cf(new ConfigVar<T>(name, t, desc));
         getConfigMap()[name] = cf;
+        LEI_LOG_DEBUG(logger_system) << "map size[" << getConfigMap().size() << "]";
         return cf;
     }
 
