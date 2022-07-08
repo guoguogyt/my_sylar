@@ -40,8 +40,11 @@ int main(int argc, char* argv[])
 
 
 
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getDesc() << "before:" << g_int_value_config->toString();
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_float_value_config->getDesc() << "before:" << g_float_value_config->toString();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getDesc() << "    before:" << g_int_value_config->toString();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_float_value_config->getDesc() << "  before:" << g_float_value_config->toString();
+
+
+    leileilei::ConfigManager::LoadConfigFromYaml(root);
 
     return 0;
 }

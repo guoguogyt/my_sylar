@@ -4,6 +4,8 @@
 #include <boost/lexical_cast.hpp>
 #include <cxxabi.h>
 #include <map>
+#include <vector>
+#include <list>
 #include <unordered_map>
 #include <typeinfo>
 #include "log.h"
@@ -228,6 +230,24 @@ public:
         }
         return std::dynamic_pointer_cast<ConfigVar<T> >(it->second);
     }
+    
+    /**
+     * @brief 载入YAML中的配置项
+                    如果    没有    对应配置项则创建
+                    如果    有      对应的配置项则覆盖
+     * 
+     * @param node 
+     */
+    static void LoadConfigFromYaml(const YAML::Node& node);
+
+    /**
+     * @brief 根据名称返回配置项
+     * 
+     * @param name 
+     * @return ConfigVarBase 
+     */
+    static ConfigVarBase LookUpBase(const std::string& name);
+
 
 private:
     //存放已有的配置项,这个属性因为在静态方法LookUp中被使用到，所以将这个属性封装成一个静态函数进行获取
