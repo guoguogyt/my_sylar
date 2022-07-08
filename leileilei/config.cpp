@@ -45,6 +45,11 @@ void ConfigManager::LoadConfigFromYaml(const YAML::Node& node)
     //     LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "prefix[" << it.first << "]-----node[" << it.second << "]";
     // }
 
+    for(auto it : getConfigMap())
+    {
+        LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "map_key[" << it.first << "]";
+    }
+
     for(auto& it : all_node)
     {
         std::string key = it.first;
@@ -57,7 +62,6 @@ void ConfigManager::LoadConfigFromYaml(const YAML::Node& node)
         ConfigVarBase::ptr cf = LookUpBase(key);
         if(cf)
         {   
-            LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "key[" << key << "]";
             if(it.second.IsScalar())
             {
                 cf->fromString(it.second.Scalar());
@@ -77,6 +81,7 @@ void ConfigManager::LoadConfigFromYaml(const YAML::Node& node)
 
 ConfigVarBase::ptr ConfigManager::LookUpBase(const std::string& name)
 {
+    LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "name[" << name << "]";
     auto it = getConfigMap().find(name);
     if(it == getConfigMap().end())
     {
