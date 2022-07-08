@@ -38,9 +38,9 @@ void ConfigManager::LoadConfigFromYaml(const YAML::Node& node)
 {
     std::list<std::pair<std::string, const YAML::Node> > all_node;
     ListAllYamlNode("", node, all_node);
-    for(auto it = all_node.begin(); it!=all_node.end(); it++)
+    for(auto& it : all_node)
     {
-        LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "prefix[" << *(it).first << "]-----node[" << *(it).second << "]";
+        LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "prefix[" << it.first << "]-----node[" << it.second << "]";
     }
 }
 
