@@ -41,12 +41,12 @@ int main(int argc, char* argv[])
                             leileilei::ConfigManager::LookUp("system.value", (float)3.1415, "this is system value");
     leileilei::ConfigVar<std::vector<int> >::ptr g_vector_value_config = 
                             leileilei::ConfigManager::LookUp("system.vector", std::vector<int>{1,2}, "this is system vector");
-    // leileilei::ConfigVar<std::list<int> >::ptr g_list_value_config = 
-    //                         leileilei::ConfigManager::LookUp("system.list", std::list<int>{3,4}, "this is system list");
-    // leileilei::ConfigVar<std::set<int> >::ptr g_set_value_config = 
-    //                         leileilei::ConfigManager::LookUp("system.set", std::set<int>{5,6}, "this is system set");
-    // leileilei::ConfigVar<std::unordered_set<int> >::ptr g_unset_value_config = 
-    //                         leileilei::ConfigManager::LookUp("system.unset", std::unordered_set<int>{5,6}, "this is system unset");
+    leileilei::ConfigVar<std::list<int> >::ptr g_list_value_config = 
+                            leileilei::ConfigManager::LookUp("system.list", std::list<int>{3,4}, "this is system list");
+    leileilei::ConfigVar<std::set<int> >::ptr g_set_value_config = 
+                            leileilei::ConfigManager::LookUp("system.set", std::set<int>{5,6}, "this is system set");
+    leileilei::ConfigVar<std::unordered_set<int> >::ptr g_unset_value_config = 
+                            leileilei::ConfigManager::LookUp("system.unset", std::unordered_set<int>{5,6}, "this is system unset");
     // leileilei::ConfigVar<std::map<std::string, int> >::ptr g_map_value_config = 
     //                         leileilei::ConfigManager::LookUp("system.map", std::map<std::string, int>{{"a",1},{"b",2}}, "this is system map");
     // leileilei::ConfigVar<std::unordered_map<std::string,int> >::ptr g_unmap_value_config = 
@@ -75,9 +75,9 @@ int main(int argc, char* argv[])
     }
 
     XX(g_vector_value_config, before);
-    // XX(g_list_value_config, before);
-    // XX(g_set_value_config, before);
-    // XX(g_unset_value_config, before);
+    XX(g_list_value_config, before);
+    XX(g_set_value_config, before);
+    XX(g_unset_value_config, before);
     // XXM(g_map_value_config, before);
     // XXM(g_unmap_value_config, before);
 
