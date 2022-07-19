@@ -88,7 +88,12 @@ int main(int argc, char* argv[])
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_float_value_config->getDesc() << "  after:" << g_float_value_config->toString();
 
 
-
+    XX(g_vector_value_config, after);
+    XX(g_list_value_config, after);
+    XX(g_set_value_config, after);
+    XX(g_unset_value_config, after);
+    XXM(g_map_value_config, after);
+    XXM(g_unmap_value_config, after);
 
 #undef XX
 #undef XXM

@@ -9,3 +9,15 @@ jay:
 system: 
     port: 9090
     value: 66.88
+    vector:
+        - 10
+        - 20
+    list: [30,40]
+    set: [50,60,60,70]
+    unset: [50,60,60,70]
+    map:
+        a: 10
+        c: 30
+    unmap:
+        a: 10
+        c: 30
