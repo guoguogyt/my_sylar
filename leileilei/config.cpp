@@ -81,7 +81,7 @@ void ConfigManager::LoadConfigFromYaml(const YAML::Node& node)
 
 ConfigVarBase::ptr ConfigManager::LookUpBase(const std::string& name)
 {
-    LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "name[" << name << "]";
+    // LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "name[" << name << "]";
     auto it = getConfigMap().find(name);
     if(it == getConfigMap().end())
     {

@@ -262,6 +262,80 @@ public:
     }
 };
 
+//偏特化类   std::string ---- std::map<std::string, T>
+template<class T>
+class LexicalCast<std::string, std::map<std::string, T> >
+{
+public:
+    std::map<std::string, T> operator()(const std::string& str)
+    {
+        YAML::Node node = YAML::Load(str);
+        typename std::map<std::string, T> vec;
+        std::stringstream ss;
+        for(int it=node.begin(); it!=node.end(); it++)
+        {
+            ss.str("");
+            ss<< it->second;
+            vec.insert(std::make_pair(it->first.Scalar(), LexicalCast<std::string, T>()(ss.str())));
+        }
+        return vec;
+    }
+};
+//偏特化类   std::map<std::string,T> ---- std::string
+template<class T>
+class LexicalCast<std::map<std::string, T>, std::string>
+{
+public:
+    std::string operator()(const std::map<std::string, T>& var)
+    {
+        YAML::Node node(YAML::NodeType::Map);
+        for(auto& it : var)
+        {
+            node[it.first] = YAML::Load(LexicalCast<T, std::string>()(it.second));
+        }
+        std::stringstream ss;
+        ss << node;
+        return ss.str();
+    }
+};
+
+//偏特化类   std::string ---- std::unordered_map<std::string, T>
+template<class T>
+class LexicalCast<std::string, std::unordered_map<std::string, T> >
+{
+public:
+    std::unordered_map<std::string, T> operator()(const std::string& str)
+    {
+        YAML::Node node = YAML::Load(str);
+        typename std::unordered_map<std::string, T> vec;
+        std::stringstream ss;
+        for(int it=node.begin(); it!=node.end(); it++)
+        {
+            ss.str("");
+            ss<< it->second;
+            vec.insert(std::make_pair(it->first.Scalar(), LexicalCast<std::string, T>()(ss.str())));
+        }
+        return vec;
+    }
+};
+//偏特化类   std::unordered_map<std::string,T> ---- std::string
+template<class T>
+class LexicalCast<std::unordered_map<std::string, T>, std::string>
+{
+public:
+    std::string operator()(const std::unordered_map<std::string, T>& var)
+    {
+        YAML::Node node(YAML::NodeType::Map);
+        for(auto& it : var)
+        {
+            node[it.first] = YAML::Load(LexicalCast<T, std::string>()(it.second));
+        }
+        std::stringstream ss;
+        ss << node;
+        return ss.str();
+    }
+};
+
 
 /*
     具体执行配置项值转对应类型，或者从string还原一个T类的配置项值

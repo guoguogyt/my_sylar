@@ -47,10 +47,10 @@ int main(int argc, char* argv[])
                             leileilei::ConfigManager::LookUp("system.set", std::set<int>{5,6}, "this is system set");
     leileilei::ConfigVar<std::unordered_set<int> >::ptr g_unset_value_config = 
                             leileilei::ConfigManager::LookUp("system.unset", std::unordered_set<int>{5,6}, "this is system unset");
-    // leileilei::ConfigVar<std::map<std::string, int> >::ptr g_map_value_config = 
-    //                         leileilei::ConfigManager::LookUp("system.map", std::map<std::string, int>{{"a",1},{"b",2}}, "this is system map");
-    // leileilei::ConfigVar<std::unordered_map<std::string,int> >::ptr g_unmap_value_config = 
-    //                         leileilei::ConfigManager::LookUp("system.unmap", std::unordered_map<std::string, int>{{"a",1},{"b",2}}, "this is system unmap");
+    leileilei::ConfigVar<std::map<std::string, int> >::ptr g_map_value_config = 
+                            leileilei::ConfigManager::LookUp("system.map", std::map<std::string, int>{{"a",1},{"b",2}}, "this is system map");
+    leileilei::ConfigVar<std::unordered_map<std::string,int> >::ptr g_unmap_value_config = 
+                            leileilei::ConfigManager::LookUp("system.unmap", std::unordered_map<std::string, int>{{"a",1},{"b",2}}, "this is system unmap");
 
 
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << g_int_value_config->getDesc() << "    before:" << g_int_value_config->toString();
@@ -78,8 +78,8 @@ int main(int argc, char* argv[])
     XX(g_list_value_config, before);
     XX(g_set_value_config, before);
     XX(g_unset_value_config, before);
-    // XXM(g_map_value_config, before);
-    // XXM(g_unmap_value_config, before);
+    XXM(g_map_value_config, before);
+    XXM(g_unmap_value_config, before);
 
 
     leileilei::ConfigManager::LoadConfigFromYaml(root);
