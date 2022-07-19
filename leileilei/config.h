@@ -272,7 +272,7 @@ public:
         YAML::Node node = YAML::Load(str);
         typename std::map<std::string, T> vec;
         std::stringstream ss;
-        for(int it=node.begin(); it!=node.end(); it++)
+        for(auto it=node.begin(); it != node.end(); it++)
         {
             ss.str("");
             ss<< it->second;
@@ -309,7 +309,7 @@ public:
         YAML::Node node = YAML::Load(str);
         typename std::unordered_map<std::string, T> vec;
         std::stringstream ss;
-        for(int it=node.begin(); it!=node.end(); it++)
+        for(auto it=node.begin(); it != node.end(); it++)
         {
             ss.str("");
             ss<< it->second;
