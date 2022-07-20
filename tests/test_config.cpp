@@ -119,8 +119,8 @@ public:
     {
         std::stringstream ss;
         ss << "[Class-Person  name-"<<name
-            <<"age-"<<age
-            <<"sex"<<sex
+            <<" age-"<<age
+            <<" sex"<<sex
             <<"]";
         return ss.str();
     }
@@ -167,19 +167,29 @@ void test_config_yaml_class()
 {
     leileilei::ConfigVar<Person>::ptr g_person_value_config = 
                             leileilei::ConfigManager::LookUp("system.person", Person(), "this is system person");
+    leileilei::ConfigVar<Person>::ptr g_personmap_value_config = 
+                            leileilei::ConfigManager::LookUp("system.personmap", std::map<std::string, Person>(), "this is system personmap");
+
 
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "before - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->toString();
-// #define XX_PERSON(g_var, prefix) \
-//     { \
-//         auto vlu = g_var->to_string(); \
-//         LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << prefix << 
-//     }
+#define XX_PERSON(g_var, prefix) \
+    { \
+        auto vlu = g_var->to_string(); \
+        for(auto& i : vlu) \
+        { \
+            LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << prefix << "   " << i.first << "-" << i.second.to_string(); 
+        } \
+    }
+
+    XX_PERSON(g_personmap_value_config, "   before  ");
     YAML::Node root = YAML::LoadFile("/root/share/my_sylar/bin/config/test.yml");
     leileilei::ConfigManager::LoadConfigFromYaml(root);
 
 
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "after - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->toString();
+    XX_PERSON(g_personmap_value_config, "   after  ");
 
+#undef XX_PERSON
 }
 
 int main(int argc,char* argv[])

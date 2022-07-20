@@ -25,3 +25,16 @@ system:
         name: lei
         age: 26
         sex: true
+    personmap:
+        lei01:
+            name: lei1
+            age: 18
+            sex: false
+        lei02:
+            name: lei2
+            age: 26
+            sex: true
+        lei03:
+            name: lei3
+            age: 22
+            sex: true
