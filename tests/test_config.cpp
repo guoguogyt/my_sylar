@@ -110,7 +110,12 @@ public:
     int age;
     bool sex;
 
-    std::string to_string()
+    /**
+     * @brief  error: passing ‘const Person’ as ‘this’ argument of ‘std::string Person::to_string()’ discards qualifiers [-fpermissive]
+        一个const对象不能调用非const成员函数，即使成员函数并没有改变对象成员的值，编译器也会以为其改变了对象。
+        所以要想调用那个函数，就（只能？）把那个函数设成const函数，也就是在函数后加const，以显式的告诉编译器，这个函数是类内的静态函数，不能改变类的成员变量。
+     */
+    std::string to_string const()
     {
         std::stringstream ss;
         ss << "[Class-Person  name-"<<name
@@ -163,7 +168,7 @@ void test_config_yaml_clss()
     leileilei::ConfigVar<Person>::ptr g_person_value_config = 
                             leileilei::ConfigManager::LookUp("system.person", Person(), "this is system person");
 
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "before - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->to_string();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "before - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->toString();
 // #define XX_PERSON(g_var, prefix) \
 //     { \
 //         auto vlu = g_var->to_string(); \
@@ -173,7 +178,7 @@ void test_config_yaml_clss()
     leileilei::ConfigManager::LoadConfigFromYaml(root);
 
 
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "after - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->to_string();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "after - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->toString();
 
 }
 
