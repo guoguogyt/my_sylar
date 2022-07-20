@@ -174,7 +174,7 @@ void test_config_yaml_class()
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "before - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->toString();
 #define XX_PERSON(g_var, prefix) \
     { \
-        auto vlu = g_var->to_string(); \
+        auto vlu = g_var->getValue(); \
         for(auto& i : vlu) \
         { \
             LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << prefix << "   " << i.first << "-" << i.second.to_string(); \
