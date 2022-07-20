@@ -163,7 +163,7 @@ void test_config_yaml_clss()
     leileilei::ConfigVar<int>::ptr g_person_value_config = 
                             leileilei::ConfigManager::LookUp("system.person", new Person(), "this is system person");
 
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "before - " << g_person_value_config->getValue()->to_string() << " - " << g_person_value_config->to_string();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "before - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->to_string();
 // #define XX_PERSON(g_var, prefix) \
 //     { \
 //         auto vlu = g_var->to_string(); \
@@ -173,7 +173,7 @@ void test_config_yaml_clss()
     leileilei::ConfigManager::LoadConfigFromYaml(root);
 
 
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "after - " << g_person_value_config->getValue()->to_string() << " - " << g_person_value_config->to_string();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "after - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->to_string();
 
 }
 
