@@ -145,7 +145,7 @@ class LexicalCast<Person, std::string>
 public:
     std::string operator()(Person var)
     {
-        YAML::Node node();
+        YAML::Node node;
         node["name"] = var.name;
         node["age"] = var.age;
         node["sex"] = var.sex;
