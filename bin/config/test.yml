@@ -38,3 +38,18 @@ system:
             name: lei3
             age: 22
             sex: true
+    personmapvec:
+        vec01:
+            - name: vec01Per1
+              age: 1
+              sex: false
+            - name: vec01Per1
+              age: 2
+              sex: true
+        vec02:
+            - name: vec02Per1
+              age: 1
+              sex: false
+            - name: vec02Per2
+              age: 2
+              sex: false

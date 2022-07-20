@@ -169,9 +169,10 @@ void test_config_yaml_class()
                             leileilei::ConfigManager::LookUp("system.person", Person(), "this is system person");
     leileilei::ConfigVar<std::map<std::string, Person> >::ptr g_personmap_value_config = 
                             leileilei::ConfigManager::LookUp("system.personmap", std::map<std::string, Person>(), "this is system personmap");
+    leileilei::ConfigVar<std::map<std::string, std::vector<Person> > >::ptr g_personmapvec_value_config = 
+                            leileilei::ConfigManager::LookUp("system.personmapvec", std::map<std::string, std::vector<Person> >(), "this is system personmapvec");
 
-
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "before - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->toString();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "person before - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->toString();
 #define XX_PERSON(g_var, prefix) \
     { \
         auto vlu = g_var->getValue(); \
@@ -181,13 +182,17 @@ void test_config_yaml_class()
         } \
     }
 
-    XX_PERSON(g_personmap_value_config, "   before  ");
+    XX_PERSON(g_personmap_value_config, "  personmap before  ");
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "personmapvec before - " <<  g_person_value_config->toString();
+
+
     YAML::Node root = YAML::LoadFile("/root/share/my_sylar/bin/config/test.yml");
     leileilei::ConfigManager::LoadConfigFromYaml(root);
 
 
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "after - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->toString();
-    XX_PERSON(g_personmap_value_config, "   after  ");
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "person after - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->toString();
+    XX_PERSON(g_personmap_value_config, "  personmap after  ");
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "personmapvec after - " <<  g_person_value_config->toString();
 
 #undef XX_PERSON
 }
