@@ -139,7 +139,7 @@ public:
         return per;
     }
 };
-template<class T>
+template<>
 class LexicalCast<Person, std::string>
 {
 public:
