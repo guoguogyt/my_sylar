@@ -167,7 +167,7 @@ void test_config_yaml_class()
 {
     leileilei::ConfigVar<Person>::ptr g_person_value_config = 
                             leileilei::ConfigManager::LookUp("system.person", Person(), "this is system person");
-    leileilei::ConfigVar<Person>::ptr g_personmap_value_config = 
+    leileilei::ConfigVar<std::map<std::string, Person> >::ptr g_personmap_value_config = 
                             leileilei::ConfigManager::LookUp("system.personmap", std::map<std::string, Person>(), "this is system personmap");
 
 
@@ -177,7 +177,7 @@ void test_config_yaml_class()
         auto vlu = g_var->to_string(); \
         for(auto& i : vlu) \
         { \
-            LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << prefix << "   " << i.first << "-" << i.second.to_string(); 
+            LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << prefix << "   " << i.first << "-" << i.second.to_string(); \
         } \
     }
 
