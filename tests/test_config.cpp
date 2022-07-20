@@ -160,7 +160,7 @@ public:
 
 void test_config_yaml_clss()
 {
-    leileilei::ConfigVar<int>::ptr g_person_value_config = 
+    leileilei::ConfigVar<Person>::ptr g_person_value_config = 
                             leileilei::ConfigManager::LookUp("system.person", new Person(), "this is system person");
 
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "before - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->to_string();
