@@ -115,7 +115,7 @@ public:
         一个const对象不能调用非const成员函数，即使成员函数并没有改变对象成员的值，编译器也会以为其改变了对象。
         所以要想调用那个函数，就（只能？）把那个函数设成const函数，也就是在函数后加const，以显式的告诉编译器，这个函数是类内的静态函数，不能改变类的成员变量。
      */
-    std::string to_string const()
+    std::string to_string() const
     {
         std::stringstream ss;
         ss << "[Class-Person  name-"<<name
