@@ -21,3 +21,7 @@ system:
     unmap:
         a: 10
         c: 30
+    person:
+        name: lei
+        age: 26
+        sex: true

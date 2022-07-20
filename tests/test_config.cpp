@@ -9,7 +9,7 @@ void print_yaml(const YAML::Node& node, int level)
 
 }
 
-int main(int argc, char* argv[])
+int test_stl_config_yaml()
 {
     // leileilei::LogManager lm;
     // leileilei::Logger::ptr system = lm.getLogger("system");
@@ -99,4 +99,85 @@ int main(int argc, char* argv[])
 #undef XXM
 
     return 0;
+}
+
+
+class Person
+{
+public:
+    Person(){};
+    std::string name;
+    int age;
+    bool sex;
+
+    std::string to_string()
+    {
+        std::stringstream ss;
+        ss << "[Class-Person  name-"<<name
+            <<"age-"<<age
+            <<"sex"<<sex
+            <<"]";
+        return ss.str();
+    }
+};
+
+namespace leileilei
+{
+//偏特化类   Person <----> std::string
+template<>
+class LexicalCast<std::string, Person>
+{
+public:
+    Person operator()(const std::string& str)
+    {
+        YAML::Node node = YAML::Load(str);
+        Person per;
+        per.name = node["name"].as<std::string>();
+        per.age = node["age"].as<int>();
+        per.sex = node["sex"].as<bool>();
+
+        return per;
+    }
+};
+template<class T>
+class LexicalCast<Person, std::string>
+{
+public:
+    std::string operator()(Person var)
+    {
+        YAML::Node node();
+        node["name"] = var.name;
+        node["age"] = var.age;
+        node["sex"] = var.sex;
+        std::stringstream ss;
+        ss<< node;
+
+        return ss.str();
+    }
+};
+
+}
+
+void test_config_yaml_clss()
+{
+    leileilei::ConfigVar<int>::ptr g_person_value_config = 
+                            leileilei::ConfigManager::LookUp("system.person", new Person(), "this is system person");
+
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "before - " << g_person_value_config->getValue()->to_string() << " - " << g_person_value_config->to_string();
+// #define XX_PERSON(g_var, prefix) \
+//     { \
+//         auto vlu = g_var->to_string(); \
+//         LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << prefix << 
+//     }
+    YAML::Node root = YAML::LoadFile("/root/share/my_sylar/bin/config/test.yml");
+    leileilei::ConfigManager::LoadConfigFromYaml(root);
+
+
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "after - " << g_person_value_config->getValue()->to_string() << " - " << g_person_value_config->to_string();
+
+}
+
+int main(int argc,char* argv[])
+{
+    // test_stl_config_yaml();
 }
