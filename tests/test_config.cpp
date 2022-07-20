@@ -183,7 +183,7 @@ void test_config_yaml_class()
     }
 
     XX_PERSON(g_personmap_value_config, "  personmap before  ");
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "personmapvec before - " <<  g_person_value_config->toString();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "personmapvec before - " <<  g_personmapvec_value_config->toString();
 
 
     YAML::Node root = YAML::LoadFile("/root/share/my_sylar/bin/config/test.yml");
@@ -192,7 +192,7 @@ void test_config_yaml_class()
 
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "person after - " << g_person_value_config->getValue().to_string() << " - " << g_person_value_config->toString();
     XX_PERSON(g_personmap_value_config, "  personmap after  ");
-    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "personmapvec after - " <<  g_person_value_config->toString();
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "personmapvec after - " <<  g_personmapvec_value_config->toString();
 
 #undef XX_PERSON
 }
