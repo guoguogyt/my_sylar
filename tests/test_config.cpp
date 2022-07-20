@@ -163,7 +163,7 @@ public:
 
 }
 
-void test_config_yaml_clss()
+void test_config_yaml_class()
 {
     leileilei::ConfigVar<Person>::ptr g_person_value_config = 
                             leileilei::ConfigManager::LookUp("system.person", Person(), "this is system person");
@@ -185,4 +185,5 @@ void test_config_yaml_clss()
 int main(int argc,char* argv[])
 {
     // test_stl_config_yaml();
+    test_config_yaml_class();
 }
