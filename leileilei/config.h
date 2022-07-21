@@ -407,8 +407,12 @@ public:
 
     bool setValue(const T& t)
     {
-        //当值改变时调用所有的回调函数
-        if(var_value_ != t)
+        //当值改变时调用所有的回调函数, 因为有!=判断，所以泛型T需要支持==符号
+        if(var_value_ == t)
+        {
+            return true;
+        }   
+        else
         {
             for(auto& it : cb_funs)
             {
