@@ -11,6 +11,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <typeinfo>
+#include <functional>
 #include "log.h"
 
 namespace leileilei{
@@ -346,6 +347,13 @@ class ConfigVar : public ConfigVarBase
 {
 public:
     typedef std::shared_ptr<ConfigVar> ptr;
+    /**
+     * @brief 
+     *  可以对functional实体进行存储、复制、调用。这些实体包括Lambda表达式、函数指针、普通函数和其他函数对象等。
+     其中函数指针是非类型安全的，functional可以对其实现类型安全的包裹。 
+     */
+    typedef std::function<void (const T& old_value, const T& new_value)> on_change_cb;
+
     ConfigVar(const std::string& name, const T& value, const std::string& desc)
         : ConfigVarBase(name, desc), var_value_(value)
     {}
@@ -379,7 +387,8 @@ public:
     {
         try
         {
-            var_value_ = fromStr()(str);
+            // var_value_ = fromStr()(str);
+            setValue(fromStr()(str));
         }
         catch(std::exception& e)
         {
@@ -395,8 +404,52 @@ public:
     }
 
     const T getValue()  {   return var_value_;}
+
+    bool setValue(const T& t)
+    {
+        //当值改变时调用所有的回调函数
+        if(var_value_ != t)
+        {
+            for(auto& it : cb_funs)
+            {
+                it.second(var_value_, t);
+            }
+        }
+        var_value_ = t;
+        return true;
+    }
+
+    /**
+     * @brief 当配置变更，及时作出处理
+     *      利用回调函数的方式，针对不同的配置项作出不同的反应
+     */
+     // 增加回调关系
+    bool addCallBack(uint64_t key, on_change_cb func) 
+    {
+        cb_funs[key] = func;
+    }
+    
+    //获取回调函数
+    on_change_cb getCallBack(uint64_t key)
+    {
+        return cb_funs.find(key) == cb_funs.end() ? nullptr : cb_funs[key];
+    }
+
+    //删除某个指定的回调
+    on_change_cb delCallBack(uint64_t key)
+    {
+        cb_funs.erase(key);
+    }
+
+    //清除所有的回调函数
+    void clearAllCallBack()
+    {
+        cb_funs.clear();
+    }
+
 private:
     T var_value_;
+    std::map<uint64_t, on_change_cb> cb_funs;//存储回调函数
 };
 
 

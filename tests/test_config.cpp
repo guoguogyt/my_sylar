@@ -182,6 +182,10 @@ void test_config_yaml_class()
         } \
     }
 
+    g_person_value_config.addCallBack(1,[](const Person& old_person, const Person& new_person)
+        {LEI_LOG_DEBUG(LEI_LOG_GETROOTOR())<< "doing config callback!"}
+    );
+
     XX_PERSON(g_personmap_value_config, "  personmap before  ");
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "personmapvec before - " <<  g_personmapvec_value_config->toString();
 
