@@ -124,6 +124,11 @@ public:
             <<"]";
         return ss.str();
     }
+
+    bool operator==(const Person& p)
+    {
+        return name==p.name && age==p.age && sex==p.sex;
+    }
 };
 
 namespace leileilei
@@ -182,8 +187,8 @@ void test_config_yaml_class()
         } \
     }
 
-    g_person_value_config.addCallBack(1,[](const Person& old_person, const Person& new_person)
-        {LEI_LOG_DEBUG(LEI_LOG_GETROOTOR())<< "doing config callback!"}
+    g_person_value_config->addCallBack(1,[](const Person& old_person, const Person& new_person)
+        {LEI_LOG_DEBUG(LEI_LOG_GETROOTOR())<< "doing config callback!";}
     );
 
     XX_PERSON(g_personmap_value_config, "  personmap before  ");
