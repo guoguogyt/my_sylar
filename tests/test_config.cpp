@@ -125,7 +125,7 @@ public:
         return ss.str();
     }
 
-    bool operator==(const Person& p)
+    bool operator==(const Person& p) const
     {
         return name==p.name && age==p.age && sex==p.sex;
     }
