@@ -588,20 +588,20 @@ struct LoggerDefine
 {
 public:
     void setName(std::string name)  {   name_ = name;   }
-    void setAppenders(std::vector<LoggerAppenderDefine> appenders)  {   appenders_ = appender;  }
+    void setAppenders(std::vector<LoggerAppenderDefine> appenders)  {   appenders_ = appenders;  }
     std::string getName()   {   return name_;   }
     std::vector<LoggerAppenderDefine> getAppenders()    {   return appenders_;  }
 
     void addAppender(LoggerAppenderDefine appender) {   appenders_.push_back(appender);  }
     void clearAppenders()   {   appenders_.clear();};
-    bool isValid()
+    bool isValid() const
     {
         if(name_.empty() || appenders_.size()==0)   return false;
         for(auto it : appenders_)
         {
             if(it.getFormat().empty())
                 return false;
-            if(it.getType() == 2 && it.getPath().empty())
+            if(it.getType() == "2" && it.getPath().empty())
                 return false;
         }
         return true;
@@ -625,7 +625,7 @@ public:
         if(!node["name"].IsDefined())
         {
             std::cout<< "log config format error, name is null"<<std::endl;
-            return nullptr;
+            return vec;
         }
         vec.setName(node["name"].as<std::string>());
         // yaml  ----  LoggerAppenderDefine
@@ -673,7 +673,7 @@ public:
         else
         {
             std::cout<< "log config format error, appenders is null"<<std::endl;
-            return nullptr;
+            return vec;
         }
 
         return vec;
@@ -693,7 +693,7 @@ public:
             
         }
 
-        var["name"] = var.getName();
+        node["name"] = var.getName();
 
         for(auto it : var.getAppenders())
         {
@@ -705,7 +705,7 @@ public:
             {
                 childNode["path"] = it.getPath();
             }
-            var["appenders"].push_back(childNode);
+            node["appenders"].push_back(childNode);
         }
 
         std::stringstream ss;
