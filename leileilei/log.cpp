@@ -589,8 +589,8 @@ struct LoggerDefine
 public:
     void setName(std::string name)  {   name_ = name;   }
     void setAppenders(std::vector<LoggerAppenderDefine> appenders)  {   appenders_ = appenders;  }
-    std::string getName()   {   return name_;   }
-    std::vector<LoggerAppenderDefine> getAppenders()    {   return appenders_;  }
+    std::string getName()  const {   return name_;   }
+    std::vector<LoggerAppenderDefine> getAppenders()  const  {   return appenders_;  }
 
     void addAppender(LoggerAppenderDefine appender) {   appenders_.push_back(appender);  }
     void clearAppenders()   {   appenders_.clear();};
