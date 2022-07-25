@@ -355,7 +355,7 @@ private:
  * 日志器管理单利模式，程序中应该只有一个实例
  * 日志的生成和获取都应该通过LogManager操作
  * 默认会生成一个名叫做root的主日志器
- * 主日志器的appender，默认2个一个流一个文件
+ * 主日志器的appender，默认2个 一个是流 一个是文件
  * 流appender的日志级别为debug，文件的日志级别为warn 
  */
 class LogManager
@@ -369,6 +369,8 @@ public:
     Logger::ptr getRootLogger() {   return root_logger_;}
     //删除某个日志器
     void delLogger(std::string name);
+    //添加某个日志器
+    bool addLogger(Logger::ptr logger);
 private:
     std::map<std::string, Logger::ptr> name_logger_;
     Logger::ptr root_logger_;

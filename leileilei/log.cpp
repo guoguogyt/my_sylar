@@ -525,6 +525,16 @@ void LogManager::delLogger(std::string name)
     name_logger_.erase(it);
 }
 
+bool LogManager::addLogger(Logger::ptr logger)
+{
+    if(logger && logger.getLoggerName()!="")
+    {
+        name_logger_[logger.getLoggerName()] = logger;
+        return true;
+    }
+    return false;
+}
+
 LogEventWrap::LogEventWrap(Logger::ptr logger , LogEvent::ptr e)
 {
     event_ = e;
@@ -535,5 +545,175 @@ LogEventWrap::~LogEventWrap()
 {
     logger_->doLog(event_);
 }
+
+/**
+ * @brief 通过yaml读取日志系统
+ *  先定义实体类
+    偏特化转换方式
+    设置回调函数
+ */
+/**  
+Appender实体类
+    - type: 2
+      level: DEBUG
+      format: '%d%T%m%n'
+      path: 
+*/
+struct LoggerAppenderDefine
+{
+public:
+    void setType(std::string type)  {   type_ = type;   }
+    void setLevel(LogLevel::level level)    {   level_ = level; }
+    void setFormat(std::string format)    { format_ = formart;  } 
+    void setPath(std::string path)  {   path_ = path;   }
+    std::string getType() const { return type_; }
+    LogLevel::level getLevel() const    {   return level_;  }
+    std::string getFormat() const   {   return format_; }
+    std::string getPath() const    {    return path_;   }
+
+private:
+    std::string type_;
+    LogLevel::level level_ = LogLevel::level::INFO;
+    std::string format_;
+    std::string path_;
+};
+
+/**  
+Logger实体类
+    - name: testLogger1
+      appenders: 
+*/
+struct LoggerDefine
+{
+public:
+    void setName(std::string name)  {   name_ = name;   }
+    void setAppenders(std::vector<LoggerAppenderDefine> appenders)  {   appenders_ = appender;  }
+    std::string getName()   {   return name_;   }
+    std::vector<LoggerAppenderDefine> getAppenders()    {   return appenders_;  }
+
+    void addAppender(LoggerAppenderDefine appender) {   appenders.push_back(appender);  }
+    void clearAppenders()   {   appenders_.clear();};
+    bool isValid()
+    {
+        if(name_.empty() || appenders_.size()==0)   return false;
+        for(auto it : appenders_)
+        {
+            if(it.getFormat().empty())
+                return false;
+            if(it.getType() == 2 && it.getPath().empty())
+                return false;
+        }
+        return true;
+    }
+private:
+    std::string name_;
+    std::vector<LoggerAppenderDefine> appenders_;
+};
+
+
+//偏特化   std::string ---- LoggerDefine
+template<>
+class LexicalCast<std::string, LoggerDefine>
+{
+public:
+    LoggerDefine operator()(const std::string& str)
+    {
+        YAML::Node node = YAML::Load(str);
+        LoggerDefine vec;
+        
+        if(!node["name"].IsDefined())
+        {
+            std::cout<< "log config format error, name is null"<<std::endl;
+            return nullptr;
+        }
+        vec.setName(node["name"].as<std::string>());
+        // yaml  ----  LoggerAppenderDefine
+        if(node["appenders"].IsDefined())
+        {
+            for(size_t i=0; i<node["appenders"].size(); i++)
+            {
+                auto var = node["appenders"][i];
+                //默认1为输出到std    2为输出到file
+                if(!var["type"].IsDefined())
+                {
+                    std::cout<< "log config error, appenders type is null"<< std::endl;
+                    continue;
+                }
+                LoggerAppenderDefine lad;
+                lad.setType(var["type"].as<std::string>());
+
+                if(!var["level"].IsDefined())
+                {
+                    std::cout<< "log config error, appenders level is null"<<std::endl;
+                    continue;
+                }
+                lad.setLevel(LogLevel::stringToLevel(var["level"].as<std::string>()));
+
+                if(!var["format"].IsDefined())
+                {
+                    std::cout<< "log config error, appenders format is null"<<std::endl;
+                    continue;
+                }
+                lad.setFormat(var["format"].as<std::string>());
+
+                if(!var["path"].IsDefined())
+                {
+                    if(lad.getType() == "2")
+                    {
+                        std::cout<< "log config error, appenders path is null ,but type is file"<<std::endl;
+                        continue;
+                    }
+                }
+                lad.setPath(var["path"].as<std::string>());
+
+                vec.addAppender(lad);
+            }
+        }
+        else
+        {
+            std::cout<< "log config format error, appenders is null"<<std::endl;
+            return nullptr;
+        }
+
+        return vec;
+    }
+};
+//偏特化   LoggerDefine ---- std::string
+template<>
+class LexicalCast<LoggerDefine, std::string>
+{
+public:
+    std::string operator()(const LoggerDefine& var)
+    {
+        YAML::Node node;
+        if(!var.isValid())
+        {
+            std::cout<< "this logger is not available" <<std::endl;
+            
+        }
+
+        var["name"] = var.getName();
+
+        for(auto it : var.getAppenders())
+        {
+            YAML::Node childNode;
+            childNode["type"] = it.getType();
+            childNode["level"] = LogLevel::levelToString(it.getLevel());
+            childNode["format"] = it.getFormat();
+            if(it.getType() == "2")
+            {
+                childNode["path"] = it.getPath();
+            }
+            var["appenders"].push_back(childNode);
+        }
+        
+        std::stringstream ss;
+        ss << node;
+        return ss.str();
+    }
+};
+
+
+ConfigVar<std::set<LoggerDefine> >::ptr g_logs_config = ConfigManager::LookUp("log_config", std::set<LoggerDefine>(), "this is logs config");
 
 }
