@@ -12,6 +12,7 @@
 #include "log.h"
 #include <functional>
 #include <time.h>
+#include "config.h"
 
 namespace leileilei{
 

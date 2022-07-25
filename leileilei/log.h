@@ -26,7 +26,7 @@
 #include<map>
 #include<stdarg.h>
 #include"singleton.h"
-#include"config.h"
+
 
 /*
     流式输出日志
