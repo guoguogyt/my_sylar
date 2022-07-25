@@ -690,39 +690,39 @@ public:
     }
 };
 //偏特化   LoggerDefine ---- std::string
-// template<>
-// class LexicalCast<LoggerDefine, std::string>
-// {
-// public:
-//     std::string operator()(const LoggerDefine& var)
-//     {
-//         YAML::Node node;
-//         if(!var.isValid())
-//         {
-//             std::cout<< "this logger is not available" <<std::endl;
+template<>
+class LexicalCast<LoggerDefine, std::string>
+{
+public:
+    std::string operator()(const LoggerDefine& var)
+    {
+        YAML::Node node;
+        if(!var.isValid())
+        {
+            std::cout<< "this logger is not available" <<std::endl;
             
-//         }
+        }
 
-//         node["name"] = var.getName();
+        node["name"] = var.getName();
 
-//         for(auto it : var.getAppenders())
-//         {
-//             YAML::Node childNode;
-//             childNode["type"] = it.getType();
-//             childNode["level"] = LogLevel::levelToString(it.getLevel());
-//             childNode["format"] = it.getFormat();
-//             if(it.getType() == "2")
-//             {
-//                 childNode["path"] = it.getPath();
-//             }
-//             node["appenders"].push_back(childNode);
-//         }
+        for(auto it : var.getAppenders())
+        {
+            YAML::Node childNode;
+            childNode["type"] = it.getType();
+            childNode["level"] = LogLevel::levelToString(it.getLevel());
+            childNode["format"] = it.getFormat();
+            if(it.getType() == "2")
+            {
+                childNode["path"] = it.getPath();
+            }
+            node["appenders"].push_back(childNode);
+        }
 
-//         std::stringstream ss;
-//         ss << node;
-//         return ss.str();
-//     }
-// };
+        std::stringstream ss;
+        ss << node;
+        return ss.str();
+    }
+};
 
 
 // ConfigVar<std::set<LoggerDefine> >::ptr g_logs_config = ConfigManager::LookUp("log_config", std::set<LoggerDefine>(), "this is logs config");
