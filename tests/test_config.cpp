@@ -209,16 +209,16 @@ void test_config_yaml_class()
 
 void test_log_yaml()
 {
-    // static leileilei::Logger::ptr system_log = LEI_GET_LOGGER("testLogger2");
-    // LEI_LOG_DEBUG(system_log) << "hello system" << std::endl;
+    static leileilei::Logger::ptr system_log = LEI_GET_LOGGER("testLogger2");
+    LEI_LOG_DEBUG(system_log) << "hello system" << std::endl;
     // std::cout << sylar::LoggerMgr::GetInstance()->toYamlString() << std::endl;
-    // YAML::Node root = YAML::LoadFile("/root/share/my_sylar/bin/config/log.yml");
-    // leileilei::ConfigManager::LoadConfigFromYaml(root);
-    // std::cout << "=============" << std::endl;
+    YAML::Node root = YAML::LoadFile("/root/share/my_sylar/bin/config/log.yml");
+    leileilei::ConfigManager::LoadConfigFromYaml(root);
+    std::cout << "=============" << std::endl;
     // std::cout << sylar::LoggerMgr::GetInstance()->toYamlString() << std::endl;
-    // std::cout << "=============" << std::endl;
+    std::cout << "=============" << std::endl;
     // std::cout << root << std::endl;
-    // LEI_LOG_DEBUG(system_log) << "hello system" << std::endl;
+    LEI_LOG_DEBUG(system_log) << "hello system" << std::endl;
 
     // system_log->setFormatter("%d - %m%n");
     // SYLAR_LOG_INFO(system_log) << "hello system" << std::endl;
@@ -228,5 +228,5 @@ int main(int argc,char* argv[])
 {
     // test_stl_config_yaml();
     // test_config_yaml_class();
-    // test_log_yaml();
+    test_log_yaml();
 }
