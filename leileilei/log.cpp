@@ -606,6 +606,16 @@ public:
         }
         return true;
     }
+
+    bool operator==(const LoggerDefine& ld)
+    {
+        return name_ == ld.getName();
+    }
+
+    bool operator<(const LoggerDefine& ld)
+    {
+        return name_ < ld.getName();
+    }
 private:
     std::string name_;
     std::vector<LoggerAppenderDefine> appenders_;
