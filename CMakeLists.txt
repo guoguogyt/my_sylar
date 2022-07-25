@@ -11,7 +11,7 @@ if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
-add_executable(test_log ./tests/test_log.cpp ./leileilei/log.cpp)
+add_executable(test_log ./tests/test_log.cpp ./leileilei/log.cpp ./leileilei/config.cpp)
 
 link_directories(/usr/local/lib64)
 include_directories(/usr/local/include/yaml-cpp)

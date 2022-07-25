@@ -527,9 +527,9 @@ void LogManager::delLogger(std::string name)
 
 bool LogManager::addLogger(Logger::ptr logger)
 {
-    if(logger && logger.getLoggerName()!="")
+    if(logger && !logger->getLoggerName().empty())
     {
-        name_logger_[logger.getLoggerName()] = logger;
+        name_logger_[logger->getLoggerName()] = logger;
         return true;
     }
     return false;
@@ -564,7 +564,7 @@ struct LoggerAppenderDefine
 public:
     void setType(std::string type)  {   type_ = type;   }
     void setLevel(LogLevel::level level)    {   level_ = level; }
-    void setFormat(std::string format)    { format_ = formart;  } 
+    void setFormat(std::string format)    { format_ = format;  } 
     void setPath(std::string path)  {   path_ = path;   }
     std::string getType() const { return type_; }
     LogLevel::level getLevel() const    {   return level_;  }
@@ -591,7 +591,7 @@ public:
     std::string getName()   {   return name_;   }
     std::vector<LoggerAppenderDefine> getAppenders()    {   return appenders_;  }
 
-    void addAppender(LoggerAppenderDefine appender) {   appenders.push_back(appender);  }
+    void addAppender(LoggerAppenderDefine appender) {   appenders_.push_back(appender);  }
     void clearAppenders()   {   appenders_.clear();};
     bool isValid()
     {
@@ -706,7 +706,7 @@ public:
             }
             var["appenders"].push_back(childNode);
         }
-        
+
         std::stringstream ss;
         ss << node;
         return ss.str();
