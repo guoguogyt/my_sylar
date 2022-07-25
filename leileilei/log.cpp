@@ -607,12 +607,12 @@ public:
         return true;
     }
 
-    bool operator==(const LoggerDefine& ld)
+    bool operator==(const LoggerDefine& ld) const
     {
         return name_ == ld.getName();
     }
 
-    bool operator<(const LoggerDefine& ld)
+    bool operator<(const LoggerDefine& ld) const
     {
         return name_ < ld.getName();
     }
