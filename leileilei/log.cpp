@@ -618,7 +618,7 @@ public:
     {
         if(name_ != ld.getName())   return false;
         if(appenders_.size() != ld.getAppenders().size())   return false;
-        for(auto i=0;i<appenders.size();i++)
+        for(auto i=0;i<appenders_.size();i++)
         {
             if(appenders_[i] == ld.getAppenders[i]) continue;
             else return false;
@@ -746,7 +746,7 @@ struct LogInit
 {
     LogInit()
     {
-        g_logs_config.addCallBack("logs",
+        g_logs_config->addCallBack("logs",
             [](std::set<LoggerDefine>& old_value, std::set<LoggerDefine>& new_value)
             {
                 std::cout << "logs config alter" << std::endl;
@@ -757,18 +757,18 @@ struct LogInit
                     {
                         //新增
                         Logger::ptr logger(new Logger);
-                        logger.setLoggerName(it.getName());
+                        logger->setLoggerName(it.getName());
                         for(auto i=0; i<it.getAppenders().size(); i++)
                         {
                             //appender类型
                             LogAppender::ptr appender(it.getAppenders[i].getType() == "1" ? 
                                 new StdoutLogAppender : new FileLogAppender(it.getAppenders[i].getPath()));
                             //appender类型日志级别
-                            appender.setLevel(LogLevel::stringToLevel(it.getAppenders[i].getLevel()));
+                            appender->setLevel(LogLevel::stringToLevel(it.getAppenders[i].getLevel()));
                             //appender类型格式
-                            appender.resetFormat(it.getAppenders[i].getFormat());
+                            appender->resetFormat(it.getAppenders[i].getFormat());
 
-                            logger.addAppender(appender);
+                            logger->addAppender(appender);
                         }
                         SingLogMar::GetInstance()->addLogger(logger);
                     }
