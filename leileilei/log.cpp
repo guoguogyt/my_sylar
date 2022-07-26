@@ -572,6 +572,13 @@ public:
     std::string getFormat() const   {   return format_; }
     std::string getPath() const    {    return path_;   }
 
+    bool operator==(const LoggerAppenderDefine& lad)
+    {
+        return type_ == lad.getType() && 
+                LogLevel::levelToString(level_) == LogLevel::levelToString(lad.getLevel()) &&
+                format_ == lad.getFormat() &&
+                path_ == lad.getPath();
+    }
 private:
     std::string type_;
     LogLevel::level level_ = LogLevel::level::INFO;
@@ -609,9 +616,17 @@ public:
 
     bool operator==(const LoggerDefine& ld) const
     {
-        return name_ == ld.getName();
+        if(name_ != ld.getName())   return false;
+        if(appenders_.size() != ld.getAppenders().size())   return false;
+        for(auto i=0;i<appenders.size();i++)
+        {
+            if(appenders_[i] == ld.getAppenders[i]) continue;
+            else return false;
+        }
+        return true;
     }
 
+    //set容器的对比方式 需要重载小于号(竟然重载的不是==号)
     bool operator<(const LoggerDefine& ld) const
     {
         return name_ < ld.getName();
@@ -726,5 +741,56 @@ public:
 
 
 ConfigVar<std::set<LoggerDefine> >::ptr g_logs_config = ConfigManager::LookUp("log_config", std::set<LoggerDefine>(), "this is logs config");
+
+struct LogInit
+{
+    LogInit()
+    {
+        g_logs_config.addCallBack("logs",
+            [](std::set<LoggerDefine>& old_value, std::set<LoggerDefine>& new_value)
+            {
+                std::cout << "logs config alter" << std::endl;
+                for(auto it : new_value)
+                {
+                    auto oldit = old_value.find(it);
+                    if(oldit == old_value.end()) 
+                    {
+                        //新增
+                        Logger::ptr logger(new Logger);
+                        logger.setLoggerName(it.getName());
+                        for(auto i=0; i<it.getAppenders().size(); i++)
+                        {
+                            //appender类型
+                            LogAppender::ptr appender(it.getAppenders[i].getType() == "1" ? 
+                                new StdoutLogAppender : new FileLogAppender(it.getAppenders[i].getPath()));
+                            //appender类型日志级别
+                            appender.setLevel(LogLevel::stringToLevel(it.getAppenders[i].getLevel()));
+                            //appender类型格式
+                            appender.resetFormat(it.getAppenders[i].getFormat());
+
+                            logger.addAppender(appender);
+                        }
+                        SingLogMar::GetInstance()->addLogger(logger);
+                    }
+                    else
+                    {
+                        //修改,这里的修改采取的偷懒的方式，先将old的appenders全部清除，再讲new的appenders放入
+                        
+                    }
+                }
+                for(auto it : old_value)
+                {
+                    auto newit = new_value.find(it);
+                    if(newit == new_value.end())
+                    {
+                        //删除
+                    }
+                }
+            }
+        );
+    }
+};
+
+static LogInit __loginit;
 
 }
