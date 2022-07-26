@@ -620,7 +620,7 @@ public:
         if(appenders_.size() != ld.getAppenders().size())   return false;
         for(auto i=0;i<appenders_.size();i++)
         {
-            if(appenders_[i] == ld.getAppenders[i]) continue;
+            if(appenders_[i] == ld.getAppenders()[i]) continue;
             else return false;
         }
         return true;
@@ -761,12 +761,12 @@ struct LogInit
                         for(auto i=0; i<it.getAppenders().size(); i++)
                         {
                             //appender类型
-                            LogAppender::ptr appender(it.getAppenders[i].getType() == "1" ? 
-                                new StdoutLogAppender : new FileLogAppender(it.getAppenders[i].getPath()));
+                            LogAppender::ptr appender(it.getAppenders()[i].getType() == "1" ? 
+                                new StdoutLogAppender : new FileLogAppender(it.getAppenders()[i].getPath()));
                             //appender类型日志级别
-                            appender->setLevel(LogLevel::stringToLevel(it.getAppenders[i].getLevel()));
+                            appender->setLevel(LogLevel::stringToLevel(it.getAppenders()[i].getLevel()));
                             //appender类型格式
-                            appender->resetFormat(it.getAppenders[i].getFormat());
+                            appender->resetFormat(it.getAppenders()[i].getFormat());
 
                             logger->addAppender(appender);
                         }
