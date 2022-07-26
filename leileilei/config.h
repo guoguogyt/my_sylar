@@ -428,9 +428,11 @@ public:
      *      利用回调函数的方式，针对不同的配置项作出不同的反应
      */
      // 增加回调关系
-    bool addCallBack(uint64_t key, on_change_cb func) 
+    bool addCallBack(on_change_cb func) 
     {
-        cb_funs[key] = func;
+        static uint64_t s_fun_id = 0;
+        s_fun_id++;
+        cb_funs[s_fun_id] = func;
     }
     bool addCallBack(on_change_cb func) {}
     
