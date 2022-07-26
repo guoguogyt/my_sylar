@@ -665,34 +665,32 @@ public:
                     std::cout<< "log config error, appenders type is null"<< std::endl;
                     continue;
                 }
-                std::cout << "LoggerDefine LexicalCast 1" << std::endl;
                 LoggerAppenderDefine lad;
                 lad.setType(var["type"].as<std::string>());
-                std::cout << "LoggerDefine LexicalCast 2" << std::endl;
                 if(!var["level"].IsDefined())
                 {
                     std::cout<< "log config error, appenders level is null"<<std::endl;
                     continue;
                 }
                 lad.setLevel(LogLevel::stringToLevel(var["level"].as<std::string>()));
-                std::cout << "LoggerDefine LexicalCast 3" << std::endl;
                 if(!var["format"].IsDefined())
                 {
                     std::cout<< "log config error, appenders format is null"<<std::endl;
                     continue;
                 }
                 lad.setFormat(var["format"].as<std::string>());
-                std::cout << "LoggerDefine LexicalCast 4" << std::endl;
-                if(!var["path"].IsDefined())
+                if(lad.getType() == "2")
                 {
-                    if(lad.getType() == "2")
+                    if(!var["path"].IsDefined())
                     {
                         std::cout<< "log config error, appenders path is null ,but type is file"<<std::endl;
                         continue;
                     }
+                    else
+                    {
+                        lad.setPath(var["path"].as<std::string>());
+                    }
                 }
-                lad.setPath(var["path"].as<std::string>());
-                std::cout << "LoggerDefine LexicalCast 5" << std::endl;
                 vec.addAppender(lad);
             }
         }
