@@ -196,7 +196,6 @@ class LexicalCast<std::string, std::set<T> >
 public:
     std::set<T> operator()(const std::string& str)
     {
-        std::cout << "set LexicalCast 1" << std::endl;
         YAML::Node node = YAML::Load(str);
         typename std::set<T> vec;
         std::stringstream ss;
@@ -204,7 +203,6 @@ public:
         {
             ss.str("");
             ss << node[i];
-            std::cout << "set LexicalCast 1" << std::endl;
             vec.insert(LexicalCast<std::string, T>()(ss.str()));
         }
         return vec;

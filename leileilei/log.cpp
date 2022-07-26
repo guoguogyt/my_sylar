@@ -655,6 +655,7 @@ public:
         }
         vec.setName(node["name"].as<std::string>());
         // yaml  ----  LoggerAppenderDefine
+        std::cout << "LoggerDefine LexicalCast 2" << std::endl;
         if(node["appenders"].IsDefined())
         {
             for(size_t i=0; i<node["appenders"].size(); i++)
@@ -666,6 +667,7 @@ public:
                     std::cout<< "log config error, appenders type is null"<< std::endl;
                     continue;
                 }
+                std::cout << "LoggerDefine LexicalCast 3" << std::endl;
                 LoggerAppenderDefine lad;
                 lad.setType(var["type"].as<std::string>());
 
@@ -692,7 +694,7 @@ public:
                     }
                 }
                 lad.setPath(var["path"].as<std::string>());
-
+                std::cout << "LoggerDefine LexicalCast 4" << std::endl;
                 vec.addAppender(lad);
             }
         }
