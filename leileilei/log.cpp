@@ -572,7 +572,7 @@ public:
     std::string getFormat() const   {   return format_; }
     std::string getPath() const    {    return path_;   }
 
-    bool operator==(const LoggerAppenderDefine& lad)
+    bool operator==(const LoggerAppenderDefine& lad) const
     {
         return type_ == lad.getType() && 
                 LogLevel::levelToString(level_) == LogLevel::levelToString(lad.getLevel()) &&

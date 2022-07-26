@@ -304,6 +304,7 @@ public:
  */
 class FileLogAppender : public LogAppender
 {
+public:
     typedef std::shared_ptr<FileLogAppender> ptr;
     FileLogAppender(const std::string& fliename);
     //重写父类的纯虚函数
