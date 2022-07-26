@@ -644,6 +644,7 @@ class LexicalCast<std::string, LoggerDefine>
 public:
     LoggerDefine operator()(const std::string& str)
     {
+        std::cout << "LoggerDefine LexicalCast 1" << std::endl;
         YAML::Node node = YAML::Load(str);
         LoggerDefine vec;
         
