@@ -432,6 +432,7 @@ public:
     {
         cb_funs[key] = func;
     }
+    bool addCallBack(on_change_cb func) {}
     
     //获取回调函数
     on_change_cb getCallBack(uint64_t key)

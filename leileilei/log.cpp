@@ -746,7 +746,8 @@ struct LogInit
 {
     LogInit()
     {
-        g_logs_config->addCallBack("logs",[](std::set<LoggerDefine>& old_value, std::set<LoggerDefine>& new_value){
+            g_logs_config->addCallBack([](std::set<LoggerDefine>& old_value, std::set<LoggerDefine>& new_value){
+        // g_logs_config->addCallBack("logs", [](std::set<LoggerDefine>& old_value, std::set<LoggerDefine>& new_value){
                 std::cout << "logs config alter" << std::endl;
                 for(auto it : new_value)
                 {
