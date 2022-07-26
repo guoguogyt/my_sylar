@@ -187,7 +187,7 @@ void test_config_yaml_class()
         } \
     }
 
-    g_person_value_config->addCallBack(1,[](const Person& old_person, const Person& new_person)
+    g_person_value_config->addCallBack([](const Person& old_person, const Person& new_person)
         {LEI_LOG_DEBUG(LEI_LOG_GETROOTOR())<< "doing config callback!";}
     );
 
