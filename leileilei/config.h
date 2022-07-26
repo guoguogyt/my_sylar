@@ -392,7 +392,7 @@ public:
         }
         catch(std::exception& e)
         {
-            LEI_LOG_ERROR(logger_system) << "ConfigVar::fromString exception " << e.what() << " convert: string to" << TypeToName<T>()  << " name=" << var_name_;
+            LEI_LOG_ERROR(logger_system) << "ConfigVar::fromString exception " << e.what() << " convert: string to " << TypeToName<T>()  << " name=" << var_name_;
             return false;
         }
         return true;
