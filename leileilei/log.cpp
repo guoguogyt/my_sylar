@@ -644,7 +644,6 @@ class LexicalCast<std::string, LoggerDefine>
 public:
     LoggerDefine operator()(const std::string& str)
     {
-        std::cout << "LoggerDefine LexicalCast 1" << std::endl;
         YAML::Node node = YAML::Load(str);
         LoggerDefine vec;
         
@@ -655,7 +654,6 @@ public:
         }
         vec.setName(node["name"].as<std::string>());
         // yaml  ----  LoggerAppenderDefine
-        std::cout << "LoggerDefine LexicalCast 2" << std::endl;
         if(node["appenders"].IsDefined())
         {
             for(size_t i=0; i<node["appenders"].size(); i++)
@@ -667,24 +665,24 @@ public:
                     std::cout<< "log config error, appenders type is null"<< std::endl;
                     continue;
                 }
-                std::cout << "LoggerDefine LexicalCast 3" << std::endl;
+                std::cout << "LoggerDefine LexicalCast 1" << std::endl;
                 LoggerAppenderDefine lad;
                 lad.setType(var["type"].as<std::string>());
-
+                std::cout << "LoggerDefine LexicalCast 2" << std::endl;
                 if(!var["level"].IsDefined())
                 {
                     std::cout<< "log config error, appenders level is null"<<std::endl;
                     continue;
                 }
                 lad.setLevel(LogLevel::stringToLevel(var["level"].as<std::string>()));
-
+                std::cout << "LoggerDefine LexicalCast 3" << std::endl;
                 if(!var["format"].IsDefined())
                 {
                     std::cout<< "log config error, appenders format is null"<<std::endl;
                     continue;
                 }
                 lad.setFormat(var["format"].as<std::string>());
-
+                std::cout << "LoggerDefine LexicalCast 4" << std::endl;
                 if(!var["path"].IsDefined())
                 {
                     if(lad.getType() == "2")
@@ -694,7 +692,7 @@ public:
                     }
                 }
                 lad.setPath(var["path"].as<std::string>());
-                std::cout << "LoggerDefine LexicalCast 4" << std::endl;
+                std::cout << "LoggerDefine LexicalCast 5" << std::endl;
                 vec.addAppender(lad);
             }
         }
