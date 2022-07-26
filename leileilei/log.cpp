@@ -761,10 +761,17 @@ struct LogInit
                         for(auto i=0; i<it.getAppenders().size(); i++)
                         {
                             //appender类型
-                            LogAppender::ptr appender(it.getAppenders()[i].getType() == "1" ? 
-                                new StdoutLogAppender : new FileLogAppender(it.getAppenders()[i].getPath()));
+                            LogAppender::ptr appender;
+                            if(it.getAppenders()[i].getType() == "1")
+                            {
+                                appender.reset(new StdoutLogAppender());
+                            }
+                            else
+                            {
+                                appender.reset(new FileLogAppender(it.getAppenders()[i].getPath()));
+                            }
                             //appender类型日志级别
-                            appender->setLevel(LogLevel::stringToLevel(it.getAppenders()[i].getLevel()));
+                            appender->setLevel(it.getAppenders()[i].getLevel());
                             //appender类型格式
                             appender->resetFormat(it.getAppenders()[i].getFormat());
 
