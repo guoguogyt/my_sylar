@@ -740,7 +740,7 @@ public:
 };
 
 
-ConfigVar<std::set<LoggerDefine> >::ptr g_logs_config = ConfigManager::LookUp("log_config", std::set<LoggerDefine>(), "this is logs config");
+ConfigVar<std::set<LoggerDefine> >::ptr g_logs_config = ConfigManager::LookUp("logs", std::set<LoggerDefine>(), "this is logs config");
 
 struct LogInit
 {

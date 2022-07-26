@@ -4,10 +4,10 @@ logs:
           - type: 1
             level: INFO
             format: '%d%T%m%n'
-          - type: 2
-            level: DEBUG
-            format: '%d%T%m%n'
-            path: './logs/test.log'
+          #- type: 2
+          #  level: DEBUG
+          #  format: '%d%T%m%n'
+          #  path: './logs/test.log'
     - name: testLogger2
       appenders: 
           - type: 1
