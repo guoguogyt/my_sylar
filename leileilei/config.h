@@ -196,6 +196,7 @@ class LexicalCast<std::string, std::set<T> >
 public:
     std::set<T> operator()(const std::string& str)
     {
+        std::cout << "set LexicalCast" << std::endl;
         YAML::Node node = YAML::Load(str);
         typename std::set<T> vec;
         std::stringstream ss;
@@ -392,7 +393,7 @@ public:
         }
         catch(std::exception& e)
         {
-            LEI_LOG_ERROR(logger_system) << "ConfigVar::fromString exception " << e.what() << " convert: string to " << TypeToName<T>()  << " name=" << var_name_;
+            LEI_LOG_ERROR(logger_system) << "ConfigVar::fromString exception " << e.what() << " convert: string to " << TypeToName<T>()  << " name = " << var_name_;
             return false;
         }
         return true;
