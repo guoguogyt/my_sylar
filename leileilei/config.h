@@ -387,8 +387,8 @@ public:
     {
         try
         {
-            var_value_ = fromStr()(str);
-            // setValue(fromStr()(str));
+            // var_value_ = fromStr()(str);
+            setValue(fromStr()(str));
         }
         catch(std::exception& e)
         {
