@@ -344,6 +344,8 @@ public:
     void delAppender(LogAppender::ptr appender);
     //获取某个appender
     LogAppender::ptr getAppender(int index);
+    //删除所有的appender
+    void clearAppenders();
 private:
     //日志器的名称
     std::string name_;

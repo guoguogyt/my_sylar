@@ -480,6 +480,11 @@ LogAppender::ptr Logger::getAppender(int index)
     return appenders_[index];
 }
 
+void Logger::clearAppenders()
+{
+    std::vector<LogAppender::ptr>().swap(appenders_);
+}
+
 LogManager::LogManager()
 {
     //初始化时创建一个主的日志器
@@ -786,11 +791,11 @@ struct LogInit
                     {
                         //新增
                         // std::cout << "add new log config, old name[" << (*oldit).getName() << "]    new name[" << it.getName() << "]" <<std::endl;
-                        leileilei::Logger::ptr system_log2 = LEI_GET_LOGGER("testLogger2");
-                        std::cout<< "new logger-" << system_log2->getLoggerName()
-                                 << "  format-"<<  system_log2->getAppender(0)->getFormat()->getFormat()<<std::endl;
-                        Logger::ptr logger(new Logger);
+                        leileilei::Logger::ptr logger = LEI_GET_LOGGER("testLogger2");
+                        std::cout<< "new logger-" << logger->getLoggerName()
+                                 << "  format-"<<  logger->getAppender(0)->getFormat()->getFormat()<<std::endl;
                         logger->setLoggerName(it.getName());
+                        logger->clearAppenders();
                         for(auto i=0; i<it.getAppenders().size(); i++)
                         {
                             //appender类型
@@ -810,9 +815,9 @@ struct LogInit
 
                             logger->addAppender(appender);
                         }
-                        SingLogMar::GetInstance()->addLogger(logger);
-                        std::cout<< "new logger-" << SingLogMar::GetInstance()->getLogger(logger->getLoggerName())->getLoggerName()
-                                 << "  format-"<<  SingLogMar::GetInstance()->getLogger(logger->getLoggerName())->getAppender(0)->getFormat()->getFormat()<<std::endl;
+                        // SingLogMar::GetInstance()->addLogger(logger);
+                        std::cout<< "new logger-" << logger->getLoggerName()
+                                 << "  format-"<<  logger->getAppender(0)->getFormat()->getFormat()<<std::endl;
                     }
                     else
                     {
