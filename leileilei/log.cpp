@@ -579,6 +579,13 @@ public:
                 format_ == lad.getFormat() &&
                 path_ == lad.getPath();
     }
+
+    std::string toString() const
+    {
+        stringstream ss;
+        ss<< "tyepe["<<getType()<<"]    level["<< LogLevel::levelToString(getLevel())<<"]   format["<< getFormat()<<"]  path["<<getPath()<<"]";
+        return ss.str(); 
+    }
 private:
     std::string type_;
     LogLevel::level level_ = LogLevel::level::INFO;
@@ -636,6 +643,17 @@ public:
     bool operator<(const LoggerDefine& ld) const
     {
         return name_ < ld.getName();
+    }
+
+    std::string toString() const
+    {
+        stringstream ss;
+        ss<< "name["<<name_<<"] appenders_[";
+        for(auto it:appenders_)
+        {
+            ss<< it.toString();
+        }
+        return ss.str();
     }
 private:
     std::string name_;
@@ -753,13 +771,21 @@ struct LogInit
     {
         g_logs_config->addCallBack([](const std::set<LoggerDefine>& old_value, const std::set<LoggerDefine>& new_value){
                 std::cout << "logs config alter" << std::endl;
+                for(auto it : old_value)
+                {
+                    std::cout<<"old "<<it.toString()<<std::endl;
+                }
+                for(auto it : new_value)
+                {
+                    std::cout<<"new "<<it.toString()<<std::endl;
+                }
                 for(auto it : new_value)
                 {
                     auto oldit = old_value.find(it);
                     if(oldit == old_value.end()) 
                     {
                         //新增
-                        std::cout << "add new log config, old name[" << (*oldit).getName() << "]    new name[" << it.getName() << "]" <<std::endl;
+                        // std::cout << "add new log config, old name[" << (*oldit).getName() << "]    new name[" << it.getName() << "]" <<std::endl;
                         Logger::ptr logger(new Logger);
                         logger->setLoggerName(it.getName());
                         for(auto i=0; i<it.getAppenders().size(); i++)
@@ -786,7 +812,7 @@ struct LogInit
                     else
                     {
                         //修改,这里的修改采取的偷懒的方式，先将old的appenders全部清除，再讲new的appenders放入
-                        std::cout << "modify log config, old name[" << (*oldit).getName() << "]    new name[" << it.getName() << "]" <<std::endl;
+                        // std::cout << "modify log config, old name[" << (*oldit).getName() << "]    new name[" << it.getName() << "]" <<std::endl;
                         // if(it == oldit) continue;
                         
                     }
