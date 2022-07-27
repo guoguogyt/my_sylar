@@ -641,6 +641,12 @@ public:
     bool operator==(const LoggerDefine& ld) const
     {
         if(name_ != ld.getName())   return false;
+        if(appenders_.size() != ld.getAppenders().size())   return false;
+        for(auto i=0;i<appenders_.size();i++)
+        {
+            if(appenders_[i] == ld.getAppenders()[i]) continue;
+            else return false;
+        }
         return true;
     }
 
@@ -787,44 +793,39 @@ struct LogInit
                 for(auto it : new_value)
                 {
                     auto oldit = old_value.find(it);
+                    leileilei::Logger::ptr logger;
                     if(oldit == old_value.end()) 
                     {
                         //新增
-                        // std::cout << "add new log config, old name[" << (*oldit).getName() << "]    new name[" << it.getName() << "]" <<std::endl;
-                        leileilei::Logger::ptr logger = LEI_GET_LOGGER(it.getName());
-                        // std::cout<< "2new logger-" << logger->getLoggerName()
-                        //          << "  format-"<<  logger->getAppender(0)->getFormat()->getFormat()<<std::endl;
-                        // logger->setLoggerName(it.getName());
-                        logger->clearAppenders();
-                        for(auto i=0; i<it.getAppenders().size(); i++)
-                        {
-                            //appender类型
-                            LogAppender::ptr appender;
-                            if(it.getAppenders()[i].getType() == "1")
-                            {
-                                appender.reset(new StdoutLogAppender);
-                            }
-                            else
-                            {
-                                appender.reset(new FileLogAppender(it.getAppenders()[i].getPath()));
-                            }
-                            //appender类型日志级别
-                            appender->setLevel(it.getAppenders()[i].getLevel());
-                            //appender类型格式
-                            appender->resetFormat(it.getAppenders()[i].getFormat());
-
-                            logger->addAppender(appender);
-                        }
-                        // SingLogMar::GetInstance()->addLogger(logger);
-                        // std::cout<< "3new logger-" << logger->getLoggerName()
-                        //          << "  format-"<<  logger->getAppender(0)->getFormat()->getFormat()<<std::endl;
+                        std::cout << "new logger config name["<<it.getName()<<"]"<<std::endl;
+                        logger = LEI_GET_LOGGER(it.getName());
                     }
                     else
                     {
-                        //修改,这里的修改采取的偷懒的方式，先将old的appenders全部清除，再讲new的appenders放入
-                        // std::cout << "modify log config, old name[" << (*oldit).getName() << "]    new name[" << it.getName() << "]" <<std::endl;
-                        // if(it == oldit) continue;
-                        
+                        if(it == (*oldit)) continue;
+                        //删除
+                        std::cout << "modify logger config name["<<it.getName()<<"]"<<std::endl;
+                        logger = LEI_GET_LOGGER(it.getName());
+                    }
+                    logger->clearAppenders();
+                    for(auto i=0; i<it.getAppenders().size(); i++)
+                    {
+                        //appender类型
+                        LogAppender::ptr appender;
+                        if(it.getAppenders()[i].getType() == "1")
+                        {
+                            appender.reset(new StdoutLogAppender);
+                        }
+                        else
+                        {
+                            appender.reset(new FileLogAppender(it.getAppenders()[i].getPath()));
+                        }
+                        //appender类型日志级别
+                        appender->setLevel(it.getAppenders()[i].getLevel());
+                        //appender类型格式
+                        appender->resetFormat(it.getAppenders()[i].getFormat());
+
+                        logger->addAppender(appender);
                     }
                 }
                 for(auto it : old_value)
@@ -833,7 +834,8 @@ struct LogInit
                     if(newit == new_value.end())
                     {
                         //删除
-                        std::cout << "delete log config" <<std::endl;
+                        std::cout << "delete logger config name["<<it.getName()<<"]"<<std::endl;
+                        SingLogMar::GetInstance()->delLogger(it.getName());
                     }
                 }
             }

@@ -4,5 +4,8 @@ logs:
           - type: 1
             level: INFO
             format: '%d{%Y-%m-%d %H:%M:%S}%T%m%n'
-
-
+    - name: testLogger1
+      appenders: 
+          - type: 1
+            level: INFO
+            format: '%d{%Y-%m-%d %H:%M:%S}%T%m%n'
