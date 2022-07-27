@@ -791,10 +791,10 @@ struct LogInit
                     {
                         //新增
                         // std::cout << "add new log config, old name[" << (*oldit).getName() << "]    new name[" << it.getName() << "]" <<std::endl;
-                        leileilei::Logger::ptr logger = LEI_GET_LOGGER("testLogger2");
-                        std::cout<< "2new logger-" << logger->getLoggerName()
-                                 << "  format-"<<  logger->getAppender(0)->getFormat()->getFormat()<<std::endl;
-                        logger->setLoggerName(it.getName());
+                        leileilei::Logger::ptr logger = LEI_GET_LOGGER(it.getName());
+                        // std::cout<< "2new logger-" << logger->getLoggerName()
+                        //          << "  format-"<<  logger->getAppender(0)->getFormat()->getFormat()<<std::endl;
+                        // logger->setLoggerName(it.getName());
                         logger->clearAppenders();
                         for(auto i=0; i<it.getAppenders().size(); i++)
                         {
@@ -816,8 +816,8 @@ struct LogInit
                             logger->addAppender(appender);
                         }
                         // SingLogMar::GetInstance()->addLogger(logger);
-                        std::cout<< "3new logger-" << logger->getLoggerName()
-                                 << "  format-"<<  logger->getAppender(0)->getFormat()->getFormat()<<std::endl;
+                        // std::cout<< "3new logger-" << logger->getLoggerName()
+                        //          << "  format-"<<  logger->getAppender(0)->getFormat()->getFormat()<<std::endl;
                     }
                     else
                     {

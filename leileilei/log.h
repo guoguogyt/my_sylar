@@ -235,6 +235,7 @@ public:
     bool resetFormat(std::string format);
     //得到模板
     std::string getFormat() const { return format_;}
+    int getFormatInfo() {   return items_.size();}
 public:
     //定义一个内部类用来保存解析出来的每一项格式
     class FormatItem
