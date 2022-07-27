@@ -776,14 +776,14 @@ struct LogInit
     {
         g_logs_config->addCallBack([](const std::set<LoggerDefine>& old_value, const std::set<LoggerDefine>& new_value){
                 std::cout << "logs config alter" << std::endl;
-                for(auto it : old_value)
-                {
-                    std::cout<<"old "<<it.toString()<<std::endl;
-                }
-                for(auto it : new_value)
-                {
-                    std::cout<<"new "<<it.toString()<<std::endl;
-                }
+                // for(auto it : old_value)
+                // {
+                //     std::cout<<"old "<<it.toString()<<std::endl;
+                // }
+                // for(auto it : new_value)
+                // {
+                //     std::cout<<"new "<<it.toString()<<std::endl;
+                // }
                 for(auto it : new_value)
                 {
                     auto oldit = old_value.find(it);
@@ -802,7 +802,7 @@ struct LogInit
                             LogAppender::ptr appender;
                             if(it.getAppenders()[i].getType() == "1")
                             {
-                                appender.reset(new StdoutLogAppender());
+                                appender.reset(new StdoutLogAppender);
                             }
                             else
                             {

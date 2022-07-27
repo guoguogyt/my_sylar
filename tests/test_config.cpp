@@ -221,6 +221,7 @@ void test_log_yaml()
                                  << "  format-"<<  system_log->getAppender(0)->getFormat()->getFormat()<<std::endl;
     std::cout << "=============" << std::endl;
     // std::cout << root << std::endl;
+    
     LEI_LOG_DEBUG(system_log) << "hello system" << std::endl;
 
     // system_log->setFormatter("%d - %m%n");
