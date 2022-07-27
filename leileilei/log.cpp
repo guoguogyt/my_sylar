@@ -753,6 +753,7 @@ struct LogInit
                     if(oldit == old_value.end()) 
                     {
                         //新增
+                        std::cout << "add new log config" <<std::endl;
                         Logger::ptr logger(new Logger);
                         logger->setLoggerName(it.getName());
                         for(auto i=0; i<it.getAppenders().size(); i++)
@@ -779,7 +780,12 @@ struct LogInit
                     else
                     {
                         //修改,这里的修改采取的偷懒的方式，先将old的appenders全部清除，再讲new的appenders放入
-                        
+                        std::cout << "modify log config" <<std::endl;
+                        if(it == oldit) continue;
+                        else
+                        {
+
+                        }
                     }
                 }
                 for(auto it : old_value)
@@ -788,6 +794,7 @@ struct LogInit
                     if(newit == new_value.end())
                     {
                         //删除
+                        std::cout << "delete log config" <<std::endl;
                     }
                 }
             }
