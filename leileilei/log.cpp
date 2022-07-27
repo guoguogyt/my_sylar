@@ -582,7 +582,7 @@ public:
 
     std::string toString() const
     {
-        stringstream ss;
+        std::stringstream ss;
         ss<< "tyepe["<<getType()<<"]    level["<< LogLevel::levelToString(getLevel())<<"]   format["<< getFormat()<<"]  path["<<getPath()<<"]";
         return ss.str(); 
     }
@@ -647,7 +647,7 @@ public:
 
     std::string toString() const
     {
-        stringstream ss;
+        std::stringstream ss;
         ss<< "name["<<name_<<"] appenders_[";
         for(auto it:appenders_)
         {
