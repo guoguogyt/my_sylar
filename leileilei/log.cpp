@@ -809,7 +809,7 @@ struct LogInit
                         }
                         SingLogMar::GetInstance()->addLogger(logger);
                         std::cout<< "new logger-" << SingLogMar::GetInstance()->getLogger(logger->getLoggerName())->getLoggerName()
-                                 << "  format-"<<  SingLogMar::GetInstance()->getLogger(logger->getLoggerName())->getAppender(0)->getFormat()<<std::endl;
+                                 << "  format-"<<  SingLogMar::GetInstance()->getLogger(logger->getLoggerName())->getAppender(0)->getFormat()->getFormat()<<std::endl;
                     }
                     else
                     {
