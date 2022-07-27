@@ -781,11 +781,8 @@ struct LogInit
                     {
                         //修改,这里的修改采取的偷懒的方式，先将old的appenders全部清除，再讲new的appenders放入
                         std::cout << "modify log config" <<std::endl;
-                        if(it == oldit) continue;
-                        else
-                        {
-
-                        }
+                        // if(it == oldit) continue;
+                        
                     }
                 }
                 for(auto it : old_value)
