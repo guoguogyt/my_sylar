@@ -815,7 +815,6 @@ struct LogInit
 
                             logger->addAppender(appender);
                         }
-                        LEI_LOG_DEBUG(logger) << "hello system";
                         // SingLogMar::GetInstance()->addLogger(logger);
                         // std::cout<< "3new logger-" << logger->getLoggerName()
                         //          << "  format-"<<  logger->getAppender(0)->getFormat()->getFormat()<<std::endl;
