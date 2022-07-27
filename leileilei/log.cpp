@@ -786,6 +786,9 @@ struct LogInit
                     {
                         //新增
                         // std::cout << "add new log config, old name[" << (*oldit).getName() << "]    new name[" << it.getName() << "]" <<std::endl;
+                        leileilei::Logger::ptr system_log2 = LEI_GET_LOGGER("testLogger2");
+                        std::cout<< "new logger-" << system_log2->getLoggerName()
+                                 << "  format-"<<  system_log2->getAppender(0)->getFormat()->getFormat()<<std::endl;
                         Logger::ptr logger(new Logger);
                         logger->setLoggerName(it.getName());
                         for(auto i=0; i<it.getAppenders().size(); i++)
