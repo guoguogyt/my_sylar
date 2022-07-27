@@ -217,6 +217,8 @@ void test_log_yaml()
     YAML::Node root = YAML::LoadFile("/root/share/my_sylar/bin/config/log.yml");
     leileilei::ConfigManager::LoadConfigFromYaml(root);
     // std::cout << sylar::LoggerMgr::GetInstance()->toYamlString() << std::endl;
+    std::cout<< "new logger-" << system_log->getLoggerName()
+                                 << "  format-"<<  system_log->getAppender(0)->getFormat()->getFormat()<<std::endl;
     std::cout << "=============" << std::endl;
     // std::cout << root << std::endl;
     LEI_LOG_DEBUG(system_log) << "hello system" << std::endl;
