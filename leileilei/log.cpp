@@ -843,6 +843,7 @@ struct LogInit
     }
 };
 
+//全局的静态变量的构造方法会在main函数执行之前执行
 static LogInit __loginit;
 
 }
