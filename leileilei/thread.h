@@ -15,7 +15,7 @@ class Thread
 public:
     typedef std::shared_ptr<Thread> ptr;
 
-    Thread(std::function<void()> cb , std::string& name);
+    Thread(std::function<void()> cb , const std::string& name);
 
     ~Thread();
 

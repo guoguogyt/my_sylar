@@ -17,7 +17,7 @@ static thread_local std::string t_thread_name = "UNKNOW";
 static Logger::ptr thread_log = LEI_GET_LOGGER("system");
 
 
-Thread::Thread(std::function<void()> cb, std::string& name)
+Thread::Thread(std::function<void()> cb, const std::string& name)
     :callback_(cb),
     thread_name_(name)
 {
