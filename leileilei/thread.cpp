@@ -23,7 +23,7 @@ Thread::Thread(std::function<void()> cb, std::string& name)
 {
     if(name.empty())    thread_name_ = "UNKNOW";
 
-    int result = pthread_create(&thread, nullptr, &Thread::run, this);
+    int result = pthread_create(&thread_, nullptr, &Thread::run, this);
     if(result)
     {
         LEI_LOG_ERROR(thread_log) << "thread create faild, result="<< result << "   name=" << thread_name_;
@@ -59,12 +59,12 @@ void Thread::join()
 void* Thread::run(void* arg)
 {
     Thread* thread = (Thread*)arg;
-    thread_ = thread;
+    t_thread = thread;
     t_thread_name = thread->thread_name_;
     thread->thread_id_ = leileilei::GetThreadId();
 
     std::function<void()> cb;
-    cb.swap(thread_->callback_);
+    cb.swap(thread->callback_);
 
     cb();
 
