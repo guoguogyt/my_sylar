@@ -20,9 +20,10 @@ int main(int argc, char* argv[])
 {
     std::vector<leileilei::Thread::ptr> threads; 
     //开线程
-    for(int i=0;i<5;i++)
+    for(int i=0;i<1;i++)
     {
-        leileilei::Thread::ptr th(new leileilei::Thread(&fun1, "name_" + std::to_string(i)));
+        // leileilei::Thread::ptr th(new leileilei::Thread(&fun1, "name_" + std::to_string(i)));
+        leileilei::Thread::ptr th(new leileilei::Thread(&fun1, "name_"));
         threads.push_back(th);
     }
     LEI_LOG_INFO(logs) << "count = "<< count;
