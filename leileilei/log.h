@@ -17,15 +17,17 @@
 #pragma once
 
 
-#include<memory>//智能指针的头文件
-#include<string>
-#include<sstream>
-#include<fstream>
-#include<vector>
-#include<iostream>
-#include<map>
-#include<stdarg.h>
-#include"singleton.h"
+#include <memory>//智能指针的头文件
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <vector>
+#include <iostream>
+#include <map>
+#include <stdarg.h>
+
+#include "singleton.h"
+#include "util.h"
 
 
 /*
@@ -33,7 +35,7 @@
 */
 #define LEI_LOG_LEVEL(logger, level) \
     leileilei::LogEventWrap(logger, leileilei::LogEvent::ptr(new leileilei::LogEvent(__FILE__, \
-                                __LINE__, 0, 1, 2, time(0), "threadName", level))).getSS()
+                                __LINE__, 0, leileilei::GetThreadId(), 2, time(0), "threadName", level))).getSS()
 
 /**
  * @brief 使用流式方式将日志级别debug的日志写入到logger
@@ -318,7 +320,7 @@ private:
     //文件流
     std::ofstream filestream_;
     //上次打开的时间
-    uint64_t last_time_;
+    uint64_t last_time_ = 0;
 };
 
 /*** 
