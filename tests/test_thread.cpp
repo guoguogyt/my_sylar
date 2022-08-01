@@ -8,7 +8,7 @@ leileilei::Logger::ptr logs = LEI_LOG_GETROOTOR();
 
 void fun1()
 {
-    LEI_LOG_INFO(logs) << << "name: " << leileilei::Thread::GetThreadName()
+    LEI_LOG_INFO(logs) << "name: " << leileilei::Thread::GetThreadName()
                              << " this.name: " << leileilei::Thread::getThis()->getThreadName()
                              << " id: " << leileilei::GetThreadId()
                              << " this.id: " << leileilei::Thread::getThis()->getThreadId();
