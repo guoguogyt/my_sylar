@@ -36,6 +36,7 @@ include_directories(/usr/local/include/yaml-cpp)
 
 # add_executable(test_log ./tests/test_log.cpp ./leileilei/log.cpp ./leileilei/config.cpp)
 # target_link_libraries(test_log yaml-cpp)
+
 # 生成可执行的文件
 add_executable(test_log ./tests/test_log.cpp)
 # 提醒编译器需要先生成test_log的依赖(leileilei),然后再去生成test_log
@@ -46,3 +47,15 @@ target_link_libraries(test_log ${LIBS})
 
 # add_executable(test_config ./tests/test_config.cpp ./leileilei/log.cpp ./leileilei/config.cpp)
 # target_link_libraries(test_config yaml-cpp)
+add_executable(test_config ./tests/test_config.cpp)
+# 提醒编译器需要先生成test_log的依赖(leileilei),然后再去生成test_log
+add_dependencies(test_config leileilei)
+# 指定需要连接的库
+target_link_libraries(test_config ${LIBS})
+
+
+add_executable(test_thread ./tests/test_thread.cpp)
+# 提醒编译器需要先生成test_log的依赖(leileilei),然后再去生成test_log
+add_dependencies(test_thread leileilei)
+# 指定需要连接的库
+target_link_libraries(test_thread ${LIBS})

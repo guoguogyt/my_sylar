@@ -62,6 +62,13 @@ void* Thread::run(void* arg)
     t_thread = thread;
     t_thread_name = thread->thread_name_;
     thread->thread_id_ = leileilei::GetThreadId();
+    /**
+     * @brief 设置线程的名称
+     * 默认情况下，所有使用 pthread_create() 创建的线程都继承程序名称。 pthread_setname_np() 函数可用于为线程设置唯一名称
+     线程名称是一个有意义的 C 语言字符串，包括终止空字节 ('\0')在内，其长度限制为 16 个字符
+     成功时，这些函数返回 0； 出错时，它们返回一个非零错误号。
+     */
+    pthread_setname_np(pthread_self(), thread->thread_name_.substr(0,15).c_str());
 
     std::function<void()> cb;
     cb.swap(thread->callback_);
