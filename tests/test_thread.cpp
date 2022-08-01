@@ -7,7 +7,7 @@ leileilei::Logger::ptr logs = LEI_LOG_GETROOTOR();
 
 void fun1()
 {
-    for(int i=0;i<100000;i++)
+    for(int i=0;i<1000000;i++)
     {
         count++;
     }
