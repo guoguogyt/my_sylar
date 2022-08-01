@@ -12,7 +12,7 @@ void fun1()
                              << " this.name: " << leileilei::Thread::getThis()->getThreadName()
                              << " id: " << leileilei::GetThreadId()
                              << " this.id: " << leileilei::Thread::getThis()->getThreadId();
-    for(int i=0;i<1000000;i++)
+    for(int i=0;i<10000000;i++)
     {
         ++count;
     }
