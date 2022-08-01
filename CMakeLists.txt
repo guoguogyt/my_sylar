@@ -11,12 +11,38 @@ if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
+set(LIB_SRC
+    leileilei/log.cpp
+    leileilei/config.cpp
+    leileilei/mutex.cpp
+    leileilei/thread.cpp
+    leileilei/util.cpp
+)
+
+# 生成一个名为leileilei的动态库
+add_library(leileilei SHARED ${LIB_SRC})
+
+find_library(PTHREAD pthread)
+find_library(YAMLCPP yaml-cpp)
+
+set(LIBS
+        leileilei
+        pthread
+        yaml-cpp
+)
+
 link_directories(/usr/local/lib64)
 include_directories(/usr/local/include/yaml-cpp)
 
-#add_executable(test_log ./tests/test_log.cpp ./leileilei/log.cpp ./leileilei/config.cpp)
-#target_link_libraries(test_log yaml-cpp)
+# add_executable(test_log ./tests/test_log.cpp ./leileilei/log.cpp ./leileilei/config.cpp)
+# target_link_libraries(test_log yaml-cpp)
+# 生成可执行的文件
+add_executable(test_log ./tests/test_log.cpp)
+# 提醒编译器需要先生成test_log的依赖(leileilei),然后再去生成test_log
+add_dependencies(test_log leileilei)
+# 指定需要连接的库
+target_link_libraries(test_log ${LIBS})
 
 
-add_executable(test_config ./tests/test_config.cpp ./leileilei/log.cpp ./leileilei/config.cpp)
-target_link_libraries(test_config yaml-cpp)
+# add_executable(test_config ./tests/test_config.cpp ./leileilei/log.cpp ./leileilei/config.cpp)
+# target_link_libraries(test_config yaml-cpp)
