@@ -16,7 +16,7 @@ void fun1()
     {
         ++count;
     }
-    // sleep(20);
+    LEI_LOG_INFO(logs) << "name: " << leileilei::Thread::GetThreadName() << "   count = "<< count;
 }
 
 
