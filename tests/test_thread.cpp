@@ -8,15 +8,16 @@ leileilei::Logger::ptr logs = LEI_LOG_GETROOTOR();
 
 void fun1()
 {
-    LEI_LOG_INFO(logs) << "name: " << leileilei::Thread::GetThreadName()
-                             << " this.name: " << leileilei::Thread::getThis()->getThreadName()
-                             << " id: " << leileilei::GetThreadId()
-                             << " this.id: " << leileilei::Thread::getThis()->getThreadId();
+    // LEI_LOG_INFO(logs) << "name: " << leileilei::Thread::GetThreadName()
+    //                     << " this.name: " << leileilei::Thread::getThis()->getThreadName()
+    //                     << " id: " << leileilei::GetThreadId()
+    //                     << " this.id: " << leileilei::Thread::getThis()->getThreadId();
+
     for(int i=0;i<10000000;i++)
     {
         ++count;
     }
-    LEI_LOG_INFO(logs) << "name: " << leileilei::Thread::GetThreadName() << "   count = "<< count;
+    LEI_LOG_INFO(logs) << "name: " << leileilei::Thread::GetThreadName() << " count = "<< count;
 }
 
 
@@ -26,7 +27,7 @@ int main(int argc, char* argv[])
     std::vector<leileilei::Thread::ptr> threads; 
     std::string ss = "name_";
     //开线程
-    for(int i=0;i<5;i++)
+    for(int i=0;i<10;i++)
     {
         // leileilei::Thread::ptr th(new leileilei::Thread(&fun1, "name_" + std::to_string(i)));
         leileilei::Thread::ptr th(new leileilei::Thread(&fun1, ss + std::to_string(i)));
