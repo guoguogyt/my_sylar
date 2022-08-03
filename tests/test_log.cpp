@@ -13,7 +13,13 @@ int main(int argc, char* argv[])
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR())<<"test log";
     LEI_FMT_LOG_INFO(LEI_LOG_GETROOTOR(), "%s", "format log");
 
+    Logger::ptr root = LEI_LOG_GETROOTOR();
+    LogAppender::ptr appender(new FileLogAppender("test.log"));
+    appender->resetFormat("%d%T%m%n");
+    root->addAppender(appender);
 
+    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR())<<"test log";
+    LEI_FMT_LOG_INFO(LEI_LOG_GETROOTOR(), "%s", "format log");
     return 0;
 }
 
