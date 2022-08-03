@@ -31,7 +31,7 @@ Thread::Thread(std::function<void()> cb, const std::string& name)
     }
 
     //为了防止线程还没有初始化完成，就显示线程已经被创建
-    sem.wait();
+    sem_.wait();
 }
 
 Thread::~Thread()
@@ -75,7 +75,7 @@ void* Thread::run(void* arg)
     std::function<void()> cb;
     cb.swap(thread->callback_);
 
-    thread->sem.notify();
+    thread->sem_.notify();
 
     cb();
     return 0;    
