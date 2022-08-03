@@ -77,7 +77,7 @@ private:
     //线程名称
     std::string thread_name_;
     //信号量
-
+    Semaphore sem_;
 
 };
 
