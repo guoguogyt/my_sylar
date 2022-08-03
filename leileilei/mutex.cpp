@@ -37,7 +37,7 @@ Semaphore::~Semaphore()
         作用: 清理信号量占有的资源，当调用该函数，而有线程等待此信号量时，将会返回错信息。
      * 
      */
-    if(sem_destory(&semaphore_))
+    if(sem_destroy(&semaphore_))
     {
         throw std::logic_error("sem destory error");
     }
