@@ -403,7 +403,8 @@ void StdoutLogAppender::doLog(Logger::ptr logger, LogEvent::ptr event)
 FileLogAppender::FileLogAppender(const std::string& fliename)
 {
     filename_ = fliename;
-    reopen();
+    if(reopen())
+        std::cout<<"open file failded , file name="<<filename_<<std::endl;
 }
 
 bool FileLogAppender::reopen()
@@ -412,7 +413,18 @@ bool FileLogAppender::reopen()
         filestream_.close();
     }
     //这里将文件的相关操作封装到until类中，暂时先空
-    return true;
+    /**
+     * @brief 
+     * 打开文件的方式在ios类(所以流式I/O的基类)中定义，有如下几种方式：
+        ios::in 为输入(读)而打开文件
+        ios::out 为输出(写)而打开文件
+        ios::ate 初始位置：文件尾
+        ios::app 所有输出附加在文件末尾
+        ios::trunc 如果文件已存在则先删除该文件
+        ios::binary 二进制方式
+     */
+    filestream_.open(filename_, std::ios::app)
+    return !filestream_;
 }
 
 void FileLogAppender::doLog(std::shared_ptr<Logger> logger, LogEvent::ptr event)

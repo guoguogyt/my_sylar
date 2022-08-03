@@ -24,6 +24,8 @@ void fun1()
 
 int main(int argc, char* argv[])
 {
+    YAML::Node root = YAML::LoadFile("/root/share/my_sylar/bin/config/test.yml");
+    leileilei::ConfigManager::LoadConfigFromYaml(root);
     std::vector<leileilei::Thread::ptr> threads; 
     std::string ss = "name_";
     /**
