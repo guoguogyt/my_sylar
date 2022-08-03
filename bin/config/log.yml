@@ -1,9 +1,6 @@
 logs: 
     - name: root
       appenders: 
-          # - type: 1
-          #   level: INFO
-          #   format: '%d{%Y-%m-%d %H:%M:%S}%T%m%n'
           - type: 2
             level: DEBUG
             format: '%d%T%m%n'
