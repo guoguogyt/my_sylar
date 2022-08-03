@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
     LEI_FMT_LOG_INFO(LEI_LOG_GETROOTOR(), "%s", "format log");
 
     leileilei::Logger::ptr root = LEI_LOG_GETROOTOR();
-    leileilei::LogAppender::ptr appender(new FileLogAppender("test.log"));
+    leileilei::LogAppender::ptr appender(new leileilei::FileLogAppender("test.log"));
     appender->resetFormat("%d%T%m%n");
     root->addAppender(appender);
 
