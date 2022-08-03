@@ -101,7 +101,7 @@ public:
         }
     }
 private:
-    T& muext_;
+    T& mutex_;
     //是否已经上锁
     bool islock_;
 };
