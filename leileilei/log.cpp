@@ -423,7 +423,7 @@ bool FileLogAppender::reopen()
         ios::trunc 如果文件已存在则先删除该文件
         ios::binary 二进制方式
      */
-    filestream_.open(filename_, std::ios::app)
+    filestream_.open(filename_, std::ios::app);
     return !filestream_;
 }
 
