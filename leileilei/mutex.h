@@ -217,4 +217,45 @@ private:
     pthread_spinlock_t mutex_;
 };
 
+/**
+ * @brief 原子锁
+ *  
+ */
+class CASLock
+{
+public:
+    /// 局部锁
+    typedef LockImpl<CASLock> Lock;
+
+    /**
+     * @brief 构造函数
+     */
+    CASLock() {
+        mutex_.clear();
+    }
+
+    /**
+     * @brief 析构函数
+     */
+    ~CASLock() {
+    }
+
+    /**
+     * @brief 上锁
+     */
+    void lock() {
+        while(std::atomic_flag_test_and_set_explicit(&mutex_, std::memory_order_acquire));
+    }
+
+    /**
+     * @brief 解锁
+     */
+    void unlock() {
+        std::atomic_flag_clear_explicit(&mutex_, std::memory_order_release);
+    }
+private:
+    // 原子状态
+    volatile std::atomic_flag mutex_;
+};
+
 }

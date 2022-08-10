@@ -29,3 +29,14 @@ sylar配套视频地址：`https://www.bilibili.com/video/BV184411s7qF?p=6&spm_i
 |            |                                                              |
 |            |                                                              |
 
+
+
+
+
+互斥量锁写日志：
+
+![image-20220810145723148](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220810145723148.png)
+
+自旋锁写日志：
+
+![image-20220810145924897](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20220810145924897.png)
