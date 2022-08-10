@@ -176,6 +176,7 @@ private:
  */
 class SpinLock
 {
+public:
     typedef LockImpl<SpinLock> Lock;
 
     /**
