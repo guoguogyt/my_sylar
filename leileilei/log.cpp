@@ -429,6 +429,7 @@ bool FileLogAppender::reopen()
 
 void FileLogAppender::doLog(std::shared_ptr<Logger> logger, LogEvent::ptr event)
 {
+    std::cout<<"write file"<<std::endl; 
     //是否有格式
     if(getFormat())
     {
