@@ -31,11 +31,11 @@ int main(int argc, char* argv[])
     /**
      * @brief   在无锁的情况下运行fun1函数  最终输出的count会小于等于 100000000
      */
-    // for(int i=0;i<10;i++)
-    // {
-    //     leileilei::Thread::ptr th(new leileilei::Thread(&fun1, ss + std::to_string(i)));
-    //     threads.push_back(th);
-    // }
+    for(int i=0;i<10;i++)
+    {
+        leileilei::Thread::ptr th(new leileilei::Thread(&fun1, ss + std::to_string(i)));
+        threads.push_back(th);
+    }
 
     for(size_t i = 0; i<threads.size();i++)
     {
