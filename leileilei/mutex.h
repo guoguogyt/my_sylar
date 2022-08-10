@@ -16,6 +16,7 @@
 #include <thread>
 #include <semaphore.h>
 #include <stdexcept>
+#include <atomic>
 
 namespace leileilei
 {
