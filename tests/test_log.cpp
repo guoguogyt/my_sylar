@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
     leileilei::Logger::ptr root = LEI_LOG_GETROOTOR();
     leileilei::LogAppender::ptr appender(new leileilei::FileLogAppender("test.log"));
     appender->resetFormat("%d%T%m%n");
+    appender->setLevel(LogLevel::level::DEBUG);
     root->addAppender(appender);
 
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR())<<"test log";

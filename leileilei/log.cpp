@@ -429,11 +429,12 @@ bool FileLogAppender::reopen()
 
 void FileLogAppender::doLog(std::shared_ptr<Logger> logger, LogEvent::ptr event)
 {
-    std::cout<<"write file"<<std::endl; 
+    std::cout<<"write file 1"<<std::endl; 
     //是否有格式
     if(getFormat())
     {
         //是否达到了日志输出级别限制
+        std::cout<<"write file 2"<<std::endl
         if(event->getLevel() >= getLevel())
         {
             uint64_t now_time = event->getTime();
@@ -442,7 +443,7 @@ void FileLogAppender::doLog(std::shared_ptr<Logger> logger, LogEvent::ptr event)
                 reopen();
                 last_time_ = now_time;
             }         
-            std::cout<<"write file"<<std::endl;   
+            std::cout<<"write file 3"<<std::endl;   
             getFormat()->doFormat(filestream_, logger, event);
         }
     }
