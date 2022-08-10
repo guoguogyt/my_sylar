@@ -158,7 +158,7 @@ private:
 /**
  * @brief   自旋锁 
  自旋锁适用于那些仅需要阻塞很短时间的场景
- 
+
  自旋锁是 SMP 架构中的一种 low-level 的同步机制。
 当线程A想要获取一把自旋锁而该锁又被其它线程锁持有时，线程A会在一个循环中自旋以检测锁是不是已经可用了。
 
@@ -214,6 +214,6 @@ class SpinLock
 private:
     // 自旋锁
     pthread_spinlock_t mutex_;
-}
+};
 
 }
