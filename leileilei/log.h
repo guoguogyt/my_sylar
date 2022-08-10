@@ -271,7 +271,7 @@ class LogAppender
 {
 public:
     typedef std::shared_ptr<LogAppender> ptr;
-    typedef SpinLock MutexType;
+    typedef CASLock MutexType;
 
     //设置默认的日志级别
     LogAppender(LogLevel::level level = LogLevel::level::DEBUG) : level_(level){ }
@@ -336,7 +336,7 @@ class Logger : public std::enable_shared_from_this<Logger>
 {
 public:
     typedef std::shared_ptr<Logger> ptr;
-    typedef SpinLock MutexType;
+    typedef CASLock MutexType;
 
     //构造函数中自动生成一个名称
     Logger();
