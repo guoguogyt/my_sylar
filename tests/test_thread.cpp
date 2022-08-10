@@ -56,10 +56,10 @@ int main(int argc, char* argv[])
     for(int i=0;i<1;i++)
     {
         leileilei::Thread::ptr th(new leileilei::Thread(&fun2, ss + std::to_string(i*2)));
-        leileilei::Thread::ptr th2(new leileilei::Thread(&fun3, ss + std::to_string(i*2+1)));
+        // leileilei::Thread::ptr th2(new leileilei::Thread(&fun3, ss + std::to_string(i*2+1)));
 
         threads.push_back(th);
-        threads.push_back(th2);
+        // threads.push_back(th2);
     }
 
     for(size_t i = 0; i<threads.size();i++)
