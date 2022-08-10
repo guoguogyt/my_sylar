@@ -20,6 +20,22 @@ void fun1()
     LEI_LOG_INFO(logs) << "name: " << leileilei::Thread::GetThreadName() << " count = "<< count;
 }
 
+void fun2()
+{
+    while(true)
+    {
+        LEI_LOG_INFO(logs) << "--------------------------------";
+    }
+}
+
+void fun3()
+{
+    while(true)
+    {
+        LEI_LOG_INFO(logs) << "================================";
+    }
+}
+
 
 
 int main(int argc, char* argv[])
@@ -31,10 +47,19 @@ int main(int argc, char* argv[])
     /**
      * @brief   在无锁的情况下运行fun1函数  最终输出的count会小于等于 100000000
      */
-    for(int i=0;i<10;i++)
+    // for(int i=0;i<10;i++)
+    // {
+    //     leileilei::Thread::ptr th(new leileilei::Thread(&fun1, ss + std::to_string(i)));
+    //     threads.push_back(th);
+    // }
+
+    for(int i=0;i<1;i++)
     {
-        leileilei::Thread::ptr th(new leileilei::Thread(&fun1, ss + std::to_string(i)));
+        leileilei::Thread::ptr th(new leileilei::Thread(&fun2, ss + std::to_string(i*2)));
+        leileilei::Thread::ptr th2(new leileilei::Thread(&fun3, ss + sdt::to_string(i*2+1)));
+
         threads.push_back(th);
+        threads.push_back(th2);
     }
 
     for(size_t i = 0; i<threads.size();i++)
