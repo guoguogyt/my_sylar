@@ -210,7 +210,7 @@ void test_config_yaml_class()
 void test_log_yaml()
 {
     static leileilei::Logger::ptr system_log = LEI_GET_LOGGER("testLogger2");
-    LEI_LOG_DEBUG(system_log) << "hello system" << std::endl;
+    LEI_LOG_DEBUG(system_log) << "hello system";
     // std::cout << sylar::LoggerMgr::GetInstance()->toYamlString() << std::endl;
     
     std::cout << "=============" << std::endl;
@@ -221,8 +221,8 @@ void test_log_yaml()
                                 //  << "  format-"<<  system_log->getAppender(0)->getFormat()->getFormat()<<std::endl;
     std::cout << "=============" << std::endl;
     // std::cout << root << std::endl;
-    std::cout << system_log->getAppender(0)->getFormat()->getFormatInfo()<<std::endl;;
-    LEI_LOG_INFO(system_log) << "hello system" << std::endl;
+    // std::cout << system_log->getAppender(0)->getFormat()->getFormatInfo()<<std::endl;;
+    LEI_LOG_INFO(system_log) << "hello system";
 
     // system_log->setFormatter("%d - %m%n");
     // SYLAR_LOG_INFO(system_log) << "hello system" << std::endl;

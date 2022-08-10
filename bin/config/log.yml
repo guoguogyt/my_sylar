@@ -1,5 +1,5 @@
 logs: 
-    - name: root
+    - name: testLogger2
       appenders: 
           - type: 2
             level: DEBUG
