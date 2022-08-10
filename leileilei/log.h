@@ -286,7 +286,7 @@ public:
     void setLevel(LogLevel::level level) {level_ = level;}
     //获取日志级别
     LogLevel::level getLevel() const { return level_;}
-private:
+protected:
     LogFormatter::ptr format_ptr_;
     LogLevel::level level_;//默认是debug
     MutexType mutex_;//锁
