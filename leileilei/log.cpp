@@ -440,7 +440,8 @@ void FileLogAppender::doLog(std::shared_ptr<Logger> logger, LogEvent::ptr event)
             {
                 reopen();
                 last_time_ = now_time;
-            }            
+            }         
+            std::cout<<"write file"<<std::endl;   
             getFormat()->doFormat(filestream_, logger, event);
         }
     }
