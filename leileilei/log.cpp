@@ -434,7 +434,7 @@ void FileLogAppender::doLog(std::shared_ptr<Logger> logger, LogEvent::ptr event)
     if(getFormat())
     {
         //是否达到了日志输出级别限制
-        std::cout<<"write file 2"<<std::endl
+        std::cout<<"write file 2"<<std::endl;
         if(event->getLevel() >= getLevel())
         {
             uint64_t now_time = event->getTime();
