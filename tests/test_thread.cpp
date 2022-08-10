@@ -54,6 +54,11 @@ int main(int argc, char* argv[])
     //     threads.push_back(th);
     // }
 
+    /**
+     * @brief 
+     *  加普通的锁进行写日志，每秒写速度在7-8m
+
+     */
     for(int i=0;i<1;i++)
     {
         leileilei::Thread::ptr th(new leileilei::Thread(&fun2, ss + std::to_string(i*2)));
