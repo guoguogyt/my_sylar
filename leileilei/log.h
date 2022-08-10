@@ -272,7 +272,7 @@ public:
     typedef std::shared_ptr<LogAppender> ptr;
 
     //设置默认的日志级别
-    LogAppender(LogLevel::level level = LogLevel::level::DEBUG){}
+    LogAppender(LogLevel::level level = LogLevel::level::DEBUG) : level_(level){ }
     //生成日志，纯虚函数需要子类实现
     virtual void doLog(std::shared_ptr<Logger> logger, LogEvent::ptr event) = 0;
     //重新设置formatter
