@@ -28,6 +28,7 @@
 
 #include "singleton.h"
 #include "util.h"
+#include "mutex.h"
 
 
 /*
@@ -270,6 +271,7 @@ class LogAppender
 {
 public:
     typedef std::shared_ptr<LogAppender> ptr;
+    typedef Mutex MutexType;
 
     //设置默认的日志级别
     LogAppender(LogLevel::level level = LogLevel::level::DEBUG) : level_(level){ }
@@ -287,6 +289,7 @@ public:
 private:
     LogFormatter::ptr format_ptr_;
     LogLevel::level level_;//默认是debug
+    MutexType mutex_;//锁
 };
 
 /*** 
@@ -333,6 +336,8 @@ class Logger : public std::enable_shared_from_this<Logger>
 {
 public:
     typedef std::shared_ptr<Logger> ptr;
+    typedef Mutex MutexType;
+
     //构造函数中自动生成一个名称
     Logger();
     //写日志
@@ -354,7 +359,8 @@ private:
     std::string name_;
     //Appender集合
     std::vector<LogAppender::ptr> appenders_;
-    
+    //锁
+    MutexType mutex_;
 };
 
 /*** 

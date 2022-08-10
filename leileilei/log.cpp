@@ -374,6 +374,7 @@ bool LogFormatter::resetFormat(std::string format)
 
 void LogAppender::resetFormat(std::string format)
 {
+    MutexType::Lock lock(mutex_);
     LogFormatter::ptr format_ptr(new LogFormatter(format));
     resetFormat(format_ptr);
 }
@@ -394,7 +395,10 @@ void StdoutLogAppender::doLog(Logger::ptr logger, LogEvent::ptr event)
     {
         //是否达到了日志输出级别限制
         if(event->getLevel() >= getLevel())
+        {
+            MutexType::Lock lock(mutex_);
             getFormat()->doFormat(std::cout, logger, event);
+        }
     }
     else 
         std::cout<<"日志模板器为空，无法生成日志！"<<std::endl;
@@ -444,6 +448,7 @@ void FileLogAppender::doLog(std::shared_ptr<Logger> logger, LogEvent::ptr event)
                 last_time_ = now_time;
             }         
             // std::cout<<"write file 3"<<std::endl;   
+            MutexType::Lock lock(mutex_);
             getFormat()->doFormat(filestream_, logger, event);
         }
     }
@@ -459,6 +464,7 @@ Logger::Logger()
 
 void Logger::doLog(LogEvent::ptr event)
 {
+    MutexType::Lock lock(mutex_);
     auto self = shared_from_this();
     // std::cout<<"Logger ---->  doLog"<<std::endl;
     for(int i=0; i<appenders_.size(); i++)
@@ -471,12 +477,14 @@ void Logger::addAppender(LogAppender::ptr appender)
 {
     if(appender)
     {
+        MutexType::Lock lock(mutex_);
         appenders_.push_back(appender);
     }
 }
 
 void Logger::delAppender(LogAppender::ptr appender)
 {
+    MutexType::Lock lock(mutex_);
     for(auto it=appenders_.begin();it!=appenders_.end();it++)
     {
         if(*it == appender)
@@ -497,6 +505,7 @@ LogAppender::ptr Logger::getAppender(int index)
 
 void Logger::clearAppenders()
 {
+    MutexType::Lock lock(mutex_);
     std::vector<LogAppender::ptr>().swap(appenders_);
 }
 
