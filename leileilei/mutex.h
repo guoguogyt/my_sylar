@@ -259,4 +259,207 @@ private:
     volatile std::atomic_flag mutex_;
 };
 
+/**
+ * @brief 
+ *  读锁的模板实现
+ * @tparam T 
+ */
+template<class T>
+struct ReadLockImp
+{
+public:
+    /**
+     * @brief Construct a new Read Lock Imp object
+     *  构造函数中加锁
+     * @param mutex 
+     */
+    ReadLockImp(T& mutex):mutex_(mutex)
+    {
+        if(!islock_)
+        {
+            mutex_.rdlock();
+            islock_ = true;
+        }
+    }
+    /**
+     * @brief Destroy the Read Lock Imp object
+     * 析构函数中解锁
+     */
+    ~ReadLockImp()
+    {
+        unLock();
+    }
+    /**
+     * @brief 
+     * 手动加锁
+     */
+    void lock()
+    {
+        if(!islock_)
+        {
+            mutex_.rdlock();
+            islock_ = true;
+        }
+    }
+    /**
+     * @brief 
+     * 手动解锁
+     */
+    void unLock()
+    {
+        if(islock_)
+        {
+            mutex_.unlock();
+            islock_ = false;
+        }
+    }
+
+private:
+    T& mutex_;
+    bool islock_ = false;
+};
+
+/**
+ * @brief 
+ *  写锁的模板实现
+ * @tparam T 
+ */
+template<class T>
+struct WriterLockImp
+{
+public:
+    /**
+     * @brief Construct a new Writer Lock Imp object
+     *  构造是加锁
+     * @param mutex 
+     */
+    WriterLockImp(T& mutex):mutex_(mutex)
+    {
+        if(!islock_)
+        {
+            mutex_.wdlock();
+            islock_ = true;
+        }
+    }
+    
+    /**
+     * @brief Destroy the Writer Lock Imp object
+     * 析构时释放锁
+     */
+    ~WriterLockImp()
+    {
+        unLock();
+    }
+    
+    /**
+     * @brief 
+     * 手动加锁
+     */
+    void lock()
+    {
+        if(!islock_)
+        {
+            mutex_.wdlock();
+            islock_ = true;
+        }
+    }
+
+    /**
+     * @brief 
+     * 手动解锁
+     */
+    void unLock()
+    {
+        if(islock_)
+        {
+            mutex_.unlock();
+            islock_ = false;
+        }
+    }
+private:
+    T& mutex_;
+    bool islock_ = false;
+};
+
+
+/**
+ * @brief 读写锁
+ * 读写锁是用来解决读者写者问题的，读操作可以共享，写操作是排他的，读可以有多个在读，写只有唯一个在写，同时写的时候不允许读。
+
+具有强读者同步和强写者同步两种形式
+强读者同步：当写者没有进行写操作，读者就可以访问；
+强写者同步：当所有写者都写完之后，才能进行读操作，读者需要最新的信息，一些事实性较高的系统可能会用到该所，比如定票之类的。
+ */
+class RWMutex
+{
+public:
+    typedef ReadLockImp<RWMutex> ReadLock;
+    typedef WriterLockImp<RWMutex> WriteLock;
+
+    /**
+     * @brief Construct a new RWMutex object
+     * 构造函数
+        读写锁的初始化：
+        函数原型：pthread_rwlock_init(pthread_rwlock_t * ,pthread_rwattr_t *);
+        返回值：0，表示成功，非0为一错误码
+     */
+    RWMutex()
+    {
+        pthread_rwlock_init(&lock_,nullptr);
+    }
+
+    /**
+     * @brief Destroy the RWMutex object
+     * 析构函数
+       读写锁的销毁：
+        函数原型：pthread_rwlock_destroy(pthread_rwlock_t* );
+        返回值：0，表示成功，非0表示错误码
+     */
+    ~RWMutex()
+    {
+        pthread_rwlock_destroy(&lock_);
+    }
+
+    /**
+     * @brief 上读锁
+     * 获取读写锁的读锁操作：分为阻塞式获取和非阻塞式获取,如果读写锁由一个写者持有，则读线程会阻塞直至写入者释放读写锁。
+        阻塞式:
+            函数原型：pthread_rwlock_rdlock(pthread_rwlock_t*);
+        非阻塞式：
+            函数原型：pthread_rwlock_tryrdlock(pthread_rwlock_t*);
+       返回值： 0，表示成功，非0表示错误码，非阻塞会返回ebusy而不会让线程等待
+     */
+    void rdlock()
+    {
+        pthread_rwlock_rdlock(&lock_);
+    }
+
+    /**
+     * @brief 上写锁
+     * 获取读写锁的写锁操作：分为阻塞和非阻塞，如果对应的读写锁被其它写者持有，或者读写锁被读者持有，该线程都会阻塞等待。
+
+      阻塞式：
+        函数原型：pthread_rwlock_wrlock(pthread_rwlock_t*);
+      非阻塞式：
+        函数原型：pthread_rwlock_trywrlock(pthread_rwlock_t*);
+       返回值： 0，表示成功
+     */
+    void wdlock()
+    {
+        pthread_rwlock_wdlock(&lock_);
+    }
+
+    /**
+     * @brief 解锁
+     * 
+     */
+    void unlock()
+    {
+        pthread_rwlock_unlock(&lock_);
+    }
+private:
+    // 读写锁
+    pthread_rwlock_t lock_;
+};
+
 }
