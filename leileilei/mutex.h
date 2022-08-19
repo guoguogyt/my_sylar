@@ -17,15 +17,16 @@
 #include <semaphore.h>
 #include <stdexcept>
 #include <atomic>
+#include "nonecopy.h"
 
-namespace leileilei
+namespace leileilei 
 {
 
 /**
  * @brief 信号量
  * 
  */
-class Semaphore
+class Semaphore : NoneCopy
 {
 public:
     /**
@@ -111,7 +112,8 @@ private:
  * @brief 互斥量
  * 
  */
-class Mutex{
+class Mutex : NoneCopy
+{
 public:
     typedef LockImpl<Mutex> Lock;
 
@@ -175,7 +177,7 @@ private:
 建立锁所需要的资源
 线程被阻塞时锁所需要的资源
  */
-class SpinLock
+class SpinLock : NoneCopy
 {
 public:
     typedef LockImpl<SpinLock> Lock;
@@ -222,7 +224,7 @@ private:
  * @brief 原子锁
  *  
  */
-class CASLock
+class CASLock : NoneCopy
 {
 public:
     /// 局部锁
@@ -390,7 +392,7 @@ private:
 强读者同步：当写者没有进行写操作，读者就可以访问；
 强写者同步：当所有写者都写完之后，才能进行读操作，读者需要最新的信息，一些事实性较高的系统可能会用到该所，比如定票之类的。
  */
-class RWMutex
+class RWMutex : NoneCopy
 {
 public:
     typedef ReadLockImp<RWMutex> ReadLock;
