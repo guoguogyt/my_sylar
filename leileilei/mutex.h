@@ -446,7 +446,7 @@ public:
      */
     void wdlock()
     {
-        pthread_rwlock_wdlock(&lock_);
+        pthread_rwlock_wrlock(&lock_);
     }
 
     /**
