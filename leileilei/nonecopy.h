@@ -46,13 +46,13 @@ public:
      * @brief Construct a new None Copy object
      * 拷贝构造函数(禁用)
      */
-    NoneCopy(const& nonecopy) = delete;
+    NoneCopy(const NoneCopy&) = delete;
     /**
      * @brief 
      * 赋值函数(禁用)
      * @return NoneCopy& 
      */
-    NoneCopy& operator=(const& nonecopy) = delete;
+    NoneCopy& operator=(const NoneCopy&) = delete;
 };
 
 }
