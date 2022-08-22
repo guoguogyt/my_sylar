@@ -82,6 +82,7 @@ void ConfigManager::LoadConfigFromYaml(const YAML::Node& node)
 ConfigVarBase::ptr ConfigManager::LookUpBase(const std::string& name)
 {
     // LEI_LOG_DEBUG(LEI_GET_LOGGER("system")) << "name[" << name << "]";
+    RWMutexType::ReadLock readLock(GetMutex());
     auto it = getConfigMap().find(name);
     if(it == getConfigMap().end())
     {
@@ -90,6 +91,14 @@ ConfigVarBase::ptr ConfigManager::LookUpBase(const std::string& name)
     return it->second;
 }
 
-
+void ConfigManager::Visit(std::function<void(ConfigVarBase::ptr)> call_function)
+{
+    RWMutexType::WriteLock writeLock(GetMutex());
+    ConfigVarMap& temp = getConfigMap();
+    for(auto it = temp.begin() ; it!=temp.end(); it++)
+    {
+        call_function(it->second);
+    }
+}
 
 }

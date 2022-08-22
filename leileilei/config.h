@@ -366,7 +366,8 @@ public:
      * @return std::string 
      */
     std::string toString() override
-    { 
+    {
+        RWMutexType::ReadLock readLock(mutex_);
         try
         {
             return toStr()(var_value_);
@@ -405,22 +406,30 @@ public:
         return TypeToName<T>();
     }
 
-    const T getValue()  {   return var_value_;}
+    const T getValue()  
+    {
+        RWMutexType::ReadLock readLock(mutex_);   
+        return var_value_;
+    }
 
     bool setValue(const T& t)
     {
         //当值改变时调用所有的回调函数, 因为有!=判断，所以泛型T需要支持==符号
-        if(var_value_ == t)
         {
-            return true;
-        }   
-        else
-        {
-            for(auto& it : cb_funs)
+            RWMutexType::ReadLock readLock(mutex_);
+            if(var_value_ == t)
             {
-                it.second(var_value_, t);
+                return true;
+            }   
+            else
+            {
+                for(auto& it : cb_funs)
+                {
+                    it.second(var_value_, t);
+                }
             }
         }
+        RWMutexType::WriteLock writeLock(mutex_);
         var_value_ = t;
         return true;
     }
@@ -433,31 +442,37 @@ public:
     bool addCallBack(on_change_cb func) 
     {
         static uint64_t s_fun_id = 0;
+        RWMutexType::WriteLock writeLock(mutex_);
         s_fun_id++;
         cb_funs[s_fun_id] = func;
+        return true;
     }
     
     //获取回调函数
     on_change_cb getCallBack(uint64_t key)
     {
+        RWMutexType::ReadLock readLock(mutex_);
         return cb_funs.find(key) == cb_funs.end() ? nullptr : cb_funs[key];
     }
 
     //删除某个指定的回调
     on_change_cb delCallBack(uint64_t key)
     {
+        RWMutexType::WriteLock writeLock(mutex_);
         cb_funs.erase(key);
     }
 
     //清除所有的回调函数
     void clearAllCallBack()
     {
+        RWMutexType::WriteLock writeLock(mutex_);
         cb_funs.clear();
     }
 
 private:
     T var_value_;
     std::map<uint64_t, on_change_cb> cb_funs;//存储回调函数
+    RWMutexType mutex_;
 };
 
 
@@ -469,6 +484,8 @@ private:
 class ConfigManager
 {
 public:
+    typedef leileilei::RWMutex RWMutexType;
+    typedef std::unordered_map<std::string, ConfigVarBase::ptr> ConfigVarMap;
     /**
      * @brief 根据配置项名称，找到其对应的配置项信息
      *          如果没有找到，则生成对应的配置项 
@@ -483,34 +500,37 @@ public:
     template<class T>
     static typename ConfigVar<T>::ptr LookUp(const std::string& name, const T& t, const std::string& desc = "")
     {
-        auto it = getConfigMap().find(name);
-        if(it != getConfigMap().end())//如果可以找到这个配置
         {
-            /**
-             * @brief 这个函数可以将基类转换为派生类    只适用于智能指针
-             * 
-             */
-            auto temp = std::dynamic_pointer_cast<ConfigVar<T> >(it->second);
-            if(temp)
+            RWMutexType::ReadLock readLock(GetMutex());
+            auto it = getConfigMap().find(name);
+            if(it != getConfigMap().end())//如果可以找到这个配置
             {
-                //转换成功
-                LEI_LOG_DEBUG(logger_system) << "find config, named " << name;
-                return temp;
+                /**
+                * @brief 这个函数可以将基类转换为派生类    只适用于智能指针
+                * 
+                */
+                auto temp = std::dynamic_pointer_cast<ConfigVar<T> >(it->second);
+                if(temp)
+                {
+                    //转换成功
+                    LEI_LOG_DEBUG(logger_system) << "find config, named " << name;
+                    return temp;
+                }
+                else
+                {
+                    //转换失败
+                    LEI_LOG_ERROR(logger_system) << "find config, named" << name << "  ,but this type[" << TypeToName<T>() << "] is not equal type[" << it->second->getConfType() << "]";
+                    return nullptr;
+                }
             }
-            else
+
+            //创建新的配置项之前，判断配置项名称是否符合要求
+            if(name.find_first_not_of("qazwsxedcrfvtgbyhnujmikolp._0123456789") != std::string::npos)
             {
-                //转换失败
-                LEI_LOG_ERROR(logger_system) << "find config, named" << name << "  ,but this type[" << TypeToName<T>() << "] is not equal type[" << it->second->getConfType() << "]";
                 return nullptr;
             }
         }
-
-        //创建新的配置项之前，判断配置项名称是否符合要求
-        if(name.find_first_not_of("qazwsxedcrfvtgbyhnujmikolp._0123456789") != std::string::npos)
-        {
-            return nullptr;
-        }
-
+        RWMutexType::WriteLock writeLock(GetMutex());
         //如果没有找到这个配置，则新生成一个配置
         typename ConfigVar<T>::ptr  cf(new ConfigVar<T>(name, t, desc));
         getConfigMap()[name] = cf;
@@ -527,6 +547,7 @@ public:
     template<class T>
     static typename ConfigVar<T>::ptr LookUp(const std::string& name)
     {
+        RWMutexType::ReadLock readLock(GetMutex());
         auto it = getConfigMap().find(name);
         if(it == getConfigMap().end())
         {
@@ -552,7 +573,12 @@ public:
      */
     static ConfigVarBase::ptr LookUpBase(const std::string& name);
 
-
+    /**
+     * @brief 
+     * 遍历所有的配置项，并且可以传入对应的函数，操作每一个配置项
+     * @param call_function 
+     */
+    static void Visit(std::function<void(ConfigVarBase::ptr)> call_function);
 private:
     /**
      * @brief Get the Config Map object
@@ -560,11 +586,17 @@ private:
      * 这里注意返回值应该是引用类型，否则相当于没有对name_config_进行修改
      * @return std::unordered_map<std::string, ConfigVarBase::ptr>& 
      */
-    static std::unordered_map<std::string, ConfigVarBase::ptr>& getConfigMap()
+    static ConfigVarMap& getConfigMap()
     {
-        static std::unordered_map<std::string, ConfigVarBase::ptr>  name_config_;
+        static ConfigVarMap  name_config_;
         return name_config_;
     }
+
+    static RWMutexType& GetMutex()
+    {
+        static RWMutexType mutex_;
+        return mutex_;
+    } 
 };
 
 }
