@@ -347,6 +347,8 @@ class ConfigVar : public ConfigVarBase
 {
 public:
     typedef std::shared_ptr<ConfigVar> ptr;
+    typedef leileilei::RWMutex  RWMutexType;
+
     /**
      * @brief 
      *  可以对functional实体进行存储、复制、调用。这些实体包括Lambda表达式、函数指针、普通函数和其他函数对象等。

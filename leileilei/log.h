@@ -28,7 +28,7 @@
 
 #include "singleton.h"
 #include "util.h"
-#include "mutex.h"
+#include "thread.h"
 
 
 /*
