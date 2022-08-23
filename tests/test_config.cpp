@@ -233,4 +233,11 @@ int main(int argc,char* argv[])
     // test_stl_config_yaml();
     // test_config_yaml_class();
     test_log_yaml();
+
+    leileilei::ConfigManager::Visit([](leileilei::ConfigVarBase::ptr var){
+        LEI_LOG_INFO(LEI_LOG_GETROOTOR())<< "name=" << var->getName()
+            << "    des=" << var->getDesc()
+            << "    typename="<< var->getConfType()
+            << "    value="<< var->toString();
+    });
 }
