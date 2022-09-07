@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: leileilei
+ * @Date: 2022-07-01 10:22:59
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2022-09-07 11:30:32
+ */
 #include<stdio.h>
 #include<iostream>
 #include"log.h"
@@ -11,6 +19,7 @@ int main(int argc, char* argv[])
 
     // leileilei::LogManager lm;
     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR())<<"test log";
+    printf("frist?\n");
     LEI_FMT_LOG_INFO(LEI_LOG_GETROOTOR(), "%s", "format log");
 
     leileilei::Logger::ptr root = LEI_LOG_GETROOTOR();
