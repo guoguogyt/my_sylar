@@ -11,8 +11,8 @@
 
 #pragma once
 
-#include <string>
-#include <assert>
+#include <string.h>
+#include <assert.h>
 #include "log.h"
 #include "util.h"
 
