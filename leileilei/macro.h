@@ -16,7 +16,7 @@
 #include "log.h"
 #include "util.h"
 
-#if defined __GNUC__ || defiend __llvm__
+#if defined __GNUC__ || defined __llvm__
 #   define LEILEILEI_LIKELY(x)      __builtin_expect(!!(x), 1)
 #   define LEILEILEI_UNLIKELY(x)    __builtin_expect(!!(x), 0)
 #else
