@@ -33,6 +33,9 @@
 
 /*
     流式输出日志
+    利用匿名对象的生命周期特点，在析构函数中打印日志
+    Cat(); —> 生成了一个匿名对象，执行完Cat()代码后，此匿名对象就此消失。这就是匿名对象的生命周期。
+    Cat cc = Cat(); —>首先生成了一个匿名对象，然后将此匿名对象变为了cc对象，其生命周期就变成了cc对象的生命周期。
 */
 #define LEI_LOG_LEVEL(logger, level) \
     leileilei::LogEventWrap(logger, leileilei::LogEvent::ptr(new leileilei::LogEvent(__FILE__, \
@@ -389,6 +392,10 @@ private:
     Logger::ptr root_logger_;
 };
 
+/**
+ * @brief 当析构时打印日志
+ * 
+ */
 class LogEventWrap
 {
 public:

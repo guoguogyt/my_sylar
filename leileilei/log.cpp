@@ -573,7 +573,6 @@ LogEventWrap::LogEventWrap(Logger::ptr logger , LogEvent::ptr e)
 
 LogEventWrap::~LogEventWrap()
 {
-    printf("被析构\n");
     logger_->doLog(event_);
 }
 

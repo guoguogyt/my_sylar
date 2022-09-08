@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: leileilei
+ * @Date: 2022-08-01 15:20:01
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2022-09-08 11:23:22
+ */
 /**
  * @file leileilei.h
  * @author your name (you@domain.com)
@@ -14,6 +22,7 @@
 #include "config.h"
 #include "log.h"
 #include "mutex.h"
+#include "macro.h"
 #include "singleton.h"
 #include "thread.h"
 #include "util.h"

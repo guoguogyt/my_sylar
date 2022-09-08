@@ -39,6 +39,18 @@ static leileilei::Logger::ptr logger_system = LEI_GET_LOGGER("system");
 template<class T>
 const char* TypeToName()
 {
+    /**
+     * @brief   #include <cxxabi.h>
+                char* __cxa_demangle(const char *mangled_name, char *output_buffer, size_t *length, int *status)
+        功能描述：
+            __cxa_demangle是C++的函数，而且是ABI（应用程序二进制接口），
+            用于将已被编译器转换后的函数名给还原为原来的形式（编译的时候加上-rdunamic选项，加入函数符号表才能正确显示），即进行符号重组。
+            第一个参数mangled_name就是要进行符号重组的名称，后三个参数用处不大，可以不作理会
+        返回值：
+            __cxa_demangle的返回值是一个字符串指针，内容就是函数的原始名称
+            （需要注意的是__cxa_demangle的返回值是调用malloc申请的内存空间，调用者必须手动释放它）
+
+     */
     static const char* type_name = abi::__cxa_demangle(typeid(T).name(), nullptr, nullptr, nullptr);
     return type_name;
 }
@@ -47,12 +59,15 @@ const char* TypeToName()
 /*
     配置项的基础类   
     包含配置项名称、配置项说明      没有加入配置项值，将这个类作为所有配置项的基类,所有配置项继承这个类，以后可以只关注配置项值层面
+    名称、描述都是字符串型，而值的类型是多样化的，所以将名称和描述放一起，值利用泛型做到不同类型的兼容
 
     包含三个需要被重写的虚函数
     toString()                             
-    表示将配置项的值转换为string            
+    表示将配置项的值转换为string     
+
     fromString()
     表示将从string转换为配置项的值
+
     getConfName()
     获取配置项值得类型
 */
@@ -65,7 +80,7 @@ public:
     {
         /*
             将配置项名称转为小写
-            这里转小写之后要注意，次系统的配置名是不区分大小写的，注意使用，否则会导致配置覆盖
+            这里转小写之后要注意，本系统的配置名是不区分大小写的，注意使用，否则会导致配置覆盖
         */
         std::transform(var_name_.begin(), var_name_.end(), var_name_.begin(), ::tolower);
         //检查名称是否是符合规则的
@@ -94,7 +109,7 @@ protected:
  * @brief 这个是一个最基础的类型T转换为V的类
             转化利用了boost库的中方法
         对运算符进行了重载，重载了操作符()
-    之后会对这个类版本进行偏特化，使其可以支持常用的stl库类型
+    之后会对这个类 进行偏特化，使其可以支持常用的stl库类型
     在 偏特化 的过程中使用了 YAML库 进行 中间转化
  * @tparam T 
  * @tparam V 

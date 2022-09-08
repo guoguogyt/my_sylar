@@ -9,5 +9,38 @@
  * 
  */
 
+#pragma once
 
- 
+#include <string>
+#include <assert>
+#include "log.h"
+#include "util.h"
+
+#if defined __GNUC__ || defiend __llvm__
+#   define LEILEILEI_LIKELY(x)      __builtin_expect(!!(x), 1)
+#   define LEILEILEI_UNLIKELY(x)    __builtin_expect(!!(x), 0)
+#else
+#   define  LEILEILEI_LIKELY(x)     (x)
+#   define  LEILEILEI_UNLIKELY(x)   (x)
+#endif
+
+// 断言宏
+#define LEILEILEI_ASSERT(x) \
+    if(LEILEILEI_UNLIKELY(!(x)))    \
+    {   \
+        LEI_LOG_ERROR(LEI_LOG_GETROOTOR()) << "ASSERTION: " #x  \
+            << "\nbacktrace:\n" \
+            << leileilei::BacktraceToString(100, 2, "   "); \
+        assert(x);  \
+    }
+
+// 断言宏
+#define LEILEILEI_ASSERT2(x, w) \
+    if(LEILEILEI_UNLIKELY(!(x)))    \
+    {   \
+        LEI_LOG_ERROR(LEI_LOG_GETROOTOR()) << "ASSERTION: " #x  \
+            << "\n" << w    \
+            << "\nbacktrace:\n" \
+            << leileilei::BacktraceToString(100, 2, "   "); \
+        assert(x);  \
+    }
