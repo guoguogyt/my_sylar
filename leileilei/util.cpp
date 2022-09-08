@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:14:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-07 17:32:12
+ * @LastEditTime: 2022-09-08 11:32:48
  */
 #include "util.h"
 
@@ -65,7 +65,7 @@ static std::string demangle(const char* str)
 }
 
 
-void Backtrace(std::vector<std::string>& bt, int size = 64, int skip = 1)
+void Backtrace(std::vector<std::string>& bt, int size, int skip)
 {
     // 因为本系统使用的是协程技术栈，所以需要节约栈空间，利用malloc将数据创建在堆上
     void** array = (void**)malloc(sizeof(void*) * size);
@@ -115,7 +115,7 @@ void Backtrace(std::vector<std::string>& bt, int size = 64, int skip = 1)
     free(array);
 }
 
-std::string BacktraceToString(int size = 64, int skip = 2, const std::string& prefix = " ")
+std::string BacktraceToString(int size, int skip, const std::string& prefix)
 {
     std::vector<std::string> bt;
     Backtrace(bt, size, skip);
