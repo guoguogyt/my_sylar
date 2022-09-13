@@ -4,4 +4,6 @@ logs:
           - type: 2
             level: DEBUG
             format: '%d%T%m%n'
-            path: 'test.log'    
+            path: 'log.log'  
+
+  

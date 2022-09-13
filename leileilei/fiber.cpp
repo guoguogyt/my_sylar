@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-22 15:33:45
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-13 13:43:28
+ * @LastEditTime: 2022-09-13 15:48:37
  */
 #include "fiber.h"
 #include "log.h"
@@ -116,7 +116,7 @@ Fiber::~Fiber()
         }
     }
     LEI_LOG_DEBUG(g_logger) << "Fiber::~Fiber id=" << id_
-                            << "total=" << s_fiber_count;
+                            << "    total=" << s_fiber_count;
 }
 
 void Fiber::reset(std::function<void()> cb)
