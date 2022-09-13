@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-22 15:33:45
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-13 11:37:14
+ * @LastEditTime: 2022-09-13 13:43:28
  */
 #include "fiber.h"
 #include "log.h"
@@ -70,7 +70,7 @@ Fiber::Fiber()
  * @param stacksize 
  * @param use_caller 
  */
-Fiber::Fiber(std::function<void()> cb, size_t stacksize = 0, bool use_caller = false)
+Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool use_caller)
 {
     s_fiber_count++; // 协程总数加1
     id_ = ++s_fiber_id;   //  协程id加1
@@ -102,7 +102,7 @@ Fiber::~Fiber()
     {
         // 检查状态
         LEILEILEI_ASSERT(state_ == TERM || state_ == EXCEPT || state_ == INIT)
-        StackAllocator::Dealloc(stack_);
+        StackAllocator::Dealloc(stack_, stacksize_);
     }
     else
     {
