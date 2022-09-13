@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-13 11:17:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-13 16:34:11
+ * @LastEditTime: 2022-09-13 16:36:32
  */
 
 #include <vector>
@@ -41,7 +41,7 @@ void test_fiber()
 int main(int argc, char* argv[])
 {
     // test_fiber();
-    std::vector<leileilei::Fiber::ptr> vec;
+    std::vector<leileilei::Thread::ptr> vec;
 
     for(int i=0; i<3; i++)
     {
