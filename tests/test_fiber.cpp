@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-13 11:17:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-13 16:36:32
+ * @LastEditTime: 2022-09-13 18:09:14
  */
 
 #include <vector>
@@ -41,6 +41,8 @@ void test_fiber()
 int main(int argc, char* argv[])
 {
     // test_fiber();
+    YAML::Node root = YAML::LoadFile("/root/share/my_sylar/bin/config/log.yml");
+    leileilei::ConfigManager::LoadConfigFromYaml(root);
     std::vector<leileilei::Thread::ptr> vec;
 
     for(int i=0; i<3; i++)
