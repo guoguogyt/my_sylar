@@ -62,5 +62,5 @@ add_dependencies(test_util leileilei)
 target_link_libraries(test_util ${LIBS})
 
 add_executable(test_fiber ./tests/test_fiber.cpp)
-add_dependencies(test_util leileilei)
+add_dependencies(test_fiber leileilei)
 target_link_libraries(test_fiber ${LIBS})
