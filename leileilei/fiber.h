@@ -135,7 +135,7 @@ public:
      *  返回协程的状态
      * @return State 
      */
-    State getState();
+    State getState() { return state_;}
 public:
     /**
      * @brief Set the This object

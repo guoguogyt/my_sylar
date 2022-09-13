@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-22 15:33:45
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-13 11:34:10
+ * @LastEditTime: 2022-09-13 11:37:14
  */
 #include "fiber.h"
 #include "log.h"
@@ -157,11 +157,6 @@ uint64_t Fiber::getId()
     return id_;
 }
 
-State Fiber::getState()
-{
-    return state_;
-}
-
 void Fiber::SetThis(Fiber* f)
 {
     t_fiber = f;
@@ -178,7 +173,7 @@ Fiber::ptr Fiber::GetThis()
 
     // 生成主协程
     Fiber::ptr main_fiber(new Fiber);
-    LEILEILEI_ASSERT(t_fiber == main_fiber);
+    LEILEILEI_ASSERT(t_fiber == main_fiber.get());
     t_threadFiber = main_fiber;
     return main_fiber->shared_from_this();
 }
