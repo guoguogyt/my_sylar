@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-13 11:17:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-13 16:04:20
+ * @LastEditTime: 2022-09-13 16:05:33
  */
 #include "leileilei.h"
 
@@ -24,9 +24,9 @@ void test_fiber()
     leileilei::Fiber::GetThis();
     LEI_LOG_DEBUG(g_logger) << "main fiber begin";
     leileilei::Fiber::ptr fiber_(new leileilei::Fiber(run_in_fiber));
-    fiber_.swapIn();
+    fiber_->swapIn();
     LEI_LOG_DEBUG(g_logger) << "come main fiber";
-    fiber_.swapIn();
+    fiber_->swapIn();
     LEI_LOG_DEBUG(g_logger) << "sub fiber end, come main fiber";
 }
 
