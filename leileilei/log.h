@@ -39,7 +39,7 @@
 */
 #define LEI_LOG_LEVEL(logger, level) \
     leileilei::LogEventWrap(logger, leileilei::LogEvent::ptr(new leileilei::LogEvent(__FILE__, \
-                                __LINE__, 0, leileilei::GetThreadId(), 2, time(0), "threadName", level))).getSS()
+                                __LINE__, 0, leileilei::GetThreadId(), 2, time(0), leileilei::Thread::GetThreadName(), level))).getSS()
 
 /**
  * @brief 使用流式方式将日志级别debug的日志写入到logger
@@ -71,7 +71,7 @@
 */
 #define LEI_LOG_FMT_LEVEL(logger, level, fmt, ...) \
     leileilei::LogEventWrap(logger, leileilei::LogEvent::ptr(new leileilei::LogEvent(__FILE__, \
-                                __LINE__, 0, leileilei::GetThreadId(), 2, time(0), leileilei::GetThreadName(), level))).getLogEvent()->format(fmt, __VA_ARGS__)
+                                __LINE__, 0, leileilei::GetThreadId(), 2, time(0), leileilei::Thread::GetThreadName(), level))).getLogEvent()->format(fmt, __VA_ARGS__)
 
 /**
  * @brief 使用格式化式方式将日志级别debug的日志写入到logger
