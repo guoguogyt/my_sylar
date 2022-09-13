@@ -2,7 +2,7 @@
  * @file fiber.h
  * @author your name (you@domain.com)
  * @brief 协程是一种用户态的轻量级线程，协程的调度完全由用户控制(用户态)
-        一个线程可以拥有多个协程，协程不是被操作系统内核所管理，而完全是由程序所控制
+     一个线程可以拥有多个协程，协程不是被操作系统内核所管理，而完全是由程序所控制
 
 子程序，或者称为函数，在所有语言中都是层级调用，比如A调用B，B在执行过程中又调用了C，C执行完毕返回，B执行完毕返回，最后是A执行完毕。
 所以子程序调用是通过栈实现的，一个线程就是执行一个子程序。
@@ -23,14 +23,16 @@
 
 
  下面详细介绍四个函数：
-        int getcontext(ucontext_t *ucp);
+     int getcontext(ucontext_t *ucp);
  初始化ucp结构体，将当前的上下文保存到ucp中
-        int setcontext(const ucontext_t *ucp);
+     int setcontext(const ucontext_t *ucp);
  设置当前的上下文为ucp，setcontext的上下文ucp应该通过getcontext或者makecontext取得，如果调用成功则不返回。如果上下文是通过调用getcontext()取得,程序会继续执行这个调用。如果上下文是通过调用makecontext取得,程序会调用makecontext函数的第二个参数指向的函数，如果func函数返回,则恢复makecontext第一个参数指向的上下文第一个参数指向的上下文context_t中指向的uc_link.如果uc_link为NULL,则线程退出。
-        void makecontext(ucontext_t *ucp, void (*func)(), int argc, ...);
- makecontext修改通过getcontext取得的上下文ucp(这意味着调用makecontext前必须先调用getcontext)。然后给该上下文指定一个栈空间ucp->stack，设置后继的上下文ucp->uc_link.
- 当上下文通过setcontext或者swapcontext激活后，执行func函数，argc为func的参数个数，后面是func的参数序列。当func执行返回后，继承的上下文被激活，如果继承上下文为NULL时，线程退出。
-        int swapcontext(ucontext_t *oucp, ucontext_t *ucp);
+     void makecontext(ucontext_t *ucp, void (*func)(), int argc, ...);
+ makecontext修改通过getcontext取得的上下文ucp(这意味着调用makecontext前必须先调用getcontext)。
+ 然后给该上下文指定一个栈空间ucp->stack，设置后继的上下文ucp->uc_link.
+ 当上下文通过setcontext或者swapcontext激活后，执行func函数，argc为func的参数个数，后面是func的参数序列。
+ 当func执行返回后，继承的上下文被激活，如果继承上下文为NULL时，线程退出。
+     int swapcontext(ucontext_t *oucp, ucontext_t *ucp);
  保存当前上下文到oucp结构体中，然后激活upc上下文。 
  如果执行成功，getcontext返回0，setcontext和swapcontext不返回；如果执行失败，getcontext,setcontext,swapcontext返回-1，并设置对于的errno.
 
@@ -38,6 +40,10 @@
 
 
  虽然我们称协程是一个用户态的轻量级线程，但实际上多个协程同属一个线程。任意一个时刻，同一个线程不可能同时运行两个协程。
+
+
+ 本系统：thread ----> main_fiber(主协程)   <------> sub fiber(子协程)
+            子协程之间不能之间切换，必须通过主协程 
  * @version 0.1
  * @date 2022-08-23
  * 
@@ -45,7 +51,149 @@
  * 
  */
 
+#pragma once
 
+#include <memory>
+#include <functional>
+#include <ucontext.h>
+
+
+namespace leileilei
+{
+
+/**
+ * @brief 协程类
+ * 
+ */
+class Fiber : public std::enable_shared_from_this<Fiber>
+{
+public:
+    typedef std::shared_ptr<Fiber> ptr;
+    
+    /**
+     * @brief 协程状态
+     */
+    enum State
+    {
+        // 初始化
+        INIT,
+        // 暂停
+        HOLD,
+        // 执行中
+        EXEC,
+        // 结束
+        TERM,
+        // 可执行
+        READY,
+        // 异常
+        EXCEPT
+    }
+private:
+    /**
+     * @brief Construct a new Fiber object
+     *     私有化的默认构造函数
+        这种私有化的构造函数，可以通过类的静态函数进行调用
+        通过该函数生成的fiber都是主协程
+     */
+    Fiber();
+public:
+    /**
+     * @brief Construct a new Fiber object
+     *  有参数的构造函数，执行该构造函数生成的fiber都是子协程，可以去执行协程绑定的函数
+     * @param cb 
+     * @param stacksize 
+     * @param use_caller 
+     */
+    Fiber(std::function<void()> cb, size_t stacksize = 0, bool use_caller = false);
+    /**
+     * @brief Destroy the Fiber object
+     * 析构函数，释放资源, 协程管理
+     */
+    ~Fiber();
+    /**
+     * @brief 重置协程函数，并设置状态
+     */
+    void reset(std::function<void()> cb);
+    /**
+     * @brief 将 调用 的协程设置为当前正在运行的协程
+     *  运行当前协程，挂起主协程
+     */
+    void swapIn();
+    /**
+     * @brief  将主协程设置为当前正在运行的协程
+        运行主协程，挂起之前的协程
+     */
+    void swapOut();
+    /**
+     * @brief Get the Id object
+     *  返回协程id
+     * @return uint64_t 
+     */
+    uint64_t getId();
+    /**
+     * @brief Get the State object
+     *  返回协程的状态
+     * @return State 
+     */
+    State getState();
+public:
+    /**
+     * @brief Set the This object
+     *  将参数传入的协程设置为正在运行的协程
+     * @param f 
+     */
+    static void SetThis(Fiber* f);
+    /**
+     * @brief Get the This object
+     *  获取当前正在执行的协程
+     * @return Fiber::ptr 
+     */
+    static Fiber::ptr GetThis();
+    /**
+     * @brief 
+     *  将 当前的 协程切换到后台，并且设置为ready状态
+     */
+    static void YieldToReady();
+    /**
+     * @brief 
+     *  将 当前的 协程切换到后台，并且设置为hold状态
+     */
+    static void YieldToHold();
+    /**
+     * @brief 
+     * 获取协程总数
+     * @return uint64_t 
+     */
+    static uint64_t TotalFibers();
+    /**
+     * @brief 
+     * 协程执行函数，执行结束应该返回到主协程
+     */
+    static void MainFunc();
+    /**
+     * @brief Get the Fiber Id object
+     * 获取当前的协程id
+     */
+    static uint64_t GetFiberId();
+public:
+    // 协程id
+    uint64_t id_ = 0;
+    // 协程运行的栈大小
+    uint32_t stacksize_ = 0;
+    // 协程的状态
+    State state_ = INIT;
+    // 协程上下文
+    ucontext_t ctx_;
+    // 协程运行的栈
+    void* stack_ = nullptr;
+    // 协程所运行的函数
+    std::function<void()> callback_;
+
+};
+
+
+
+}
 
  
 

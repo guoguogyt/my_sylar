@@ -14,6 +14,7 @@ endif()
 set(LIB_SRC
     leileilei/log.cpp
     leileilei/config.cpp
+    leileilei/fiber.cpp
     leileilei/mutex.cpp
     leileilei/thread.cpp
     leileilei/util.cpp
@@ -59,3 +60,7 @@ target_link_libraries(test_thread ${LIBS})
 add_executable(test_util ./tests/test_util.cpp)
 add_dependencies(test_util leileilei)
 target_link_libraries(test_util ${LIBS})
+
+add_executable(test_fiber ./tests/test_fiber.cpp)
+add_dependencies(test_util leileilei)
+target_link_libraries(test_fiber ${LIBS})

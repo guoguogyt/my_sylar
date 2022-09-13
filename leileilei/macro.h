@@ -41,7 +41,7 @@
 #   define  LEILEILEI_UNLIKELY(x)   (x)
 #endif
 
-// 断言宏
+// 断言宏,用于异常排查
 #define LEILEILEI_ASSERT(x) \
     if(LEILEILEI_UNLIKELY(!(x)))    \
     {   \
@@ -51,7 +51,7 @@
         assert(x);  \
     }
 
-// 断言宏
+// 断言宏,用于异常排查
 #define LEILEILEI_ASSERT2(x, w) \
     if(LEILEILEI_UNLIKELY(!(x)))    \
     {   \
