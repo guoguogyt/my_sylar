@@ -87,7 +87,7 @@ public:
         READY,
         // 异常
         EXCEPT
-    }
+    };
 private:
     /**
      * @brief Construct a new Fiber object

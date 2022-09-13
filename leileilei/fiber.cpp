@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-22 15:33:45
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-13 11:14:34
+ * @LastEditTime: 2022-09-13 11:34:10
  */
 #include "fiber.h"
 #include "log.h"
@@ -26,7 +26,7 @@ static std::atomic<uint64_t> s_fiber_count {0};
 // 当前正在执行的协程
 static thread_local Fiber* t_fiber = nullptr;
 // 表示线程的主协程
-static thread_local Fiber:ptr t_threadFiber = nullptr;
+static thread_local Fiber::ptr t_threadFiber = nullptr;
 
 // 设置默认的栈大小，可以从配置文件中载入
 static ConfigVar<uint32_t>::ptr g_fiber_stack_size = ConfigManager::LookUp<uint32_t>("fiber.stack_size", 128*1024, "fiber stack size");
