@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-13 11:17:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-13 16:05:33
+ * @LastEditTime: 2022-09-13 16:26:39
  */
 #include "leileilei.h"
 
@@ -21,13 +21,18 @@ void run_in_fiber()
 void test_fiber()
 {
     LEI_LOG_DEBUG(g_logger) << "test fiber begin";
-    leileilei::Fiber::GetThis();
-    LEI_LOG_DEBUG(g_logger) << "main fiber begin";
-    leileilei::Fiber::ptr fiber_(new leileilei::Fiber(run_in_fiber));
-    fiber_->swapIn();
-    LEI_LOG_DEBUG(g_logger) << "come main fiber";
-    fiber_->swapIn();
-    LEI_LOG_DEBUG(g_logger) << "sub fiber end, come main fiber";
+    {
+        leileilei::Fiber::GetThis();
+        LEI_LOG_DEBUG(g_logger) << "main fiber begin";
+        leileilei::Fiber::ptr fiber_(new leileilei::Fiber(run_in_fiber));
+        fiber_->swapIn();
+        LEI_LOG_DEBUG(g_logger) << "come main fiber";
+        fiber_->swapIn();
+        LEI_LOG_DEBUG(g_logger) << "sub fiber is swapOut, come main fiber";
+        fiber->swapIn();
+        LEI_LOG_DEBUG(g_logger) << "sub fiber callback exe end";
+    }
+    LEI_LOG_DEBUG(g_logger) << "sub fiber should destory, and then main fiber will be destory";
 }
 
 int main(int argc, char* argv[])
