@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-20 16:05:38
+ * @LastEditTime: 2022-09-20 16:20:08
  */
 
 #include "scheduler.h"
@@ -34,6 +34,7 @@ Scheduler::Scheduler(size_t threads, bool use_caller, const std::string& name)
         s_schedule = this;
         
         rootFiebr_.reset(new Fiber(std::bind(&Scheduler::run,this), 0, true));
+        leileilei::Thread::SetThreadName(scheduler_name_);
         s_main_fiber = rootFiebr_.get();
         root_thread_ = leileilei::GetThreadId();
         thread_ids_.push_back(root_thread_);
@@ -57,7 +58,7 @@ Scheduler::~Scheduler()
 
 void Scheduler::start()
 {
-    LEI_LOG_DEBUG(g_logger) << this << "begin Scheduler";
+    LEI_LOG_DEBUG(g_logger) << this << "    start Scheduler";
     MutexType::Lock lock(mutex_);
     if(!stopping_)
     {
@@ -76,12 +77,12 @@ void Scheduler::start()
 
 void Scheduler::stop()
 {
-    LEI_LOG_DEBUG(g_logger) << this << "try to stop scheduler";
+    LEI_LOG_DEBUG(g_logger) << this << "    try to stop scheduler";
     is_autoStop_ = true;
     // 当线程池中只有一个线程，且这个线程为主线程时，的停止判断
     if(rootFiebr_ && thread_counts_==0 && (rootFiebr_->getState() == Fiber::TERM || rootFiebr_->getState() == Fiber::INIT))
     {
-        LEI_LOG_DEBUG(g_logger) << this << "stopped";
+        LEI_LOG_DEBUG(g_logger) << this << "    stopped";
         stopping_ = true;
         if(canStop())   return;
     }
@@ -288,6 +289,9 @@ void Scheduler::run()
 
 bool Scheduler::canStop()
 {
+    LEI_LOG_DEBUG(g_logger) << "is_autoStop_[" << is_autoStop_ <<"]     stopping_[" << stopping_
+                            << "]   fiber_list_ size[" << fiber_list_.empty() << "] active_thread_count_["
+                            << active_thread_count_ << "]";
     return is_autoStop_ && stopping_ && fiber_list_.empty() && active_thread_count_==0;
 }
 
