@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-20 15:35:40
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-20 16:26:14
+ * @LastEditTime: 2022-09-20 16:30:03
  */
 #include "leileilei.h"
 
@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
     leileilei::Scheduler sc(1, true, "test_scheduler");
     sc.start();
     LEI_LOG_DEBUG(g_logger) << "main other things";
-    sc.schedule(&test_fiber)
+    sc.schedule(&test_fiber);
     sc.stop();
     LEI_LOG_DEBUG(g_logger) << "main over";
 }
