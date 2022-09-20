@@ -191,9 +191,14 @@ public:
     static uint64_t TotalFibers();
     /**
      * @brief 
-     * 协程执行函数，执行结束应该返回到主协程
+     * 协程执行函数，执行结束应该返回到调度协程
      */
     static void MainFunc();
+    /**
+     * @brief 
+     * 协程执行函数，执行结束应该返回到主协程
+     */
+    static void CallerMainFunc();
     /**
      * @brief Get the Fiber Id object
      * 获取当前的协程id

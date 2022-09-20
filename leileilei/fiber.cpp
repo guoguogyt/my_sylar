@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-22 15:33:45
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-20 15:50:37
+ * @LastEditTime: 2022-09-20 16:57:33
  */
 #include "fiber.h"
 #include "log.h"
@@ -90,7 +90,14 @@ Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool use_caller)
     ctx_.uc_stack.ss_size = stacksize_;
 
     // 为这个协程绑定一个函数
-    makecontext(&ctx_, &Fiber::MainFunc, 0);
+    if(!use_caller)
+    {
+        makecontext(&ctx_, &Fiber::MainFunc, 0);
+    }
+    else
+    {
+        makecontext(&ctx_, &Fiber::CallerMainFunc, 0);
+    }
 
     LEI_LOG_DEBUG(g_logger) << "Fiber::sub Fiber id = " << id_;    
 }
@@ -251,7 +258,44 @@ void Fiber::MainFunc()
     // 因为cur_fiber无法直接完整个函数的代码块(被swapOut出去了,所以代码不会执行完)
     auto temp = cur_fiber.get();
     cur_fiber.reset();
+    // 协程切换的时候要注意，自己换自己等于没有换，会往下继续执行代码
     temp->swapOut();
+
+    LEILEILEI_ASSERT2(false, "fiber shoud not reach there, fiberid=" + std::to_string(temp->getId()));
+}
+
+void Fiber::CallerMainFunc()
+{
+    // 当函数执行结束，需要将协程控制权返回到主协程(因为在子协程创建的时候，并没有指定uc_link的下文)
+    Fiber::ptr cur_fiber = Fiber::GetThis();
+    try
+    {
+        cur_fiber->callback_();
+        cur_fiber->callback_ = nullptr;
+        cur_fiber->state_ = TERM;
+    }catch(std::exception& ex)
+    {
+        cur_fiber->state_ = EXCEPT;
+        LEI_LOG_ERROR(g_logger) << "Fiber Except " << ex.what()
+                                << "fiber id = " << cur_fiber->getId()
+                                << std::endl
+                                << leileilei::BacktraceToString();
+    }catch(...)
+    {
+        cur_fiber->state_ = EXCEPT;
+        LEI_LOG_ERROR(g_logger) << "Fiber Except "
+                                << "fiber id = " << cur_fiber->getId()
+                                << std::endl
+                                << leileilei::BacktraceToString();
+    }
+
+    // 为了避免sub fiber的智能指针引用计数到不了0，导致协程无法析构
+    // 这里手工reset使得，智能指针的引用计数-1
+    // 因为cur_fiber无法直接完整个函数的代码块(被swapOut出去了,所以代码不会执行完)
+    auto temp = cur_fiber.get();
+    cur_fiber.reset();
+    // 协程切换的时候要注意，自己换自己等于没有换，会往下继续执行代码
+    temp->back();
 
     LEILEILEI_ASSERT2(false, "fiber shoud not reach there, fiberid=" + std::to_string(temp->getId()));
 }
