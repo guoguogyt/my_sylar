@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-20 16:01:11
+ * @LastEditTime: 2022-09-20 16:05:38
  */
 
 #include "scheduler.h"
@@ -231,7 +231,7 @@ void Scheduler::run()
             // 如果cb_fiber已经存在, 直接替换绑定函数即可
             if(cb_fiber)
             {
-                cb_fiber->reset(ft.cb);
+                cb_fiber->reset(ft.cb_);
             }
             // 否则需要生成新的协程
             else
@@ -246,7 +246,7 @@ void Scheduler::run()
                 schedule(cb_fiber);
                 cb_fiber.reset();
             }
-            if(cb_fiber->getState() == Fiber::TERM || cb_fiber->getState == Fiber::EXCEPT)
+            if(cb_fiber->getState() == Fiber::TERM || cb_fiber->getState() == Fiber::EXCEPT)
             {
                 cb_fiber->reset(nullptr);
             }
