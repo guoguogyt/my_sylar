@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-20 16:22:54
+ * @LastEditTime: 2022-09-20 17:04:39
  */
 
 #include "scheduler.h"
@@ -289,9 +289,9 @@ void Scheduler::run()
 
 bool Scheduler::canStop()
 {
-    LEI_LOG_DEBUG(g_logger) << "is_autoStop_[" << is_autoStop_ <<"]     stopping_[" << stopping_
-                            << "]   fiber_list_ empty[" << fiber_list_.empty() << "] active_thread_count_["
-                            << active_thread_count_ << "]";
+    // LEI_LOG_DEBUG(g_logger) << "is_autoStop_[" << is_autoStop_ <<"]     stopping_[" << stopping_
+    //                         << "]   fiber_list_ empty[" << fiber_list_.empty() << "] active_thread_count_["
+    //                         << active_thread_count_ << "]";
     return is_autoStop_ && stopping_ && fiber_list_.empty() && active_thread_count_==0;
 }
 
