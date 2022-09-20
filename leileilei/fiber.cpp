@@ -4,11 +4,12 @@
  * @Author: leileilei
  * @Date: 2022-08-22 15:33:45
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-20 15:16:53
+ * @LastEditTime: 2022-09-20 15:50:37
  */
 #include "fiber.h"
 #include "log.h"
 #include "config.h"
+#include "scheduler.h"
 #include "macro.h"
 #include <atomic>
 
