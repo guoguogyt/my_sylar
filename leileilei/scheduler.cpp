@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-20 14:57:09
+ * @LastEditTime: 2022-09-20 16:01:11
  */
 
 #include "scheduler.h"
@@ -154,7 +154,7 @@ void Scheduler::run()
 {
     LEI_LOG_DEBUG(g_logger) << " begin do Scheduler";
 
-    SetThis();
+    setThis();
     // 产生第一个协程---如果不是主线程，那么线程产生的主协程就是调度协程，主线程则不
     if(leileilei::GetThreadId() != root_thread_)
     {
@@ -187,7 +187,7 @@ void Scheduler::run()
                 }
                 LEILEILEI_ASSERT(it->fiber_ || it->cb_);
                 // 如果协程正在执行，就放掉
-                if(it->fiber_ && it->fiber->getState() == Fiber::EXEC)
+                if(it->fiber_ && it->fiber_->getState() == Fiber::EXEC)
                 {
                     ++it;
                     continue;
@@ -210,18 +210,18 @@ void Scheduler::run()
         if(ft.fiber_ && ft.fiber_->getState() != Fiber::TERM && ft.fiber_->getState() != Fiber::EXCEPT)
         {
             // 开始执行协程任务
-            ft.fiber_.swapIn();
+            ft.fiber_->swapIn();
 
             active_thread_count_--;
 
             // 执行结束之后如果是ready在放入协程任务队列
             if(ft.fiber_->getState() == Fiber::READY)
             {
-                schedule(ft.fiber);
+                schedule(ft.fiber_);
             }
             else if(ft.fiber_->getState() != Fiber::TERM && ft.fiber_->getState() != Fiber::EXCEPT)
             {
-                ft.fiber->state_ = Fiber::HOLD;
+                ft.fiber_->state_ = Fiber::HOLD;
             }
             ft.reset();
         }
@@ -236,10 +236,10 @@ void Scheduler::run()
             // 否则需要生成新的协程
             else
             {
-                cb_fiber.reset(new Fiber(ft.cb));
+                cb_fiber.reset(new Fiber(ft.cb_));
             }
 
-            cb_fiber.swapIn();
+            cb_fiber->swapIn();
             active_thread_count_--;
             if(cb_fiber->getState() == Fiber::READY)
             {
@@ -248,7 +248,7 @@ void Scheduler::run()
             }
             if(cb_fiber->getState() == Fiber::TERM || cb_fiber->getState == Fiber::EXCEPT)
             {
-                cb_fiber.reset(nullptr);
+                cb_fiber->reset(nullptr);
             }
             else
             {
