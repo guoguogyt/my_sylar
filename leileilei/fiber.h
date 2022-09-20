@@ -61,12 +61,15 @@
 namespace leileilei
 {
 
+class Scheduler;
+
 /**
  * @brief 协程类
  * 
  */
 class Fiber : public std::enable_shared_from_this<Fiber>
 {
+friend class Scheduler;
 public:
     typedef std::shared_ptr<Fiber> ptr;
     
@@ -114,16 +117,37 @@ public:
      * @brief 重置协程函数，并设置状态
      */
     void reset(std::function<void()> cb);
+
+    // swapIn 与 swapOut是一套
     /**
      * @brief 将 调用 的协程设置为当前正在运行的协程
-     *  运行当前协程，挂起主协程
+     *  运行当前协程，挂起调度协程(是调度模块的调度协程)
      */
     void swapIn();
     /**
      * @brief  将主协程设置为当前正在运行的协程
-        运行主协程，挂起之前的协程
+        运行调度协程(是调度模块的调度协程)，挂起之前的协程
      */
     void swapOut();
+
+    /**
+     *   调度协程 和 线程的主协程，在大部分时候是相同的。但是当主线程进入线程池中则不一样。
+     */
+
+    // call 与 back是一套
+    /**
+     * @brief 
+     * 将 调用 的协程设置为当前正在运行的协程
+         运行当前协程，挂起线程主协程
+     */
+    void call();
+    /**
+     * @brief 
+     * 将主协程设置为当前正在运行的协程
+       运行线程主协程，挂起之前的协程
+     */
+    void back();
+
     /**
      * @brief Get the Id object
      *  返回协程id

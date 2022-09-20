@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-22 15:33:45
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-13 16:18:52
+ * @LastEditTime: 2022-09-20 15:16:53
  */
 #include "fiber.h"
 #include "log.h"
@@ -143,10 +143,24 @@ void Fiber::swapIn()
     SetThis(this);
     LEILEILEI_ASSERT(state_ != EXEC);
     state_ = EXEC;
-    if(swapcontext(&t_threadFiber->ctx_, &ctx_))    LEILEILEI_ASSERT2(false, "swapcontext error");
+    if(swapcontext(&Scheduler::GetMainFiber()->ctx_, &ctx_))    LEILEILEI_ASSERT2(false, "swapcontext error");
 }
 
 void Fiber::swapOut()
+{
+    SetThis(Scheduler::GetMainFiber());
+    if(swapcontext(&ctx_, &Scheduler::GetMainFiber()->ctx_))    LEILEILEI_ASSERT2(false, "swapcontext error");
+}
+
+void Fiber::call()
+{
+    SetThis(this);
+    LEILEILEI_ASSERT(state_ != EXEC);
+    state_ = EXEC;
+    if(swapcontext(&t_threadFiber->ctx_, &ctx_))    LEILEILEI_ASSERT2(false, "swapcontext error");
+}
+    
+void Fiber::back()
 {
     SetThis(t_threadFiber.get());
     if(swapcontext(&ctx_, &t_threadFiber->ctx_))    LEILEILEI_ASSERT2(false, "swapcontext error");

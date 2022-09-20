@@ -16,6 +16,7 @@ set(LIB_SRC
     leileilei/config.cpp
     leileilei/fiber.cpp
     leileilei/mutex.cpp
+    leileilei/scheduler.cpp
     leileilei/thread.cpp
     leileilei/util.cpp
 )
@@ -64,3 +65,7 @@ target_link_libraries(test_util ${LIBS})
 add_executable(test_fiber ./tests/test_fiber.cpp)
 add_dependencies(test_fiber leileilei)
 target_link_libraries(test_fiber ${LIBS})
+
+add_executable(test_scheduler ./tests/test_scheduler.cpp)
+add_dependencies(test_scheduler leileilei)
+target_link_libraries(test_scheduler ${LIBS})

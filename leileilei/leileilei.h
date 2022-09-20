@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 15:20:01
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-13 11:15:49
+ * @LastEditTime: 2022-09-16 16:22:40
  */
 
 #pragma once
@@ -15,6 +15,7 @@
 #include "log.h"
 #include "mutex.h"
 #include "macro.h"
+#include "scheduler.h"
 #include "singleton.h"
 #include "thread.h"
 #include "util.h"
