@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:28
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-20 15:33:01
+ * @LastEditTime: 2022-09-20 15:56:18
  */
 #pragma once
 
@@ -218,7 +218,7 @@ private:
         int thread_;
 
         FiberAndThread(Fiber::ptr fiber, int id):fiber_(fiber), thread_(id) {}
-        FiberAndThread(Fiber* fiber, int id):thread_(id)    {   fiber_.swap(*fiber);}
+        FiberAndThread(Fiber::ptr* fiber, int id):thread_(id)    {   fiber_.swap(*fiber);}
         FiberAndThread(std::function<void()> callback, int id):cb_(callback),thread_(id)  {}
         FiberAndThread(std::function<void()>* callback, int id):thread_(id) {   cb_.swap(*callback);}
         FiberAndThread():thread_(-1)    {}
