@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-20 15:35:40
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-20 17:04:44
+ * @LastEditTime: 2022-09-21 10:08:24
  */
 #include "leileilei.h"
 
@@ -17,6 +17,8 @@ void test_fiber()
 
 int main(int argc, char* argv[])
 {
+    YAML::Node root = YAML::LoadFile("/root/share/my_sylar/bin/config/log.yml");
+    leileilei::ConfigManager::LoadConfigFromYaml(root);
     LEI_LOG_DEBUG(g_logger) << "main start";
     leileilei::Scheduler sc(3, true, "test_scheduler");
     sc.start();
