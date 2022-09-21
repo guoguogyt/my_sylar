@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-20 17:04:39
+ * @LastEditTime: 2022-09-21 11:31:44
  */
 
 #include "scheduler.h"
@@ -287,6 +287,7 @@ void Scheduler::run()
     }
 }
 
+// 不执行stop函数，这个返回值永远是0， 及时执行了stop函数还需要看其他条件
 bool Scheduler::canStop()
 {
     // LEI_LOG_DEBUG(g_logger) << "is_autoStop_[" << is_autoStop_ <<"]     stopping_[" << stopping_
