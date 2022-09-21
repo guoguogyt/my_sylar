@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-13 11:17:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-13 18:09:14
+ * @LastEditTime: 2022-09-21 09:24:53
  */
 
 #include <vector>
@@ -16,9 +16,9 @@ leileilei::Logger::ptr g_logger = LEI_LOG_GETROOTOR();
 void run_in_fiber()
 {
     LEI_LOG_DEBUG(g_logger) << "run in fiber begin";
-    leileilei::Fiber::YieldToHold();
+    leileilei::Fiber::back();
     LEI_LOG_DEBUG(g_logger) << "come sub fiber";
-    leileilei::Fiber::YieldToHold();
+    leileilei::Fiber::back();
 }
 
 void test_fiber()
@@ -28,11 +28,11 @@ void test_fiber()
         leileilei::Fiber::GetThis();
         LEI_LOG_DEBUG(g_logger) << "main fiber begin";
         leileilei::Fiber::ptr fiber_(new leileilei::Fiber(run_in_fiber));
-        fiber_->swapIn();
+        fiber_->call();
         LEI_LOG_DEBUG(g_logger) << "come main fiber";
-        fiber_->swapIn();
+        fiber_->call();
         LEI_LOG_DEBUG(g_logger) << "sub fiber is swapOut, come main fiber";
-        fiber_->swapIn();
+        fiber_->call();
         LEI_LOG_DEBUG(g_logger) << "sub fiber callback exe end";
     }
     LEI_LOG_DEBUG(g_logger) << "sub fiber should destory, and then main fiber will be destory";
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
     leileilei::ConfigManager::LoadConfigFromYaml(root);
     std::vector<leileilei::Thread::ptr> vec;
 
-    for(int i=0; i<3; i++)
+    for(int i=0; i<1; i++)
     {
         vec.push_back(leileilei::Thread::ptr(new leileilei::Thread(&test_fiber, "name_" + std::to_string(i))));
     }
