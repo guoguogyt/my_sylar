@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-22 15:33:45
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-21 10:04:48
+ * @LastEditTime: 2022-09-21 10:05:52
  */
 #include "fiber.h"
 #include "log.h"
@@ -320,10 +320,8 @@ uint64_t Fiber::GetFiberId()
 {
     if(t_fiber)
     {
-        printf("111\n");
-        t_fiber->getId();
+        return t_fiber->getId();
     } 
-    
     return 0;
 }
 
