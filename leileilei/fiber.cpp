@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-22 15:33:45
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-21 10:05:52
+ * @LastEditTime: 2022-09-21 11:13:59
  */
 #include "fiber.h"
 #include "log.h"
@@ -130,7 +130,7 @@ Fiber::~Fiber()
 void Fiber::reset(std::function<void()> cb)
 {
     LEILEILEI_ASSERT(state_ == TERM || state_ == INIT || state_ == EXCEPT);
-    LEILEILEI_ASSERT(!cb);
+    LEILEILEI_ASSERT(stack_);
 
     callback_ = cb;
 
