@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:28
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-20 15:56:18
+ * @LastEditTime: 2022-09-21 16:22:50
  */
 #pragma once
 
@@ -17,6 +17,8 @@
 #include "fiber.h"
 #include "log.h"
 #include "macro.h"
+
+#define MAX_FIBER_LIST_SIZE 1000000;
 
 namespace leileilei
 {
@@ -34,9 +36,9 @@ namespace leileilei
 注意:
     线程池可以将主线程放入，放入主线程之后，情况会变的复杂
 
-展望：
-    协程队列大小限制
-    当关闭调度器的过程中，不允许在向协程队列总push任务
+增加：
+    协程队列大小限制,不能无限制的往协程队列里面放任务
+    当关闭调度器的过程中，不允许在向协程队列中push任务
  */
 class Scheduler
 {
@@ -88,9 +90,19 @@ public:
     template<class FiberOrCb>
     void schedule(FiberOrCb fc, int thread = -1)
     {
+        if(is_autoStop_)
+        {
+            LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << " scheduler is stopping, can not add fiber task";
+            return;
+        }
         bool need_tickle = false;
         {
             MutexType::Lock lock(mutex_);
+            if(fiber_list_.size() >= MAX_FIBER_LIST_SIZE)
+            {
+                LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << " fiber list is full, can not add fiber task";
+                return;
+            }
             need_tickle = scheduleNoLock(fc, thread);
         }
         // 需要唤醒
@@ -110,11 +122,21 @@ public:
     template<class FiberOrCbIterator>
     void schedule(FiberOrCbIterator begin, FiberOrCbIterator end)
     {
+        if(is_autoStop_)
+        {
+            LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << " scheduler is stopping, can not add fiber task";
+            return;
+        }
         bool need_tickle = false;
         {
             MutexType::Lock lock(mutex_);
             while(begin != end)
             {
+                if(fiber_list_.size() >= MAX_FIBER_LIST_SIZE)
+                {
+                    LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << " fiber list is full, can not add fiber task";
+                    return;
+                }
                 need_tickle = scheduleNoLock(&*begin, -1) || need_tickle;
                 begin++;
             }
