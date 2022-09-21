@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:28
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-21 16:22:50
+ * @LastEditTime: 2022-09-21 16:24:57
  */
 #pragma once
 
@@ -18,7 +18,7 @@
 #include "log.h"
 #include "macro.h"
 
-#define MAX_FIBER_LIST_SIZE 1000000;
+#define MAX_FIBER_LIST_SIZE 1000000
 
 namespace leileilei
 {
