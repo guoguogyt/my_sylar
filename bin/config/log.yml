@@ -3,7 +3,7 @@ logs:
       appenders: 
           - type: 2
             level: DEBUG
-            format: '%d%T%m%n'
+            format: '%d{%Y-%m-%d %H:%M:%S}%T%t%T%N%T%F%T[%p]%T[%c]%T%f:%l%T%m%n'
             path: 'log.log'  
 
   
