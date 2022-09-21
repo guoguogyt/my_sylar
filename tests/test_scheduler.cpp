@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-20 15:35:40
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-21 10:45:57
+ * @LastEditTime: 2022-09-21 10:47:24
  */
 #include "leileilei.h"
 
@@ -17,7 +17,7 @@ void test_fiber()
     sleep(1);
     if(--s_count >= 0)
     {
-        leileilei::GetThis()->schedule(&test_fiber, leileilei::GetThreadId());
+        leileilei::Scheduler::GetThis()->schedule(&test_fiber, leileilei::GetThreadId());
     }
 }
 
