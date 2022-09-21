@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-20 15:35:40
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-21 10:18:15
+ * @LastEditTime: 2022-09-21 10:45:57
  */
 #include "leileilei.h"
 
@@ -12,7 +12,13 @@ static leileilei::Logger::ptr g_logger = LEI_LOG_GETROOTOR();
 
 void test_fiber()
 {
-    LEI_LOG_DEBUG(g_logger) << "exe test_fiber function";
+    static int s_count = 5;
+    LEI_LOG_DEBUG(g_logger) << "exe test_fiber function,and count=" <<s_count;
+    sleep(1);
+    if(--s_count >= 0)
+    {
+        leileilei::GetThis()->schedule(&test_fiber, leileilei::GetThreadId());
+    }
 }
 
 int main(int argc, char* argv[])
