@@ -175,14 +175,25 @@ public:
     static Fiber::ptr GetThis();
     /**
      * @brief 
-     *  将 当前的 协程切换到后台，并且设置为ready状态
+     *  将 当前的 协程切换到后台，并且设置为ready状态  调用的是swapOut()
      */
     static void YieldToReady();
     /**
      * @brief 
-     *  将 当前的 协程切换到后台，并且设置为hold状态
+     *  将 当前的 协程切换到后台，并且设置为hold状态    调用的是swapOut()
      */
     static void YieldToHold();
+    /**
+     * @brief 
+     *  将 当前的 协程切换到后台，并且设置为ready状态  调用的是back()
+     */
+    static void YieldToReadyMainFiber();
+    /**
+     * @brief 
+     *  将 当前的 协程切换到后台，并且设置为hold状态    调用的是back()
+     */
+    static void YieldToHoldMainFiber();
+
     /**
      * @brief 
      * 获取协程总数

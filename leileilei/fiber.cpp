@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-22 15:33:45
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-20 16:57:33
+ * @LastEditTime: 2022-09-21 09:42:23
  */
 #include "fiber.h"
 #include "log.h"
@@ -214,6 +214,22 @@ void Fiber::YieldToHold()
     LEILEILEI_ASSERT(cur_fiber->state_ == EXEC);
     cur_fiber->state_ = HOLD;
     cur_fiber->swapOut();
+}
+
+void YieldToReadyMainFiber()
+{
+    Fiber::ptr cur_fiber = GetThis();
+    LEILEILEI_ASSERT(cur_fiber->state_ == EXEC);
+    cur_fiber->state_ = READY;
+    cur_fiber->back();
+}
+
+void YieldToHoldMainFiber()
+{
+    Fiber::ptr cur_fiber = GetThis();
+    LEILEILEI_ASSERT(cur_fiber->state_ == EXEC);
+    cur_fiber->state_ = HOLD;
+    cur_fiber->back();
 }
 
 uint64_t Fiber::TotalFibers()
