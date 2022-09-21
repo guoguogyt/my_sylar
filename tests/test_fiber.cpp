@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-13 11:17:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-21 09:24:53
+ * @LastEditTime: 2022-09-21 09:35:21
  */
 
 #include <vector>
@@ -16,9 +16,9 @@ leileilei::Logger::ptr g_logger = LEI_LOG_GETROOTOR();
 void run_in_fiber()
 {
     LEI_LOG_DEBUG(g_logger) << "run in fiber begin";
-    leileilei::Fiber::back();
+    leileilei::Fiber::YieldToHold();
     LEI_LOG_DEBUG(g_logger) << "come sub fiber";
-    leileilei::Fiber::back();
+    leileilei::Fiber::YieldToHold();
 }
 
 void test_fiber()
