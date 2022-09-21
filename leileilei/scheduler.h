@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:28
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-21 16:24:57
+ * @LastEditTime: 2022-09-21 16:27:16
  */
 #pragma once
 
@@ -90,7 +90,7 @@ public:
     template<class FiberOrCb>
     void schedule(FiberOrCb fc, int thread = -1)
     {
-        if(is_autoStop_)
+        if(canStop())
         {
             LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << " scheduler is stopping, can not add fiber task";
             return;
@@ -122,7 +122,7 @@ public:
     template<class FiberOrCbIterator>
     void schedule(FiberOrCbIterator begin, FiberOrCbIterator end)
     {
-        if(is_autoStop_)
+        if(canStop())
         {
             LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << " scheduler is stopping, can not add fiber task";
             return;
