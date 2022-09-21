@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-13 11:17:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-21 09:57:43
+ * @LastEditTime: 2022-09-21 10:00:32
  */
 
 #include <vector>
@@ -15,7 +15,7 @@ leileilei::Logger::ptr g_logger = LEI_LOG_GETROOTOR();
 
 void run_in_fiber()
 {
-    printf("sub fiber_id = %d", leileilei::Fiber::GetFiberId());
+    printf("sub fiber_id = %d\n", leileilei::Fiber::GetFiberId());
     LEI_LOG_DEBUG(g_logger) << "run in fiber begin";
     leileilei::Fiber::YieldToHoldMainFiber();
     LEI_LOG_DEBUG(g_logger) << "come sub fiber";
@@ -26,7 +26,7 @@ void test_fiber()
 {
     LEI_LOG_DEBUG(g_logger) << "test fiber begin";
     {
-        printf("main fiber_id = %d", leileilei::Fiber::GetFiberId());
+        printf("main fiber_id = %d\n", leileilei::Fiber::GetFiberId());
         leileilei::Fiber::GetThis();
         LEI_LOG_DEBUG(g_logger) << "main fiber begin";
         leileilei::Fiber::ptr fiber_(new leileilei::Fiber(run_in_fiber, 0, true));
