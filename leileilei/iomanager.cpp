@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 15:29:27
+ * @LastEditTime: 2022-09-27 15:57:50
  */
 #include "iomanager.h"
 
@@ -318,6 +318,7 @@ void IOManager::contextResize(size_t size)
 
 void IOManager::tickle()
 {
+    LEI_LOG_DEBUG(g_logger) << "iomanager tickle";
     if(!hasIdleThreads())
     {
         return;
