@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-27 11:23:18
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 18:36:25
+ * @LastEditTime: 2022-09-27 18:42:14
  */
 #include "leileilei.h"
 
@@ -36,7 +36,7 @@ void test_fun()
     memset(&addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_port = htons(80);
-    inet_pton(AF_INET, "115.239.210.27", &addr.sin_addr.s_addr);
+    inet_pton(AF_INET, "112.80.248.75", &addr.sin_addr.s_addr);
 
     if(!connect(sock, (const sockaddr*)&addr, sizeof(addr))) {
     } else if(errno == EINPROGRESS) {
