@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 14:24:07
+ * @LastEditTime: 2022-09-27 14:27:48
  */
 #include "iomanager.h"
 
@@ -48,11 +48,11 @@ void IOManager::FdContext::triggerEvent(IOManager::Event event)
     EventContext& fd_event = getContext(event);
     if(fd_event.cb)
     {
-        fd_event.schedule->schedule(&fd_event.cb);
+        fd_event.scheduler->schedule(&fd_event.cb);
     }
     else
     {
-        fd_event.schedule->schedule(&fd_event.fiber);
+        fd_event.scheduler->schedule(&fd_event.fiber);
     }
     fd_event.scheduler = nullptr;
 }
@@ -61,7 +61,7 @@ IOManager::IOManager(size_t thread, bool use_caller, const std::string& name)
 :Scheduler(thread, use_caller, name)
 {
     // 初始化epoll
-    epoll_fd_ = epoll_create();
+    epoll_fd_ = epoll_create(5000);
     LEILEILEI_ASSERT(epoll_fd_ > 0);
 
     // 初始化管道
@@ -135,10 +135,10 @@ int IOManager::addEvent(int fd, Event event, std::function<void()> cb)
     int rt = epoll_ctl(epoll_fd_, op, fd, &epollevent);
     if(rt)
     {
-        LEI_LOG_ERROR(g_logger) << "epoll_ctl(" << epoll_fd_ << ", "
-            << (EpollCtlOp)op << ", " << fd << ", " << (EPOLL_EVENTS)epollevent.events << "):"
-            << rt << " (" << errno << ") (" << strerror(errno) << ") fct->events="
-            << (EPOLL_EVENTS)fct->events;
+        // LEI_LOG_ERROR(g_logger) << "epoll_ctl(" << epoll_fd_ << ", "
+        //     << (EpollCtlOp)op << ", " << fd << ", " << (EPOLL_EVENTS)epollevent.events << "):"
+        //     << rt << " (" << errno << ") (" << strerror(errno) << ") fct->events="
+        //     << (EPOLL_EVENTS)fct->events;
         return -1;
     }
     event_counts_++;
@@ -191,10 +191,10 @@ bool IOManager::delEvent(int fd, Event event)
     int rt = epoll_ctl(epoll_fd_, op, fd, &epollevent);
     if(rt)
     {
-        LEI_LOG_ERROR(g_logger) << "epoll_ctl(" << epoll_fd_ << ", "
-            << (EpollCtlOp)op << ", " << fd << ", " << (EPOLL_EVENTS)epollevent.events << "):"
-            << rt << " (" << errno << ") (" << strerror(errno) << ") fct->events="
-            << (EPOLL_EVENTS)fct->events;
+        // LEI_LOG_ERROR(g_logger) << "epoll_ctl(" << epoll_fd_ << ", "
+        //     << (EpollCtlOp)op << ", " << fd << ", " << (EPOLL_EVENTS)epollevent.events << "):"
+        //     << rt << " (" << errno << ") (" << strerror(errno) << ") fct->events="
+        //     << (EPOLL_EVENTS)fct->events;
         return false;
     }
     event_counts_--;
@@ -235,10 +235,10 @@ bool IOManager::cancelEvent(int fd, Event event)
     int rt = epoll_ctl(epoll_fd_, op, fd, &epollevent);
     if(rt)
     {
-        LEI_LOG_ERROR(g_logger) << "epoll_ctl(" << epoll_fd_ << ", "
-            << (EpollCtlOp)op << ", " << fd << ", " << (EPOLL_EVENTS)epollevent.events << "):"
-            << rt << " (" << errno << ") (" << strerror(errno) << ") fct->events="
-            << (EPOLL_EVENTS)fct->events;
+        // LEI_LOG_ERROR(g_logger) << "epoll_ctl(" << epoll_fd_ << ", "
+        //     << (EpollCtlOp)op << ", " << fd << ", " << (EPOLL_EVENTS)epollevent.events << "):"
+        //     << rt << " (" << errno << ") (" << strerror(errno) << ") fct->events="
+        //     << (EPOLL_EVENTS)fct->events;
         return false;
     }
 
@@ -276,10 +276,10 @@ bool IOManager::cancelAll(int fd)
     int rt = epoll_ctl(epoll_fd_, op, fd, epollevent);
     if(rt)
     {
-        LEI_LOG_ERROR(g_logger) << "epoll_ctl(" << epoll_fd_ << ", "
-            << (EpollCtlOp)op << ", " << fd << ", " << (EPOLL_EVENTS)epollevent.events << "):"
-            << rt << " (" << errno << ") (" << strerror(errno) << ") fct->events="
-            << (EPOLL_EVENTS)fct->events;
+        // LEI_LOG_ERROR(g_logger) << "epoll_ctl(" << epoll_fd_ << ", "
+        //     << (EpollCtlOp)op << ", " << fd << ", " << (EPOLL_EVENTS)epollevent.events << "):"
+        //     << rt << " (" << errno << ") (" << strerror(errno) << ") fct->events="
+        //     << (EPOLL_EVENTS)fct->events;
         return false;
     }
 
@@ -402,10 +402,10 @@ void IOManager::idle()
             int rt2 = epoll_ctl(epoll_fd_, op, fct->fd, &event);
             if(rt2)
             {
-                LEI_LOG_ERROR(g_logger) << "epoll_ctl(" << epoll_fd_ << ", "
-                    << (EpollCtlOp)op << ", " << fct->fd << ", " << (EPOLL_EVENTS)event.events << "):"
-                    << rt << " (" << errno << ") (" << strerror(errno) << ") fct->events="
-                    << (EPOLL_EVENTS)fct->events;
+                // LEI_LOG_ERROR(g_logger) << "epoll_ctl(" << epoll_fd_ << ", "
+                //     << (EpollCtlOp)op << ", " << fct->fd << ", " << (EPOLL_EVENTS)event.events << "):"
+                //     << rt << " (" << errno << ") (" << strerror(errno) << ") fct->events="
+                //     << (EPOLL_EVENTS)fct->events;
                 return ;
             }
 
