@@ -12,9 +12,10 @@ if(Boost_FOUND)
 endif()
 
 set(LIB_SRC
-    leileilei/log.cpp
     leileilei/config.cpp
     leileilei/fiber.cpp
+    leileilei/iomanager.cpp
+    leileilei/log.cpp
     leileilei/mutex.cpp
     leileilei/scheduler.cpp
     leileilei/thread.cpp
@@ -69,3 +70,7 @@ target_link_libraries(test_fiber ${LIBS})
 add_executable(test_scheduler ./tests/test_scheduler.cpp)
 add_dependencies(test_scheduler leileilei)
 target_link_libraries(test_scheduler ${LIBS})
+
+add_executable(test_iomanager ./tests/test_iomanager.cpp)
+add_dependencies(test_iomanager leileilei)
+target_link_libraries(test_iomanager ${LIBS})
