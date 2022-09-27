@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 16:50:05
+ * @LastEditTime: 2022-09-27 16:58:54
  */
 #include "iomanager.h"
 
@@ -318,13 +318,13 @@ void IOManager::contextResize(size_t size)
 
 void IOManager::tickle()
 {
-    LEI_LOG_DEBUG(g_logger) << "iomanager tickle";
     if(!hasIdleThreads())
     {
-        LEI_LOG_DEBUG(g_logger) << "idle_thread_count_ is 0";
+        LEI_LOG_DEBUG(g_logger) << "idle idle_thread_count_ is 0";
         return;
     }
     int rt = write(pipe_fd_[1], "T", 1);
+    LEI_LOG_DEBUG(g_logger) << "iomanager tickle";
     LEILEILEI_ASSERT(rt == 1);
 }
 
@@ -364,6 +364,7 @@ void IOManager::idle()
             }
             // 阻塞等待
             rt = epoll_wait(epoll_fd_, events, MAX_EVENTS, (int)next_timeout);
+            // 通过返回值的状态判断是否有事件发生
             if(rt < 0 && errno == EINTR)    {    }
             else
             {
