@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:13
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-26 14:33:01
+ * @LastEditTime: 2022-09-27 13:59:00
  */
 #pragma
 
@@ -30,7 +30,7 @@ public:
     enum Event
     {
         //  无事件
-        NODE = 0x0,
+        NONE = 0x0,
         // 读事件
         READ = 0x1,
         // 写事件

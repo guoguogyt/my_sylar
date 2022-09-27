@@ -4,14 +4,16 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 11:17:42
+ * @LastEditTime: 2022-09-27 14:19:02
  */
 #include "iomanager.h"
 
 #include <errno.h>
-#include <sys/epoll.h>
-#include <unistd.h>
 #include <fcntl.h>
+#include <sys/epoll.h>
+#include <string.h>
+#include <unistd.h>
+
 
 namespace leileilei
 {
@@ -46,11 +48,11 @@ void IOManager::FdContext::triggerEvent(Event event)
     EventContext& fd_event = getContext(event);
     if(fd_event.cb)
     {
-        ctx.schedule(&fd_event.cb);
+        fd_event.schedule->schedule(&fd_event.cb);
     }
     else
     {
-        ctx.schedule(&fd_event.fiber);
+        fd_event.schedule->schedule(&fd_event.fiber);
     }
     fd_event.scheduler = nullptr;
 }
@@ -59,7 +61,7 @@ IOManager::IOManager(size_t thread, bool use_caller, const std::string& name)
 :Scheduler(thread, use_caller, name)
 {
     // 初始化epoll
-    epoll_fd_ = epoll_create1();
+    epoll_fd_ = epoll_create();
     LEILEILEI_ASSERT(epoll_fd_ > 0);
 
     // 初始化管道
@@ -122,14 +124,14 @@ int IOManager::addEvent(int fd, Event event, std::function<void()> cb)
         LEI_LOG_ERROR(g_logger) << "addEvent assert fd=" << fd
                     << " event=" << (EPOLL_EVENTS)event
                     << " fct.event=" << (EPOLL_EVENTS)fct->events;
-        SYLAR_ASSERT(!(fct->events & event));
+        LEILEILEI_ASSERT(!(fct->events & event));
     }
 
     // 放入epoll中
     int op = fct->events ? EPOLL_CTL_MOD : EPOLL_CTL_ADD;
     epoll_event epollevent;
     epollevent.events = EPOLLET | fct->events | event;
-    epoll_event.data.ptr = fct;
+    epollevent.data.ptr = fct;
     int rt = epoll_ctl(epoll_fd_, op, fd, &epollevent);
     if(rt)
     {
@@ -141,7 +143,7 @@ int IOManager::addEvent(int fd, Event event, std::function<void()> cb)
     }
     event_counts_++;
     // 修改fct状态
-    fct->events = fct->events | event;
+    fct->events = (Event)(fct->events | event);
     FdContext::EventContext& fct_event = fct->getContext(event);
     // 状态检查
     LEILEILEI_ASSERT(!fct_event.scheduler && !fct_event.fiber && !fct_event.cb);
@@ -154,7 +156,7 @@ int IOManager::addEvent(int fd, Event event, std::function<void()> cb)
     else
     {
         fct_event.fiber = Fiber::GetThis();
-        SYLAR_ASSERT2(fct_event.fiber->getState() == Fiber::EXEC
+        LEILEILEI_ASSERT2(fct_event.fiber->getState() == Fiber::EXEC
                       ,"state=" << fct_event.fiber->getState());
     }
 
@@ -183,7 +185,7 @@ bool IOManager::delEvent(int fd, Event event)
     Event new_events = (Event)(fct->events & ~event);
     int op = new_events ? EPOLL_CTL_MOD : EPOLL_CTL_DEL;
     epoll_event epollevent;
-    epollevent.event = EPOLLET | new_events;
+    epollevent.events = EPOLLET | new_events;
     epollevent.data.ptr = fct;
 
     int rt = epoll_ctl(epoll_fd_, op, fd, &epollevent);
@@ -197,7 +199,7 @@ bool IOManager::delEvent(int fd, Event event)
     }
     event_counts_--;
     // 修改状态
-    fct->events = new_event;
+    fct->events = new_events;
     FdContext::EventContext* fd_event = fct->getContext(event);
     fct->resetContext(fd_event);
     return true;
@@ -226,11 +228,11 @@ bool IOManager::cancelEvent(int fd, Event event)
     Event new_event = (Event)(fct->events & ~event);
     int op = new_event ? EPOLL_CTL_MOD : EPOLL_CTL_DEL;
     epoll_event epollevent;
-    epollevent.event = EPOLLET | new_event;
+    epollevent.events = EPOLLET | new_event;
     epollevent.data.ptr = fct;
 
     // 放入epoll
-    int rt = epoll_ctl(epoll_fd_, op, fd, epollevent);
+    int rt = epoll_ctl(epoll_fd_, op, fd, &epollevent);
     if(rt)
     {
         LEI_LOG_ERROR(g_logger) << "epoll_ctl(" << epoll_fd_ << ", "
@@ -251,7 +253,7 @@ bool IOManager::cancelAll(int fd)
     RWMutexType::ReadLock lock(rwmutex_);
     if(fd >= fdContexts_.size())
     {
-        LEI_LOG_ERROR(g_logger) << "fd not exit fd_list, delete event:"<< event <<" on fd="<< fd <<" error!";
+        LEI_LOG_ERROR(g_logger) << "fd not exit fd_list";
         return false;
     }
     FdContext* fct = fdContexts_[fd];
@@ -267,7 +269,7 @@ bool IOManager::cancelAll(int fd)
 
     int op = EPOLL_CTL_DEL;
     epoll_event epollevent;
-    epollevent.event = NONE;
+    epollevent.events = NONE;
     epollevent.data.ptr = fct;
 
     // 放入epoll
@@ -373,11 +375,11 @@ void IOManager::idle()
             }
             // 取出fd对应的事件类
             FdContext* fct = (FdContext*)event.data.ptr;
-            FdContext::Mutex::Lock lock(fct->mutex);
+            FdContext::MutexType::Lock lock(fct->mutex);
 
             // 找到是哪种事件返回了
             if(event.events & (EPOLLERR | EPOLLHUP)) {
-                event.events |= (EPOLLIN | EPOLLOUT) & fd_ctx->events;
+                event.events |= (EPOLLIN | EPOLLOUT) & fct->events;
             }
             int real_events = NONE;
             if(event.events & EPOLLIN)
@@ -389,14 +391,14 @@ void IOManager::idle()
                 real_events |= WRITE;
             }
 
-            if((fd_ctx->events & real_events) == NONE)
+            if((fct->events & real_events) == NONE)
             {
                 continue;
             }
 
-            int left_event = (Event)(fd_ctx->events & ~real_events);
-            int op = left_event ? EPOLL_CTL_MOD | EPOLL_CTL_DEL;
-            event.event = EPOLLET | left_event;
+            int left_event = (Event)(fct->events & ~real_events);
+            int op = left_event ? EPOLL_CTL_MOD : EPOLL_CTL_DEL;
+            event.events = EPOLLET | left_event;
             int rt2 = epoll_ctl(epoll_fd_, op, fct->fd, &event);
             if(rt2)
             {
@@ -404,7 +406,7 @@ void IOManager::idle()
                     << (EpollCtlOp)op << ", " << fct->fd << ", " << (EPOLL_EVENTS)event.events << "):"
                     << rt << " (" << errno << ") (" << strerror(errno) << ") fct->events="
                     << (EPOLL_EVENTS)fct->events;
-                return false;
+                return ;
             }
 
             // 处理事件
@@ -423,7 +425,7 @@ void IOManager::idle()
         auto raw_swap = cur_fiber.get();
         cur_fiber.reset();
 
-        raw_swap.swapOut();
+        raw_swap->swapOut();
     }
 }
 

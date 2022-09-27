@@ -307,7 +307,7 @@ public:
      * @brief 
      * 手动解锁
      */
-    void unLock()
+    void unlock()
     {
         if(islock_)
         {
@@ -370,7 +370,7 @@ public:
      * @brief 
      * 手动解锁
      */
-    void unLock()
+    void unlock()
     {
         if(islock_)
         {
