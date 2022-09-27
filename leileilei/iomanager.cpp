@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 16:36:04
+ * @LastEditTime: 2022-09-27 16:43:17
  */
 #include "iomanager.h"
 
@@ -321,6 +321,7 @@ void IOManager::tickle()
     LEI_LOG_DEBUG(g_logger) << "iomanager tickle";
     if(!hasIdleThreads())
     {
+        LEI_LOG_DEBUG(g_logger) << "idle_thread_count_ is 0";
         return;
     }
     int rt = write(pipe_fd_[1], "T", 1);

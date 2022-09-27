@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:28
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-21 16:27:16
+ * @LastEditTime: 2022-09-27 16:41:26
  */
 #pragma once
 
@@ -201,7 +201,7 @@ protected:
      * @return true 
      * @return false 
      */
-    bool hasIdleThreads() { return active_thread_count_ > 0;}
+    bool hasIdleThreads() { return idle_thread_count_ > 0;}
 
 private:
     /**
