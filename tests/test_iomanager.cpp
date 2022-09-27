@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-27 11:23:18
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 16:03:15
+ * @LastEditTime: 2022-09-27 16:05:31
  */
 #include "leileilei.h"
 
@@ -15,6 +15,8 @@
 #include <fcntl.h>
 #include <iostream>
 #include <sys/epoll.h>
+
+static leileilei::Logger::ptr g_logger = LEI_GET_LOGGER();
 
 int sock = 0;
 
