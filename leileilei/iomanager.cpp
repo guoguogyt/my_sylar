@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 16:43:17
+ * @LastEditTime: 2022-09-27 16:50:05
  */
 #include "iomanager.h"
 
@@ -364,6 +364,11 @@ void IOManager::idle()
             }
             // 阻塞等待
             rt = epoll_wait(epoll_fd_, events, MAX_EVENTS, (int)next_timeout);
+            if(rt < 0 && errno == EINTR)    {    }
+            else
+            {
+                break;
+            }
         }while(true);
 
         for(int i=0; i<rt; i++)
