@@ -289,7 +289,7 @@ public:
      */
     ~ReadLockImp()
     {
-        unLock();
+        unlock();
     }
     /**
      * @brief 
@@ -350,7 +350,7 @@ public:
      */
     ~WriterLockImp()
     {
-        unLock();
+        unlock();
     }
     
     /**

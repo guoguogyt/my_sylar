@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 14:19:02
+ * @LastEditTime: 2022-09-27 14:24:07
  */
 #include "iomanager.h"
 
@@ -20,7 +20,7 @@ namespace leileilei
 
 static leileilei::Logger::ptr g_logger = LEI_GET_LOGGER("system");
 
-IOManager::FdContext::EventContext& IOManager::FdContext::getContext(Event event)
+IOManager::FdContext::EventContext& IOManager::FdContext::getContext(IOManager::Event event)
 {
     switch(event)
     {
@@ -41,7 +41,7 @@ void IOManager::FdContext::resetContext(EventContext& ctx)
     ctx.cb = nullptr;
 }
 
-void IOManager::FdContext::triggerEvent(Event event)
+void IOManager::FdContext::triggerEvent(IOManager::Event event)
 {
     LEILEILEI_ASSERT(events & event);
     events = (Event)(events & ~event);
