@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 14:31:11
+ * @LastEditTime: 2022-09-27 15:29:27
  */
 #include "iomanager.h"
 
@@ -333,7 +333,7 @@ bool IOManager::canStop()
 
 void IOManager::idle()
 {
-    LEI_LOG_DEBUG(g_logger) << "idle";
+    LEI_LOG_DEBUG(g_logger) << "iomanager idle";
     const uint64_t MAX_EVENTS = 256;
     epoll_event* events = new epoll_event[MAX_EVENTS];\
     // 将events智能指针化，方便析构
@@ -344,6 +344,7 @@ void IOManager::idle()
     while(true)
     {
         uint64_t next_timeout = 0;
+        // 当可以停止时，不会进入
         if(LEILEILEI_UNLIKELY(canStop()))
         {
             LEI_LOG_DEBUG(g_logger) << "schedule name = "<< getName()<< " idle can stop, thread exit!";
@@ -376,7 +377,9 @@ void IOManager::idle()
             // 取出fd对应的事件类
             FdContext* fct = (FdContext*)event.data.ptr;
             FdContext::MutexType::Lock lock(fct->mutex);
-
+            
+            LEI_LOG_DEBUG(g_logger) << "iomanager idel get fd=" << fct->fd;
+            
             // 找到是哪种事件返回了
             if(event.events & (EPOLLERR | EPOLLHUP)) {
                 event.events |= (EPOLLIN | EPOLLOUT) & fct->events;

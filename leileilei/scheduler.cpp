@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-21 11:31:44
+ * @LastEditTime: 2022-09-27 15:48:48
  */
 
 #include "scheduler.h"
@@ -98,6 +98,7 @@ void Scheduler::stop()
 
     stopping_ = true;
 
+    // 为了避免调度器停止时，那些空闲线程正在阻塞中，无法释放，需要通过掉用tickle函数将其唤醒，然后终止线程
     for(int i=0; i<thread_counts_; i++)
     {
         tickle();
@@ -164,6 +165,7 @@ void Scheduler::run()
 
     // 产生第二个协程   空跑协程
     Fiber::ptr idle_fiber(new Fiber(std::bind(&Scheduler::idle, this)));
+    LEI_LOG_DEBUG(g_logger) << "scheduler run this=" << this;
     // 产生第三个协程   消费协程队列任务的协程
     Fiber::ptr cb_fiber;
 
