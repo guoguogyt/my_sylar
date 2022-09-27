@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 14:27:48
+ * @LastEditTime: 2022-09-27 14:31:11
  */
 #include "iomanager.h"
 
@@ -200,7 +200,7 @@ bool IOManager::delEvent(int fd, Event event)
     event_counts_--;
     // 修改状态
     fct->events = new_events;
-    FdContext::EventContext* fd_event = fct->getContext(event);
+    FdContext::EventContext& fd_event = fct->getContext(event);
     fct->resetContext(fd_event);
     return true;
 }
@@ -273,7 +273,7 @@ bool IOManager::cancelAll(int fd)
     epollevent.data.ptr = fct;
 
     // 放入epoll
-    int rt = epoll_ctl(epoll_fd_, op, fd, epollevent);
+    int rt = epoll_ctl(epoll_fd_, op, fd, &epollevent);
     if(rt)
     {
         // LEI_LOG_ERROR(g_logger) << "epoll_ctl(" << epoll_fd_ << ", "
