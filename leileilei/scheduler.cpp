@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 15:48:48
+ * @LastEditTime: 2022-09-27 16:13:22
  */
 
 #include "scheduler.h"
@@ -165,7 +165,7 @@ void Scheduler::run()
 
     // 产生第二个协程   空跑协程
     Fiber::ptr idle_fiber(new Fiber(std::bind(&Scheduler::idle, this)));
-    LEI_LOG_DEBUG(g_logger) << "scheduler run this=" << this;
+    // LEI_LOG_DEBUG(g_logger) << "scheduler run this=" << this;
     // 产生第三个协程   消费协程队列任务的协程
     Fiber::ptr cb_fiber;
 
