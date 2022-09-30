@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-30 10:07:51
+ * @LastEditTime: 2022-09-30 10:23:55
  */
 #include "iomanager.h"
 
@@ -364,12 +364,12 @@ void IOManager::idle()
             }
             // 阻塞等待
             rt = epoll_wait(epoll_fd_, events, MAX_EVENTS, (int)next_timeout);
-            LEI_LOG_DEBUG(g_logger) << "after epoll_wait";
+            // LEI_LOG_DEBUG(g_logger) << "after epoll_wait";
             // 通过返回值的状态判断是否有事件发生
-            if(rt <= 0 && errno == EINTR)    {    }
+            if(rt < 0 && errno == EINTR)    {    }
             else
             {
-                LEI_LOG_DEBUG(g_logger) << "rt========" << rt;
+                LEI_LOG_DEBUG(g_logger) << "rt===========" << rt;
                 break;
             }
         }while(true);
