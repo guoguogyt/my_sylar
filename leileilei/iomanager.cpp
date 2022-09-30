@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 17:06:22
+ * @LastEditTime: 2022-09-30 08:56:15
  */
 #include "iomanager.h"
 
@@ -381,6 +381,7 @@ void IOManager::idle()
                 LEI_LOG_DEBUG(g_logger) << "come to pipe";
                 uint8_t dummy[256];
                 while(read(pipe_fd_[0], dummy, sizeof(dummy)) > 0);
+                LEI_LOG_DEBUG(g_logger) << "out to pipe";
                 continue;
             }
             // 取出fd对应的事件类

@@ -4,7 +4,8 @@ project(learnning_sylar_program)
 
 include_directories(leileilei)
 
-add_compile_options(-Wall -std=c++11 -O2)
+# add_compile_options(-g -Wall -std=c++11 -O2)
+add_compile_options(-g -std=c++11 -O2)
 
 find_package(Boost REQUIRED)       
 if(Boost_FOUND)
