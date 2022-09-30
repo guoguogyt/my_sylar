@@ -366,7 +366,7 @@ void IOManager::idle()
             rt = epoll_wait(epoll_fd_, events, MAX_EVENTS, (int)next_timeout);
             LEI_LOG_DEBUG(g_logger) << "after epoll_wait";
             // 通过返回值的状态判断是否有事件发生
-            if(rt < 0 && errno == EINTR)    {    }
+            if(rt <= 0 && errno == EINTR)    {    }
             else
             {
                 LEI_LOG_DEBUG(g_logger) << "rt========" << rt;
