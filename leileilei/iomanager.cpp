@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-30 10:05:37
+ * @LastEditTime: 2022-09-30 10:07:51
  */
 #include "iomanager.h"
 
@@ -369,7 +369,7 @@ void IOManager::idle()
             if(rt < 0 && errno == EINTR)    {    }
             else
             {
-                LEI_LOG_DEBUG(g_logger) << "rt========"rt;
+                LEI_LOG_DEBUG(g_logger) << "rt========" << rt;
                 break;
             }
         }while(true);
