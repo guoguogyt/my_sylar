@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 16:13:22
+ * @LastEditTime: 2022-09-30 09:58:08
  */
 
 #include "scheduler.h"
@@ -278,6 +278,7 @@ void Scheduler::run()
 
             idle_thread_count_++;
             idle_fiber->swapIn();
+            LEI_LOG_DEBUG(g_logger) << "out idle func";
             idle_thread_count_--;
 
             if(idle_fiber->getState() != Fiber::TERM && idle_fiber->getState() != Fiber::EXCEPT)

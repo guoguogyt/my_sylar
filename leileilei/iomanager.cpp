@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-30 08:56:15
+ * @LastEditTime: 2022-09-30 09:32:47
  */
 #include "iomanager.h"
 
@@ -364,6 +364,7 @@ void IOManager::idle()
             }
             // 阻塞等待
             rt = epoll_wait(epoll_fd_, events, MAX_EVENTS, (int)next_timeout);
+            LEI_LOG_DEBUG(g_logger) << "after epoll_wait";
             // 通过返回值的状态判断是否有事件发生
             if(rt < 0 && errno == EINTR)    {    }
             else
