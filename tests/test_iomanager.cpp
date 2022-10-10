@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-27 11:23:18
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 18:42:14
+ * @LastEditTime: 2022-10-10 11:38:28
  */
 #include "leileilei.h"
 
@@ -56,7 +56,8 @@ void test_fun()
 
 void test1()
 {
-    leileilei::IOManager iom;
+    leileilei::IOManager iom(2, false, "");
+    sleep(3000);
     iom.schedule(&test_fun);
 }
 

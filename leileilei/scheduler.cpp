@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-30 10:24:11
+ * @LastEditTime: 2022-10-10 08:57:30
  */
 
 #include "scheduler.h"
@@ -249,7 +249,7 @@ void Scheduler::run()
                 schedule(cb_fiber);
                 cb_fiber.reset();
             }
-            if(cb_fiber->getState() == Fiber::TERM || cb_fiber->getState() == Fiber::EXCEPT)
+            else if(cb_fiber->getState() == Fiber::TERM || cb_fiber->getState() == Fiber::EXCEPT)
             {
                 cb_fiber->reset(nullptr);
             }

@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-30 10:28:08
+ * @LastEditTime: 2022-10-10 11:31:56
  */
 #include "iomanager.h"
 
@@ -337,7 +337,7 @@ void IOManager::idle()
 {
     LEI_LOG_DEBUG(g_logger) << "iomanager idle";
     const uint64_t MAX_EVENTS = 256;
-    epoll_event* events = new epoll_event[MAX_EVENTS];\
+    epoll_event* events = new epoll_event[MAX_EVENTS];
     // 将events智能指针化，方便析构
     std::shared_ptr<epoll_event> shared_events(events, [](epoll_event* ptr){
         delete[] ptr;
@@ -363,6 +363,10 @@ void IOManager::idle()
                 next_timeout = MAX_TIMEOUT;
             }
             // 阻塞等待
+            /**
+             * @brief 多个线程绑定的是同一个epoll_fd_
+             *  当有事件到来时候，会唤醒所有绑定他的线程么？
+             */
             rt = epoll_wait(epoll_fd_, events, MAX_EVENTS, (int)next_timeout);
             // LEI_LOG_DEBUG(g_logger) << "after epoll_wait";
             // 通过返回值的状态判断是否有事件发生
@@ -370,7 +374,7 @@ void IOManager::idle()
             else
             {
                 if(rt>0)
-                    LEI_LOG_DEBUG(g_logger) << "rt===========" << rt;
+                    LEI_LOG_DEBUG(g_logger) << "occur io event" << rt;
                 break;
             }
         }while(true);
