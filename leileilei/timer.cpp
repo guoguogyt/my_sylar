@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-11 08:52:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 15:16:55
+ * @LastEditTime: 2022-10-12 15:33:34
  */
 
 #include "timer.h"
@@ -163,10 +163,10 @@ void TimerManager::getExpireCb(std::vector<std::function<void()> >& cbs)
     for(auto& time : expired)
     {
         cbs.push_back(time->cb_);
-        LEI_LOG_DEBUG(g_logger) << "+++++++++++++++++";
+        // LEI_LOG_DEBUG(g_logger) << "+++++++++++++++++";
         if(time->is_loop_)
         {
-            time->next_time_ += time->time_period_;
+            time->next_time_ = cur_time + time->time_period_;
             // 这里直接插入，如果插入的是第一个不会唤醒onFrontTimer()函数
             timer_set_.insert(time);
         }
