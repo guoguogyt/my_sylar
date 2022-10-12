@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 09:41:20
+ * @LastEditTime: 2022-10-12 11:37:56
  */
 #include "iomanager.h"
 
@@ -382,7 +382,7 @@ void IOManager::idle()
             else
             {
                 if(rt>0)
-                    LEI_LOG_DEBUG(g_logger) << "occur io event" << rt;
+                    // LEI_LOG_DEBUG(g_logger) << "occur io event = " << rt;
                 break;
             }
         }while(true);
@@ -402,10 +402,10 @@ void IOManager::idle()
             // 读到管道fd则不做任何事情
             if(event.data.fd = pipe_fd_[0])
             {
-                LEI_LOG_DEBUG(g_logger) << "come to pipe";
+                // LEI_LOG_DEBUG(g_logger) << "come to pipe";
                 uint8_t dummy[256];
                 while(read(pipe_fd_[0], dummy, sizeof(dummy)) > 0);
-                LEI_LOG_DEBUG(g_logger) << "out to pipe";
+                // LEI_LOG_DEBUG(g_logger) << "out to pipe";
                 continue;
             }
             // 取出fd对应的事件类
