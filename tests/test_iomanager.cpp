@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-27 11:23:18
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 09:46:52
+ * @LastEditTime: 2022-10-12 11:34:27
  */
 #include "leileilei.h"
 
@@ -62,7 +62,7 @@ void test1()
 }
 
 
-leileilei:::Timer::ptr s_timer;
+leileilei::Timer::ptr s_timer;
 void test_timer()
 {
     leileilei::IOManager iom(2);
