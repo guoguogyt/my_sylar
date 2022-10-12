@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-27 11:23:18
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 15:58:47
+ * @LastEditTime: 2022-10-12 16:13:05
  */
 #include "leileilei.h"
 
@@ -70,7 +70,7 @@ void test_timer()
         static int i = 0;
         LEI_LOG_DEBUG(g_logger) << "do timer  " << leileilei::GetCurrentMS();
         i++;
-        if(i>4)
+        if(i==4)
         {
             s_timer->reset(2000, true);
         }
