@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-11 08:51:56
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 09:34:59
+ * @LastEditTime: 2022-10-12 15:28:41
  */
 #pragma once
 
@@ -12,6 +12,7 @@
 #include <set>
 #include <vector>
 #include "mutex.h"
+#include "log.h"
 
 namespace leileilei
 {
