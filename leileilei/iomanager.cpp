@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 15:38:43
+ * @LastEditTime: 2022-10-12 15:55:59
  */
 #include "iomanager.h"
 
@@ -388,9 +388,10 @@ void IOManager::idle()
             }
         }while(true);
         
-        LEI_LOG_DEBUG(g_logger) << "next_timeout = "<< next_timeout;
+        // LEI_LOG_DEBUG(g_logger) << "next_timeout = "<< next_timeout;
 
         // 获取到定时器需要执行的任务 
+        // 这里在io中集成定时器，如果任务大量且持续，那么不会有线程进入到等待函数中，定时器永远不会触发 
         std::vector<std::function<void()> > cbs;
         /**
          * @brief Get the Expire Cb object
