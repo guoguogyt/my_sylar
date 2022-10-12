@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 11:37:56
+ * @LastEditTime: 2022-10-12 15:00:41
  */
 #include "iomanager.h"
 
@@ -376,20 +376,29 @@ void IOManager::idle()
              *  当有事件到来时候，会唤醒所有绑定他的线程么？
              */
             rt = epoll_wait(epoll_fd_, events, MAX_EVENTS, (int)next_timeout);
-            // LEI_LOG_DEBUG(g_logger) << "after epoll_wait";
+            LEI_LOG_DEBUG(g_logger) << "next_timeout = " next_timeout;
             // 通过返回值的状态判断是否有事件发生
             if(rt < 0 && errno == EINTR)    {    }
             else
             {
-                if(rt>0)
+                // if(rt>0)
+                // {
                     // LEI_LOG_DEBUG(g_logger) << "occur io event = " << rt;
+                // }
                 break;
             }
         }while(true);
 
         // 获取到定时器需要执行的任务 
         std::vector<std::function<void()> > cbs;
+        /**
+         * @brief Get the Expire Cb object
+         * 如果有多个线程，当阻塞时间到时，多个线程的epoll_wait全部被唤醒，程序执行到此处
+           多个线程在getExpireCb在函数中会竞争锁，只有一个线程会拿到锁，这个线程中的cbs会取到值
+           而其他线程在之后竞争到锁，但是定时器队列中的过期定时器已经被取出删除，所以他们的cbs为空
+         */
         getExpireCb(cbs);
+        LEI_LOG_DEBUG(g_logger) << "cbs size = "<< cbs.size();
         if(!cbs.empty())
         {
             schedule(cbs.begin(), cbs.end());
