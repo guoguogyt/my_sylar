@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-27 11:23:18
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 11:38:45
+ * @LastEditTime: 2022-10-12 15:20:30
  */
 #include "leileilei.h"
 
@@ -65,7 +65,7 @@ void test1()
 leileilei::Timer::ptr s_timer;
 void test_timer()
 {
-    leileilei::IOManager iom(2);
+    leileilei::IOManager iom(1);
     s_timer = iom.addTimer(1000, [](){
         LEI_LOG_DEBUG(g_logger) << "do timer  " << leileilei::GetCurrentMS();
     }, true);
