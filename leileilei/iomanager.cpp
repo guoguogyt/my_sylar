@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 15:00:41
+ * @LastEditTime: 2022-10-12 15:02:27
  */
 #include "iomanager.h"
 
@@ -376,7 +376,7 @@ void IOManager::idle()
              *  当有事件到来时候，会唤醒所有绑定他的线程么？
              */
             rt = epoll_wait(epoll_fd_, events, MAX_EVENTS, (int)next_timeout);
-            LEI_LOG_DEBUG(g_logger) << "next_timeout = " next_timeout;
+            LEI_LOG_DEBUG(g_logger) << "next_timeout = "<< next_timeout;
             // 通过返回值的状态判断是否有事件发生
             if(rt < 0 && errno == EINTR)    {    }
             else
