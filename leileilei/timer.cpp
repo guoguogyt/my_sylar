@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-11 08:52:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 10:36:01
+ * @LastEditTime: 2022-10-12 10:51:18
  */
 
 #include "timer.h"
@@ -103,7 +103,7 @@ TimerManager::~TimerManager()
 
 Timer::ptr TimerManager::addTimer(uint64_t time_period, std::function<void()> cb, bool is_loop)
 {
-    Timer::ptr timer(new Timer(time_period, cb, is_loop, this));
+    Timer::ptr timer(new Timer(time_period, is_loop, cb, this));
     RWMutexType::WriteLock lock(rwmutex_);
     addTimer(timer, lock);
     return timer;
@@ -145,7 +145,7 @@ void TimerManager::getExpireCb(std::vector<std::function<void()> >& cbs)
     }
 
     RWMutexType::WriteLock lock(rwmutex_);
-    bool rollover = detectClockRollover();
+    bool rollover = detectClockRollover(cur_time);
 
     if(!rollover && (*timer_set_.begin())->next_time_ > cur_time)    return;
     Timer::ptr ptr(new Timer(cur_time));
