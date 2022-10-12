@@ -68,7 +68,7 @@ void test_timer()
     leileilei::IOManager iom(2);
     s_timer = iom.addTimer(500, [](){
         LEI_LOG_DEBUG(g_logger) << "do timer  " << leileilei::GetCurrentMS();
-    }, true)
+    }, true);
 }
 
 int main(int argc, char* argv[])
