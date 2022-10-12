@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-11 08:52:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 10:31:01
+ * @LastEditTime: 2022-10-12 10:36:01
  */
 
 #include "timer.h"
@@ -80,7 +80,7 @@ Timer::Timer(uint64_t nt)
 
 }
 
-bool Timer::Comparator::operator()(const Timer::ptr& left, const Timer::ptr& right)
+bool Timer::Comparator::operator()(const Timer::ptr& left, const Timer::ptr& right) const
 {
     if(!left && !right) return false;
     if(!left) return true;
