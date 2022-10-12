@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 15:32:22
+ * @LastEditTime: 2022-10-12 15:38:43
  */
 #include "iomanager.h"
 
@@ -376,7 +376,6 @@ void IOManager::idle()
              *  当有事件到来时候，会唤醒所有绑定他的线程么？
              */
             rt = epoll_wait(epoll_fd_, events, MAX_EVENTS, (int)next_timeout);
-            LEI_LOG_DEBUG(g_logger) << "next_timeout = "<< next_timeout;
             // 通过返回值的状态判断是否有事件发生
             if(rt < 0 && errno == EINTR)    {    }
             else
@@ -388,6 +387,8 @@ void IOManager::idle()
                 break;
             }
         }while(true);
+        
+        LEI_LOG_DEBUG(g_logger) << "next_timeout = "<< next_timeout;
 
         // 获取到定时器需要执行的任务 
         std::vector<std::function<void()> > cbs;
