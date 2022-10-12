@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-10 11:31:56
+ * @LastEditTime: 2022-10-12 09:41:20
  */
 #include "iomanager.h"
 
@@ -330,7 +330,14 @@ void IOManager::tickle()
 
 bool IOManager::canStop()
 {
-    return event_counts_==0 && Scheduler::canStop();
+    uint64_t timeout = 0;
+    return canStop(timeout);
+}
+
+bool IOManager::canStop(uint64_t& timeout)
+{
+    timeout = getNextTimer();
+    return timeout == ~0ull && event_counts_==0 && Scheduler::canStop();
 }
 
 void IOManager::idle()
@@ -347,7 +354,8 @@ void IOManager::idle()
     {
         uint64_t next_timeout = 0;
         // 当可以停止时，不会进入
-        if(LEILEILEI_UNLIKELY(canStop()))
+        // 这里利用epoll_wait的阻塞机制，执行定时器过期任务，又利用设置的定时器时间唤醒epoll_wait
+        if(LEILEILEI_UNLIKELY(canStop(next_timeout)))
         {
             LEI_LOG_DEBUG(g_logger) << "schedule name = "<< getName()<< " idle can stop, thread exit!";
             break;
@@ -378,6 +386,15 @@ void IOManager::idle()
                 break;
             }
         }while(true);
+
+        // 获取到定时器需要执行的任务 
+        std::vector<std::function<void()> > cbs;
+        getExpireCb(cbs);
+        if(!cbs.empty())
+        {
+            schedule(cbs.begin(), cbs.end());
+            cbs.clear();
+        }
 
         for(int i=0; i<rt; i++)
         {
@@ -447,6 +464,10 @@ void IOManager::idle()
 
         raw_swap->swapOut();
     }
+}
+void IOManager::onFrontTimer()
+{
+    tickle();
 }
 
 }

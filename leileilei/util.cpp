@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:14:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-08 11:32:48
+ * @LastEditTime: 2022-10-11 16:59:09
  */
 #include "util.h"
 
@@ -127,5 +127,18 @@ std::string BacktraceToString(int size, int skip, const std::string& prefix)
     return ss.str();
 }
 
+uint64_t GetCurrentMS()
+{
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec * 1000 * 1000ul + tv.tv_usec / 1000;
+}
+
+uint64_t GetCurrentUS()
+{
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec * 1000 * 1000ul + tv.tv_usec;
+}
 
 }

@@ -20,6 +20,7 @@ set(LIB_SRC
     leileilei/mutex.cpp
     leileilei/scheduler.cpp
     leileilei/thread.cpp
+    leileilei/timer.cpp
     leileilei/util.cpp
 )
 

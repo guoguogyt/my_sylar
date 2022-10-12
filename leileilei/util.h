@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:13:59
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-08 11:33:15
+ * @LastEditTime: 2022-10-11 16:54:52
  */
 #pragma once
 
@@ -45,5 +45,19 @@ void Backtrace(std::vector<std::string>& bt, int size = 64, int skip = 1);
  * @return std::string 
  */
 std::string BacktraceToString(int size = 64, int skip = 2, const std::string& prefix = " ");
+
+/**
+ * @brief Get the Current M S object
+ * 返回系统当前时间(毫秒)
+ * @return uint64_t 
+ */
+uint64_t GetCurrentMS();
+
+/**
+ * @brief Get the Current U S object
+ * 返回系统当前时间(微妙)
+ * @return uint64_t 
+ */
+uint64_t GetCurrentUS();
 
 }

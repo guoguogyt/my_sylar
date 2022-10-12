@@ -4,12 +4,12 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:13
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-09-27 18:35:56
+ * @LastEditTime: 2022-10-12 09:34:28
  */
 #pragma
 
 #include "scheduler.h"
-
+#include "timer.h"
 
 namespace leileilei
 {
@@ -18,7 +18,7 @@ namespace leileilei
  * @brief 基于epoll的IO事件协程调度器
  * 本质上还是一个协程调度器
  */
-class IOManager : public Scheduler
+class IOManager : public Scheduler, public TimerManager
 {
 public:
     typedef std::shared_ptr<IOManager> ptr;
@@ -133,8 +133,9 @@ public:
 protected:
     void tickle()   override;
     bool canStop()  override;
+    bool canStop(uint64_t& timeout);
     void idle() override;
-
+    void onFrontTimer() override;
     /**
      * @brief 
      * 重置socket句柄上下文的容器大小
