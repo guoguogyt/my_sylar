@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-11 08:52:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 09:11:52
+ * @LastEditTime: 2022-10-12 10:31:01
  */
 
 #include "timer.h"
@@ -20,10 +20,10 @@ bool Timer::cancel()
     {
         cb_ = nullptr;
         auto it = tm_->timer_set_.find(shared_from_this());
-        if(it == tm_->timer_set_.begin() && !is_tickle_)
-        {
-            onFrontTimer();
-        }
+        // if(it == tm_->timer_set_.begin() && !is_tickle_)
+        // {
+        //     onFrontTimer();
+        // }
         tm_->timer_set_.erase(it);
         return true;
     }
