@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 10:48:09
+ * @LastEditTime: 2022-10-27 10:53:33
  */
 #include "hook.h"
 #include "iomanager.h"
@@ -58,6 +58,11 @@ static _HookInit __init__;
 
 extern "C"
 {
+    
+#define XX(name) name ## _fun name ## _f = nullptr;
+    HOOK_FUN(XX);
+#undef XX
+
 unsigned int sleep(unsigned int seconds)
 {
     if(!leileilei::is_hook_enable())
