@@ -12,7 +12,7 @@ leileilei::Logger::ptr g_logger = LEI_LOG_GETROOTOR();
 
 void test_sleep()
 {
-    leileilei::iomanager iom(1);
+    leileilei::IOManager iom(1);
     iom.schedule([](){
         sleep(2);
         LEI_LOG_DEBUG(g_logger) << "sleep 2";
