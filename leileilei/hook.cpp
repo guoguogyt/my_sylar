@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 10:45:34
+ * @LastEditTime: 2022-10-27 10:48:09
  */
 #include "hook.h"
 #include "iomanager.h"
@@ -56,30 +56,30 @@ static _HookInit __init__;
 }
 
 
-// extern "C"
-// {
-// unsigned int sleep(unsigned int seconds)
-// {
-//     if(!leileilei::is_hook_enable())
-//     {
-//         return sleep_f(seconds);
-//     }
-//     // 获取当前正常执行的协程
-//     leileilei::Fiber::ptr fiber = leileilei::Fiber::GetThis();
-//     leileilei::IOManager* iom = leileilei::IOManager::GetThis();
-//     // iom->addTimer(seconds*1000, std::bind(&leileilei::Scheduler::schedule, iom, fiber, -1));
-//     leileilei::Fiber::YieldToHold();
-//     return 0;
-// }
+extern "C"
+{
+unsigned int sleep(unsigned int seconds)
+{
+    if(!leileilei::is_hook_enable())
+    {
+        return sleep_f(seconds);
+    }
+    // 获取当前正常执行的协程
+    leileilei::Fiber::ptr fiber = leileilei::Fiber::GetThis();
+    leileilei::IOManager* iom = leileilei::IOManager::GetThis();
+    // iom->addTimer(seconds*1000, std::bind(&leileilei::Scheduler::schedule, iom, fiber, -1));
+    leileilei::Fiber::YieldToHold();
+    return 0;
+}
 
-// int usleep(useconds_t usec)
-// {
-//     return 0;    
-// }
+int usleep(useconds_t usec)
+{
+    return 0;    
+}
 
-// int nanosleep(const struct timespec *req, struct timespec *rem)
-// {
-//     return 0;
-// }
+int nanosleep(const struct timespec *req, struct timespec *rem)
+{
+    return 0;
+}
 
-// }
+}
