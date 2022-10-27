@@ -4,8 +4,10 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 10:53:33
+ * @LastEditTime: 2022-10-27 10:57:35
  */
+
+#include <dlfcn.h>
 #include "hook.h"
 #include "iomanager.h"
 #include "fiber.h"
@@ -14,16 +16,6 @@ namespace leileilei
 {
 
 static thread_local bool t_hook_enable = false;
-
-bool is_hook_enable()
-{
-    return t_hook_enable;
-}
-
-void set_hook_enable(bool flag)
-{
-    t_hook_enable = flag;
-}
 
 #define HOOK_FUN(XX) \
     XX(sleep) \
@@ -42,6 +34,7 @@ void for_hook_init()
     HOOK_FUN(XX);
 #undef XX
 }
+
 // 用于初始化
 struct _HookInit
 {
@@ -53,12 +46,22 @@ struct _HookInit
 // 用于初始化   静态全局变量的构造函数在main函数执行之前执行
 static _HookInit __init__;
 
+
+bool is_hook_enable()
+{
+    return t_hook_enable;
+}
+
+void set_hook_enable(bool flag)
+{
+    t_hook_enable = flag;
+}
 }
 
 
 extern "C"
 {
-    
+
 #define XX(name) name ## _fun name ## _f = nullptr;
     HOOK_FUN(XX);
 #undef XX

@@ -4,12 +4,17 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:12:58
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 10:44:07
+ * @LastEditTime: 2022-10-27 10:55:45
  */
 
 #pragma once
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <stdint.h>
+#include <time.h>
 #include <unistd.h>
-#include <dlfcn.h>
 
 namespace leileilei
 {
