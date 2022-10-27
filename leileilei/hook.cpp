@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 10:44:20
+ * @LastEditTime: 2022-10-27 10:45:34
  */
 #include "hook.h"
 #include "iomanager.h"
@@ -25,35 +25,35 @@ void set_hook_enable(bool flag)
     t_hook_enable = flag;
 }
 
-// #define HOOK_FUN(XX) \
-//     XX(sleep) \
-//     XX(usleep) \
-//     XX(nanosleep)
+#define HOOK_FUN(XX) \
+    XX(sleep) \
+    XX(usleep) \
+    XX(nanosleep)
 
-// // 用于初始化
-// void for_hook_init()
-// {
-//     static bool is_init = false;
-//     if(is_init)
-//     {
-//         return;
-//     }
-// #define XX(name) name ## _f = (name ## _fun)dlsym(RTLD_NEXT, #name);
-//     HOOK_FUN(XX);
-// #undef XX
-// }
-// // 用于初始化
-// struct _HookInit
-// {
-//     _HookInit()
-//     {
-//         for_hook_init();
-//     }
-// };
-// // 用于初始化   静态全局变量的构造函数在main函数执行之前执行
-// static _HookInit __init__;
+// 用于初始化
+void for_hook_init()
+{
+    static bool is_init = false;
+    if(is_init)
+    {
+        return;
+    }
+#define XX(name) name ## _f = (name ## _fun)dlsym(RTLD_NEXT, #name);
+    HOOK_FUN(XX);
+#undef XX
+}
+// 用于初始化
+struct _HookInit
+{
+    _HookInit()
+    {
+        for_hook_init();
+    }
+};
+// 用于初始化   静态全局变量的构造函数在main函数执行之前执行
+static _HookInit __init__;
 
-// }
+}
 
 
 // extern "C"
@@ -82,4 +82,4 @@ void set_hook_enable(bool flag)
 //     return 0;
 // }
 
-}
+// }
