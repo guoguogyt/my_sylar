@@ -32,6 +32,7 @@ find_library(PTHREAD pthread)
 find_library(YAMLCPP yaml-cpp)
 
 set(LIBS
+        dl
         leileilei
         pthread
         yaml-cpp
