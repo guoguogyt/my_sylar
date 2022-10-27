@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 15:20:01
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 09:47:32
+ * @LastEditTime: 2022-10-27 09:30:24
  */
 
 #pragma once
@@ -12,6 +12,7 @@
 
 #include "config.h"
 #include "fiber.h"
+#include "hook.h"
 #include "iomanager.h"
 #include "log.h"
 #include "macro.h"

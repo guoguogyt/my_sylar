@@ -15,6 +15,7 @@ endif()
 set(LIB_SRC
     leileilei/config.cpp
     leileilei/fiber.cpp
+    leileilei/hook.cpp
     leileilei/iomanager.cpp
     leileilei/log.cpp
     leileilei/mutex.cpp
@@ -76,3 +77,7 @@ target_link_libraries(test_scheduler ${LIBS})
 add_executable(test_iomanager ./tests/test_iomanager.cpp)
 add_dependencies(test_iomanager leileilei)
 target_link_libraries(test_iomanager ${LIBS})
+
+add_executable(test_hook ./tests/test_hook.cpp)
+add_dependencies(test_hook leileilei)
+target_link_libraries(test_hook ${LIBS})
