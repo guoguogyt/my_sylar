@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 14:25:04
+ * @LastEditTime: 2022-10-27 15:17:05
  */
 
 #include <dlfcn.h>
@@ -79,19 +79,42 @@ unsigned int sleep(unsigned int seconds)
     // 获取当前正常执行的协程
     leileilei::Fiber::ptr fiber = leileilei::Fiber::GetThis();
     leileilei::IOManager* iom = leileilei::IOManager::GetThis();
-    iom->addTimer(seconds*1000, std::bind((void(leileilei::Scheduler::*)(leileilei::Fiber::ptr, int thread))&leileilei::IOManager::schedule, iom, fiber, -1));
+    /**
+     * 这里想绑定的其实是Scheduler::schedule函数
+     但是iom是 IOManager类型
+     */
+    iom->addTimer(seconds * 1000, std::bind((void(leileilei::Scheduler::*)(leileilei::Fiber::ptr, int thread))&leileilei::IOManager::schedule, iom, fiber, -1));
     leileilei::Fiber::YieldToHold();
     return 0;
 }
 
 int usleep(useconds_t usec)
 {
-    return 0;    
+    if(!leileilei::is_hook_enable())
+    {
+        return sleep_f(seconds);
+    }
+    // 获取当前正常执行的协程
+    leileilei::Fiber::ptr fiber = leileilei::Fiber::GetThis();
+    leileilei::IOManager* iom = leileilei::IOManager::GetThis();
+    iom->addTimer(usec / 1000, std::bind((void(leileilei::Scheduler::*)(leileilei::Fiber::ptr, int thread))&leileilei::IOManager::schedule, iom, fiber, -1));
+    leileilei::Fiber::YieldToHold();
+    return 0;   
 }
 
 int nanosleep(const struct timespec *req, struct timespec *rem)
 {
-    return 0;
+    if(!leileilei::is_hook_enable())
+    {
+        return sleep_f(seconds);
+    }
+    // 获取当前正常执行的协程
+    int timeout_ns = req->tv_sec*1000 + req->tv_nsec / 1000 / 1000;
+    leileilei::Fiber::ptr fiber = leileilei::Fiber::GetThis();
+    leileilei::IOManager* iom = leileilei::IOManager::GetThis();
+    iom->addTimer(timeout_ns, std::bind((void(leileilei::Scheduler::*)(leileilei::Fiber::ptr, int thread))&leileilei::IOManager::schedule, iom, fiber, -1));
+    leileilei::Fiber::YieldToHold();
+    return 0;   
 }
 
 }
