@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 10:57:35
+ * @LastEditTime: 2022-10-27 14:01:43
  */
 
 #include <dlfcn.h>
@@ -30,6 +30,10 @@ void for_hook_init()
     {
         return;
     }
+/**
+ * @brief 
+ * dlsym    使用dlsym要引入 dl动态库
+ */
 #define XX(name) name ## _f = (name ## _fun)dlsym(RTLD_NEXT, #name);
     HOOK_FUN(XX);
 #undef XX
@@ -75,7 +79,7 @@ unsigned int sleep(unsigned int seconds)
     // 获取当前正常执行的协程
     leileilei::Fiber::ptr fiber = leileilei::Fiber::GetThis();
     leileilei::IOManager* iom = leileilei::IOManager::GetThis();
-    // iom->addTimer(seconds*1000, std::bind(&leileilei::Scheduler::schedule, iom, fiber, -1));
+    iom->addTimer(seconds*1000, std::bind(&leileilei::Scheduler::schedule, iom, fiber, -1));
     leileilei::Fiber::YieldToHold();
     return 0;
 }
