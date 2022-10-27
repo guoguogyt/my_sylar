@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-26 16:57:09
+ * @LastEditTime: 2022-10-27 10:31:04
  */
 
 #include "scheduler.h"
@@ -156,7 +156,7 @@ void Scheduler::run()
 {
     LEI_LOG_DEBUG(g_logger) << " begin do Scheduler";
     // 启用hook
-    set_hook_enable(true);
+    // set_hook_enable(true);
     setThis();
     // 产生第一个协程---如果不是主线程，那么线程产生的主协程就是调度协程，主线程则不
     if(leileilei::GetThreadId() != root_thread_)
