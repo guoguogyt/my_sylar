@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:12:58
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 09:18:28
+ * @LastEditTime: 2022-10-27 10:14:58
  */
 
 #pragma once
@@ -48,7 +48,7 @@ typedef int (*usleep_fun)(useconds_t usec);
 extern usleep_fun usleep_f;
 // nanosleep可以到纳秒级别
 typedef int (*nanosleep_fun)(const struct timespec *req, struct timespec *rem);
-extern nanosleep_f;
+extern nanosleep_fun nanosleep_f;
 
 
 
