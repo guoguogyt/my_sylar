@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 14:22:05
+ * @LastEditTime: 2022-10-27 14:25:04
  */
 
 #include <dlfcn.h>
@@ -79,7 +79,7 @@ unsigned int sleep(unsigned int seconds)
     // 获取当前正常执行的协程
     leileilei::Fiber::ptr fiber = leileilei::Fiber::GetThis();
     leileilei::IOManager* iom = leileilei::IOManager::GetThis();
-    iom->addTimer(seconds*1000, std::bind(&leileilei::IOManager::schedule, iom, fiber, -1));
+    iom->addTimer(seconds*1000, std::bind((void(leileilei::Scheduler::*)(leileilei::Fiber::ptr, int thread))&leileilei::IOManager::schedule, iom, fiber, -1));
     leileilei::Fiber::YieldToHold();
     return 0;
 }
