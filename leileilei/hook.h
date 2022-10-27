@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:12:58
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 10:39:07
+ * @LastEditTime: 2022-10-27 10:44:07
  */
 
 #pragma once
@@ -19,14 +19,14 @@ namespace leileilei
      * @return true 
      * @return false 
      */
-    bool is_hook_enable()   {return true;}
+    bool is_hook_enable();
     /**
      * @brief Set the hook enable object
      *  
      * @return true 
      * @return false 
      */
-    void set_hook_enable(bool flag) {return;}
+    void set_hook_enable(bool flag);
 }
 
 /**

@@ -1,29 +1,29 @@
-// /*
-//  * @Descripttion: 
-//  * @version: 
-//  * @Author: leileilei
-//  * @Date: 2022-10-26 16:13:03
-//  * @LastEditors: sueRimn
-//  * @LastEditTime: 2022-10-27 10:14:34
-//  */
-// #include "hook.h"
-// #include "iomanager.h"
-// #include "fiber.h"
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: leileilei
+ * @Date: 2022-10-26 16:13:03
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2022-10-27 10:44:20
+ */
+#include "hook.h"
+#include "iomanager.h"
+#include "fiber.h"
 
-// namespace leileilei
-// {
+namespace leileilei
+{
 
-// static thread_local bool t_hook_enable = false;
+static thread_local bool t_hook_enable = false;
 
-// bool is_hook_enable()
-// {
-//     return t_hook_enable;
-// }
+bool is_hook_enable()
+{
+    return t_hook_enable;
+}
 
-// void set_hook_enable(bool flag)
-// {
-//     t_hook_enable = flag;
-// }
+void set_hook_enable(bool flag)
+{
+    t_hook_enable = flag;
+}
 
 // #define HOOK_FUN(XX) \
 //     XX(sleep) \
@@ -82,4 +82,4 @@
 //     return 0;
 // }
 
-// }
+}
