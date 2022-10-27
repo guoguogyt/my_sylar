@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 15:17:05
+ * @LastEditTime: 2022-10-27 15:22:09
  */
 
 #include <dlfcn.h>
@@ -92,7 +92,7 @@ int usleep(useconds_t usec)
 {
     if(!leileilei::is_hook_enable())
     {
-        return sleep_f(seconds);
+        return usleep_f(usec);
     }
     // 获取当前正常执行的协程
     leileilei::Fiber::ptr fiber = leileilei::Fiber::GetThis();
@@ -106,7 +106,7 @@ int nanosleep(const struct timespec *req, struct timespec *rem)
 {
     if(!leileilei::is_hook_enable())
     {
-        return sleep_f(seconds);
+        return nanosleep_f(req, rem);
     }
     // 获取当前正常执行的协程
     int timeout_ns = req->tv_sec*1000 + req->tv_nsec / 1000 / 1000;
