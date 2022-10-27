@@ -4,13 +4,15 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 15:22:09
+ * @LastEditTime: 2022-10-27 15:27:35
  */
 
 #include <dlfcn.h>
 #include "hook.h"
 #include "iomanager.h"
 #include "fiber.h"
+
+leileilei::Logger::ptr g_logger = LEI_GET_LOGGER("system");
 
 namespace leileilei
 {
@@ -76,6 +78,7 @@ unsigned int sleep(unsigned int seconds)
     {
         return sleep_f(seconds);
     }
+    LEI_LOG_DEBUG(g_logger) << "do hook!";
     // 获取当前正常执行的协程
     leileilei::Fiber::ptr fiber = leileilei::Fiber::GetThis();
     leileilei::IOManager* iom = leileilei::IOManager::GetThis();
