@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 15:20:22
+ * @LastEditTime: 2022-10-27 16:54:36
  */
 
 #include "scheduler.h"
@@ -242,7 +242,7 @@ void Scheduler::run()
             {
                 cb_fiber.reset(new Fiber(ft.cb_));
             }
-
+            ft.reset();
             cb_fiber->swapIn();
             active_thread_count_--;
             if(cb_fiber->getState() == Fiber::READY)
@@ -258,11 +258,11 @@ void Scheduler::run()
             {
                 cb_fiber->state_ = Fiber::HOLD;
                 cb_fiber.reset();
+                if(cb_fiber)
+                    LEI_LOG_DEBUG(g_logger) << "idle fiber is destory";
             }
-            ft.reset();
         }
-        // 空跑
-        else
+        else// 空跑
         {
             if(is_active)
             {
