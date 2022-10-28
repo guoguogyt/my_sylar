@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-11 08:52:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 15:33:34
+ * @LastEditTime: 2022-10-28 11:30:52
  */
 
 #include "timer.h"
@@ -157,13 +157,13 @@ void TimerManager::getExpireCb(std::vector<std::function<void()> >& cbs)
         it++;
     }
     expired.insert(expired.begin(), timer_set_.begin(), it);
-    // printf("expired size[%d]    timer_set_ size[%d]\n", expired.size(), timer_set_.size());
+    printf("rollover[%d]    expired size[%d]    timer_set_ size[%d]\n", rollover, expired.size(), timer_set_.size());
     timer_set_.erase(timer_set_.begin(), it);
     cbs.resize(expired.size());
     for(auto& time : expired)
     {
         cbs.push_back(time->cb_);
-        // LEI_LOG_DEBUG(g_logger) << "+++++++++++++++++";
+        LEI_LOG_DEBUG(g_logger) << "+++++++++++++++++";
         if(time->is_loop_)
         {
             time->next_time_ = cur_time + time->time_period_;
