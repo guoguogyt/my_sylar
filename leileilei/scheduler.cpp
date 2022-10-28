@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-28 16:52:22
+ * @LastEditTime: 2022-10-28 17:01:36
  */
 
 #include "scheduler.h"
@@ -179,7 +179,7 @@ void Scheduler::run()
         {
             // 取数据
             MutexType::Lock lock(mutex_);
-            LEI_LOG_DEBUG(g_logger) << "fiber list size" << fiber_list_.size();
+            LEI_LOG_DEBUG(g_logger) << "fiber list size=" << fiber_list_.size();
             auto it = fiber_list_.begin();
             while(it != fiber_list_.end())
             {
