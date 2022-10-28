@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-11 08:52:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-28 11:30:52
+ * @LastEditTime: 2022-10-28 11:40:54
  */
 
 #include "timer.h"
@@ -157,13 +157,13 @@ void TimerManager::getExpireCb(std::vector<std::function<void()> >& cbs)
         it++;
     }
     expired.insert(expired.begin(), timer_set_.begin(), it);
-    printf("rollover[%d]    expired size[%d]    timer_set_ size[%d]\n", rollover, expired.size(), timer_set_.size());
+    LEI_FMt_LOG_DEBUG(g_logger, "rollover[%d]    expired size[%d]    timer_set_ size[%d]", rollover, expired.size(), timer_set_.size());
     timer_set_.erase(timer_set_.begin(), it);
     cbs.resize(expired.size());
     for(auto& time : expired)
     {
         cbs.push_back(time->cb_);
-        LEI_LOG_DEBUG(g_logger) << "+++++++++++++++++";
+        LEI_FMt_LOG_DEBUG(g_logger, "timer_time[%d]     cur_time[%d]", time->next_time_, cur_time);
         if(time->is_loop_)
         {
             time->next_time_ = cur_time + time->time_period_;
@@ -175,6 +175,7 @@ void TimerManager::getExpireCb(std::vector<std::function<void()> >& cbs)
             time->cb_ = nullptr;
         }
     }
+    LEI_LOG_DEBUG(g_logger) << "cbs size = "<< cbs.size();
 }
 
 bool TimerManager::hasTimer()
