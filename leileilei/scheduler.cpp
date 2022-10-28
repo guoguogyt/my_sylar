@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-28 10:20:42
+ * @LastEditTime: 2022-10-28 15:09:47
  */
 
 #include "scheduler.h"
@@ -213,6 +213,7 @@ void Scheduler::run()
         // 处理协程
         if(ft.fiber_ && ft.fiber_->getState() != Fiber::TERM && ft.fiber_->getState() != Fiber::EXCEPT)
         {
+            LEI_LOG_DEBUG(g_logger) << "====================fiber task====================";
             // 开始执行协程任务
             ft.fiber_->swapIn();
 
@@ -232,6 +233,7 @@ void Scheduler::run()
         // 处理函数
         else if(ft.cb_)
         {
+            LEI_LOG_DEBUG(g_logger) << "++++++++++++++++++++cb task+++++++++++++++++++";
             // 如果cb_fiber已经存在, 直接替换绑定函数即可
             if(cb_fiber)
             {
