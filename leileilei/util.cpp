@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:14:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-11 16:59:09
+ * @LastEditTime: 2022-10-28 14:05:45
  */
 #include "util.h"
 
@@ -131,7 +131,7 @@ uint64_t GetCurrentMS()
 {
     struct timeval tv;
     gettimeofday(&tv, NULL);
-    return tv.tv_sec * 1000 * 1000ul + tv.tv_usec / 1000;
+    return tv.tv_sec * 1000ul + tv.tv_usec / 1000;
 }
 
 uint64_t GetCurrentUS()
