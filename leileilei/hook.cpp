@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 15:27:35
+ * @LastEditTime: 2022-10-28 08:59:58
  */
 
 #include <dlfcn.h>
@@ -88,6 +88,7 @@ unsigned int sleep(unsigned int seconds)
      */
     iom->addTimer(seconds * 1000, std::bind((void(leileilei::Scheduler::*)(leileilei::Fiber::ptr, int thread))&leileilei::IOManager::schedule, iom, fiber, -1));
     leileilei::Fiber::YieldToHold();
+    LEI_LOG_DEBUG(g_logger) << "sssssssssssss";
     return 0;
 }
 
