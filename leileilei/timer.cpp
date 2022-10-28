@@ -168,7 +168,7 @@ void TimerManager::getExpireCb(std::vector<std::function<void()> >& cbs)
     for(auto& time : expired)
     {
         cbs.push_back(time->cb_);
-        LEI_FMt_LOG_DEBUG(g_logger, "timer_time[%d]     cur_time[%d]", time->next_time_, cur_time);
+        LEI_LOG_DEBUG(g_logger) << "timer_time=" << time->next_time_ << "     cur_time=" << cur_time;
         if(time->is_loop_)
         {
             time->next_time_ = cur_time + time->time_period_;
