@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-11 08:52:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-28 14:09:23
+ * @LastEditTime: 2022-10-28 14:13:05
  */
 
 #include "timer.h"
@@ -180,7 +180,7 @@ void TimerManager::getExpireCb(std::vector<std::function<void()> >& cbs)
             time->cb_ = nullptr;
         }
     }
-    LEI_LOG_DEBUG(g_logger) << "cbs size = "<< cbs.size();
+    // LEI_LOG_DEBUG(g_logger) << "cbs size = "<< cbs.size();
 }
 
 bool TimerManager::hasTimer()
