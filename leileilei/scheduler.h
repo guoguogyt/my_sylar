@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:28
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 15:32:36
+ * @LastEditTime: 2022-10-28 09:59:18
  */
 #pragma once
 
@@ -90,11 +90,11 @@ public:
     template<class FiberOrCb>
     void schedule(FiberOrCb fc, int thread = -1)
     {
-        if(stopping_ && is_autoStop_)
-        {
-            LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << " scheduler is stopping, can not add fiber task";
-            return;
-        }
+        // if(stopping_ && is_autoStop_)
+        // {
+        //     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << " scheduler is stopping, can not add fiber task";
+        //     return;
+        // }
         bool need_tickle = false;
         {
             MutexType::Lock lock(mutex_);
@@ -122,11 +122,11 @@ public:
     template<class FiberOrCbIterator>
     void schedule(FiberOrCbIterator begin, FiberOrCbIterator end)
     {
-        if(stopping_ && is_autoStop_)
-        {
-            LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << " scheduler is stopping, can not add fiber task";
-            return;
-        }
+        // if(stopping_ && is_autoStop_)
+        // {
+        //     LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << " scheduler is stopping, can not add fiber task";
+        //     return;
+        // }
         bool need_tickle = false;
         {
             MutexType::Lock lock(mutex_);
