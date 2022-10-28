@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-28 09:44:47
+ * @LastEditTime: 2022-10-28 10:20:42
  */
 
 #include "scheduler.h"
@@ -256,10 +256,8 @@ void Scheduler::run()
             }
             else
             {
-                LEI_LOG_DEBUG(g_logger) << "3 count = " << cb_fiber.use_count();
                 cb_fiber->state_ = Fiber::HOLD;
                 cb_fiber.reset();
-                LEI_LOG_DEBUG(g_logger) << "4 count = " << cb_fiber.use_count();
             }
         }
         else// 空跑

@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-28 09:44:36
+ * @LastEditTime: 2022-10-28 10:20:36
  */
 
 #include <dlfcn.h>
@@ -78,17 +78,14 @@ unsigned int sleep(unsigned int seconds)
     {
         return sleep_f(seconds);
     }
-    LEI_LOG_DEBUG(g_logger) << "do hook!";
     // 获取当前正常执行的协程
     leileilei::Fiber::ptr fiber = leileilei::Fiber::GetThis();
-    LEI_LOG_DEBUG(g_logger) << "1 count = " << fiber.use_count();
     leileilei::IOManager* iom = leileilei::IOManager::GetThis();
     /**
      * 这里想绑定的其实是Scheduler::schedule函数
      但是iom是 IOManager类型
      */
     iom->addTimer(seconds * 1000, std::bind((void(leileilei::Scheduler::*)(leileilei::Fiber::ptr, int thread))&leileilei::IOManager::schedule, iom, fiber, -1));
-    LEI_LOG_DEBUG(g_logger) << "2 count = " << fiber.use_count();
     leileilei::Fiber::YieldToHold();
     return 0;
 }
