@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-27 09:32:16
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 15:56:28
+ * @LastEditTime: 2022-10-28 10:23:12
  */
 #include "leileilei.h"
 
@@ -18,7 +18,7 @@ void test_sleep()
         LEI_LOG_DEBUG(g_logger) << "sleep 2";
     });
     iom.schedule([](){
-        sleep(3);
+        sleep(10);
         LEI_LOG_DEBUG(g_logger) << "sleep 3";
     });
     LEI_LOG_DEBUG(g_logger) << "test sleep";
