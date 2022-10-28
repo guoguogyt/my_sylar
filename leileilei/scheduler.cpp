@@ -256,10 +256,10 @@ void Scheduler::run()
             }
             else
             {
-                LEI_LOG_DEBUG(g_logger) << "3 count = " << fiber.use_count();
+                LEI_LOG_DEBUG(g_logger) << "3 count = " << cb_fiber.use_count();
                 cb_fiber->state_ = Fiber::HOLD;
                 cb_fiber.reset();
-                LEI_LOG_DEBUG(g_logger) << "4 count = " << fiber.use_count();
+                LEI_LOG_DEBUG(g_logger) << "4 count = " << cb_fiber.use_count();
             }
         }
         else// 空跑
