@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-27 17:00:03
+ * @LastEditTime: 2022-10-28 09:44:47
  */
 
 #include "scheduler.h"
@@ -256,10 +256,10 @@ void Scheduler::run()
             }
             else
             {
+                LEI_LOG_DEBUG(g_logger) << "3 count = " << fiber.use_count();
                 cb_fiber->state_ = Fiber::HOLD;
                 cb_fiber.reset();
-                if(!cb_fiber)
-                    LEI_LOG_DEBUG(g_logger) << "idle fiber is destory";
+                LEI_LOG_DEBUG(g_logger) << "4 count = " << fiber.use_count();
             }
         }
         else// 空跑
