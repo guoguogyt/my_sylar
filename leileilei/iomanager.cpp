@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 15:55:59
+ * @LastEditTime: 2022-10-28 10:33:34
  */
 #include "iomanager.h"
 
@@ -400,7 +400,7 @@ void IOManager::idle()
            而其他线程在之后竞争到锁，但是定时器队列中的过期定时器已经被取出删除，所以他们的cbs为空
          */
         getExpireCb(cbs);
-        // LEI_LOG_DEBUG(g_logger) << "cbs size = "<< cbs.size();
+        LEI_LOG_DEBUG(g_logger) << "cbs size = "<< cbs.size();
         if(!cbs.empty())
         {
             schedule(cbs.begin(), cbs.end());
