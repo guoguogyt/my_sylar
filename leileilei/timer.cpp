@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-11 08:52:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-28 13:38:39
+ * @LastEditTime: 2022-10-28 14:09:23
  */
 
 #include "timer.h"
@@ -162,13 +162,13 @@ void TimerManager::getExpireCb(std::vector<std::function<void()> >& cbs)
     //     LEI_LOG_DEBUG(g_logger) << "time next_time" << time->next_time_;
     // }
     expired.insert(expired.begin(), timer_set_.begin(), it);
-    LEI_FMt_LOG_DEBUG(g_logger, "rollover[%d]    expired size[%d]    timer_set_ size[%d]", rollover, expired.size(), timer_set_.size());
+    // LEI_FMt_LOG_DEBUG(g_logger, "rollover[%d]    expired size[%d]    timer_set_ size[%d]", rollover, expired.size(), timer_set_.size());
     timer_set_.erase(timer_set_.begin(), it);
     cbs.resize(expired.size());
     for(auto& time : expired)
     {
         cbs.push_back(time->cb_);
-        LEI_LOG_DEBUG(g_logger) << "timer_time=" << time->next_time_ << "     cur_time=" << cur_time;
+        // LEI_LOG_DEBUG(g_logger) << "timer_time=" << time->next_time_ << "     cur_time=" << cur_time;
         if(time->is_loop_)
         {
             time->next_time_ = cur_time + time->time_period_;
@@ -192,7 +192,7 @@ bool TimerManager::hasTimer()
 void TimerManager::addTimer(Timer::ptr timer, RWMutexType::WriteLock& lock)
 {
     auto it = timer_set_.insert(timer).first;
-    LEI_LOG_DEBUG(g_logger) << "add timer----"<< (*it)->next_time_;
+    // LEI_LOG_DEBUG(g_logger) << "add timer----"<< (*it)->next_time_;
     bool f = (it == timer_set_.begin()) && !is_tickle_;
     if(f)   is_tickle_ = true;
     lock.unlock();
