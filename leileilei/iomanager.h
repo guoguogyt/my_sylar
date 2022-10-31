@@ -148,7 +148,7 @@ protected:
      * @param[out] timeout 最近要出发的定时器事件间隔
      * @return 返回是否可以停止
      */
-    bool stopping(uint64_t& timeout);
+    bool canStop(uint64_t& timeout);
 private:
     /// epoll 文件句柄
     int m_epfd = 0;
