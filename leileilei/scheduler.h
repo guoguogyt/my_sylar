@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:28
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-31 16:21:19
+ * @LastEditTime: 2022-10-31 16:54:35
  */
 #pragma once
 
@@ -216,12 +216,19 @@ private:
     template<class FiberOrCb>
     bool scheduleNoLock(FiberOrCb fc, int thread)
     {
-        LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "push in fiber list";
         bool need_tickle = fiber_list_.empty();
         FiberAndThread ft(fc, thread);
         if(ft.fiber_ || ft.cb_)
         {
             fiber_list_.push_back(ft);
+        }
+        if(ft.fiber_)
+        {
+            LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "push fiber in fiber list";
+        }
+        else
+        {
+            LEI_LOG_DEBUG(LEI_LOG_GETROOTOR()) << "push callback in fiber list";
         }
         return need_tickle;
     }
