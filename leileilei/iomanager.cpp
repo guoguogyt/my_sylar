@@ -360,7 +360,7 @@ void IOManager::idle() {
         } while(true);
 
         std::vector<std::function<void()> > cbs;
-        getExpireCb(cbs);
+        listExpiredCb(cbs);
         if(!cbs.empty()) {
             //SYLAR_LOG_DEBUG(g_logger) << "on timer cbs.size=" << cbs.size();
             schedule(cbs.begin(), cbs.end());
