@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-28 10:20:36
+ * @LastEditTime: 2022-10-31 14:26:12
  */
 
 #include <dlfcn.h>
@@ -12,7 +12,7 @@
 #include "iomanager.h"
 #include "fiber.h"
 
-leileilei::Logger::ptr g_logger = LEI_GET_LOGGER("system");
+static leileilei::Logger::ptr g_logger = LEI_GET_LOGGER("system");
 
 namespace leileilei
 {
