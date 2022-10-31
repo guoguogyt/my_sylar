@@ -245,13 +245,13 @@ protected:
     int m_rootThread = 0;
 };
 
-class SchedulerSwitcher : public Noncopyable {
-public:
-    SchedulerSwitcher(Scheduler* target = nullptr);
-    ~SchedulerSwitcher();
-private:
-    Scheduler* m_caller;
-};
+// class SchedulerSwitcher : public Noncopyable {
+// public:
+//     SchedulerSwitcher(Scheduler* target = nullptr);
+//     ~SchedulerSwitcher();
+// private:
+//     Scheduler* m_caller;
+// };
 
 }
 
