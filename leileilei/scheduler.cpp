@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-28 17:10:40
+ * @LastEditTime: 2022-10-31 15:52:33
  */
 
 #include "scheduler.h"
@@ -210,7 +210,7 @@ void Scheduler::run()
         {
             tickle();
         }
-        LEI_LOG_DEBUG(g_logger) << "1----fiber list size=" << fiber_list_.size();
+        LEI_LOG_DEBUG(g_logger) << "2----fiber list size=" << fiber_list_.size();
         // 处理协程
         if(ft.fiber_ && ft.fiber_->getState() != Fiber::TERM && ft.fiber_->getState() != Fiber::EXCEPT)
         {
