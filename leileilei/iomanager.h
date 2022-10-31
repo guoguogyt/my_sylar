@@ -133,9 +133,9 @@ public:
     static IOManager* GetThis();
 protected:
     void tickle() override;
-    bool stopping() override;
+    bool canStop() override;
     void idle() override;
-    void onTimerInsertedAtFront() override;
+    void onFrontTimer() override;
 
     /**
      * @brief 重置socket句柄上下文的容器大小

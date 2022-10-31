@@ -314,17 +314,17 @@ void IOManager::tickle() {
     LEILEILEI_ASSERT(rt == 1);
 }
 
-bool IOManager::stopping(uint64_t& timeout) {
+bool IOManager::canStop(uint64_t& timeout) {
     timeout = getNextTimer();
     return timeout == ~0ull
         && m_pendingEventCount == 0
-        && Scheduler::stopping();
+        && Scheduler::canStop();
 
 }
 
-bool IOManager::stopping() {
+bool IOManager::canStop() {
     uint64_t timeout = 0;
-    return stopping(timeout);
+    return canStop(timeout);
 }
 
 void IOManager::idle() {
@@ -337,9 +337,9 @@ void IOManager::idle() {
 
     while(true) {
         uint64_t next_timeout = 0;
-        if(LEILEILEI_UNLIKELY(stopping(next_timeout))) {
+        if(LEILEILEI_UNLIKELY(canStop(next_timeout))) {
             LEI_LOG_INFO(g_logger) << "name=" << getName()
-                                     << " idle stopping exit";
+                                     << " idle canStop exit";
             break;
         }
 
@@ -428,7 +428,7 @@ void IOManager::idle() {
     }
 }
 
-void IOManager::onTimerInsertedAtFront() {
+void IOManager::onFrontTimer() {
     tickle();
 }
 
