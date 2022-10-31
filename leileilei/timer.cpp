@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-11 08:52:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-28 17:04:10
+ * @LastEditTime: 2022-10-31 08:54:20
  */
 
 #include "timer.h"
@@ -134,7 +134,7 @@ uint64_t TimerManager::getNextTimer()
     const Timer::ptr& f = *timer_set_.begin();
     uint64_t cur_time = leileilei::GetCurrentMS();
     if(cur_time > f->next_time_)    return 0;
-    LEI_LOG_DEBUG(g_logger) << "next_time_ = " << f->next_time_;
+    // LEI_LOG_DEBUG(g_logger) << "next_time_ = " << f->next_time_;
     return f->next_time_ - cur_time;
 }
 
