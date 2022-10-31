@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-11 08:52:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-31 08:54:20
+ * @LastEditTime: 2022-10-31 16:44:25
  */
 
 #include "timer.h"
@@ -163,9 +163,9 @@ void TimerManager::getExpireCb(std::vector<std::function<void()> >& cbs)
     //     LEI_LOG_DEBUG(g_logger) << "time next_time" << time->next_time_;
     // }
     expired.insert(expired.begin(), timer_set_.begin(), it);
-    // LEI_FMt_LOG_DEBUG(g_logger, "rollover[%d]    expired size[%d]    timer_set_ size[%d]", rollover, expired.size(), timer_set_.size());
     timer_set_.erase(timer_set_.begin(), it);
     cbs.resize(expired.size());
+    LEI_FMt_LOG_DEBUG(g_logger, "rollover[%d]    expired size[%d]    timer_set_ size[%d]", rollover, expired.size(), timer_set_.size());
     for(auto& time : expired)
     {
         cbs.push_back(time->cb_);
@@ -181,7 +181,7 @@ void TimerManager::getExpireCb(std::vector<std::function<void()> >& cbs)
             time->cb_ = nullptr;
         }
     }
-    // LEI_LOG_DEBUG(g_logger) << "cbs size = "<< cbs.size();
+    LEI_LOG_DEBUG(g_logger) << "cbs size = "<< cbs.size();
 }
 
 bool TimerManager::hasTimer()

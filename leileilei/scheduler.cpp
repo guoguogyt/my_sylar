@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-31 15:52:33
+ * @LastEditTime: 2022-10-31 16:43:44
  */
 
 #include "scheduler.h"
@@ -179,7 +179,7 @@ void Scheduler::run()
         {
             // 取数据
             MutexType::Lock lock(mutex_);
-            LEI_LOG_DEBUG(g_logger) << "1----fiber list size=" << fiber_list_.size();
+            // LEI_LOG_DEBUG(g_logger) << "1----fiber list size=" << fiber_list_.size();
             auto it = fiber_list_.begin();
             while(it != fiber_list_.end())
             {
@@ -210,11 +210,11 @@ void Scheduler::run()
         {
             tickle();
         }
-        LEI_LOG_DEBUG(g_logger) << "2----fiber list size=" << fiber_list_.size();
+        // LEI_LOG_DEBUG(g_logger) << "2----fiber list size=" << fiber_list_.size();
         // 处理协程
         if(ft.fiber_ && ft.fiber_->getState() != Fiber::TERM && ft.fiber_->getState() != Fiber::EXCEPT)
         {
-            LEI_LOG_DEBUG(g_logger) << "====================fiber task====================";
+            // LEI_LOG_DEBUG(g_logger) << "====================fiber task====================";
             // 开始执行协程任务
             ft.fiber_->swapIn();
 
@@ -234,7 +234,7 @@ void Scheduler::run()
         // 处理函数
         else if(ft.cb_)
         {
-            LEI_LOG_DEBUG(g_logger) << "++++++++++++++++++++cb task+++++++++++++++++++";
+            // LEI_LOG_DEBUG(g_logger) << "++++++++++++++++++++cb task+++++++++++++++++++";
             // 如果cb_fiber已经存在, 直接替换绑定函数即可
             if(cb_fiber)
             {
