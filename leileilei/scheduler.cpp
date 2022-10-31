@@ -274,17 +274,17 @@ std::ostream& Scheduler::dump(std::ostream& os) {
     return os;
 }
 
-SchedulerSwitcher::SchedulerSwitcher(Scheduler* target) {
-    m_caller = Scheduler::GetThis();
-    if(target) {
-        target->switchTo();
-    }
-}
+// SchedulerSwitcher::SchedulerSwitcher(Scheduler* target) {
+//     m_caller = Scheduler::GetThis();
+//     if(target) {
+//         target->switchTo();
+//     }
+// }
 
-SchedulerSwitcher::~SchedulerSwitcher() {
-    if(m_caller) {
-        m_caller->switchTo();
-    }
-}
+// SchedulerSwitcher::~SchedulerSwitcher() {
+//     if(m_caller) {
+//         m_caller->switchTo();
+//     }
+// }
 
 }
