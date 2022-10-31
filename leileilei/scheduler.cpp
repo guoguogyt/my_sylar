@@ -77,7 +77,7 @@ void Scheduler::stop() {
             && m_threadCount == 0
             && (m_rootFiber->getState() == Fiber::TERM
                 || m_rootFiber->getState() == Fiber::INIT)) {
-        LEILEILEI_LOG_INFO(g_logger) << this << " stopped";
+        LEI_LOG_INFO(g_logger) << this << " stopped";
         m_stopping = true;
 
         if(canStop()) {
@@ -134,7 +134,7 @@ void Scheduler::setThis() {
 }
 
 void Scheduler::run() {
-    LEILEILEI_LOG_DEBUG(g_logger) << m_name << " run";
+    LEI_LOG_INFO(g_logger) << m_name << " run";
     set_hook_enable(true);
     setThis();
     if(leileilei::GetThreadId() != m_rootThread) {
@@ -215,7 +215,7 @@ void Scheduler::run() {
                 continue;
             }
             if(idle_fiber->getState() == Fiber::TERM) {
-                LEILEILEI_LOG_INFO(g_logger) << "idle fiber term";
+                LEI_LOG_INFO(g_logger) << "idle fiber term";
                 break;
             }
 
@@ -231,7 +231,7 @@ void Scheduler::run() {
 }
 
 void Scheduler::tickle() {
-    LEILEILEI_LOG_INFO(g_logger) << "tickle";
+    LEI_LOG_INFO(g_logger) << "tickle";
 }
 
 bool Scheduler::canStop() {
@@ -241,7 +241,7 @@ bool Scheduler::canStop() {
 }
 
 void Scheduler::idle() {
-    LEILEILEI_LOG_INFO(g_logger) << "idle";
+    LEI_LOG_INFO(g_logger) << "idle";
     while(!canStop()) {
         leileilei::Fiber::YieldToHold();
     }
