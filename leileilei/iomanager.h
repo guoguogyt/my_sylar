@@ -135,7 +135,7 @@ protected:
     void tickle() override;
     bool canStop() override;
     void idle() override;
-    void onFrontTimer() override;
+    void onTimerInsertedAtFront() override;
 
     /**
      * @brief 重置socket句柄上下文的容器大小
