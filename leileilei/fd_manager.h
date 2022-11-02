@@ -4,11 +4,12 @@
  * @Author: leileilei
  * @Date: 2022-11-02 14:13:28
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-02 14:33:58
+ * @LastEditTime: 2022-11-02 15:18:09
  */
 #pragma once
 
 #include <memory>
+#include <vector>
 #include "mutex.h"
 #include "singleton.h"
 
@@ -86,6 +87,6 @@ private:
     std::vector<FdCtx::ptr> fd_list_;
 };
 
-typedef singleton<FdManager>  FdMgr;
+typedef Singleton<FdManager>  FdMgr;
 
 }
