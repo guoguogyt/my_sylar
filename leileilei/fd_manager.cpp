@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-11-02 14:13:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-02 15:21:16
+ * @LastEditTime: 2022-11-02 15:24:33
  */
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -53,7 +53,7 @@ bool FdCtx::init()
         return true;
     }
     struct stat fd_stat;
-    if(fstat(fd_, fd_stat) == -1)
+    if(fstat(fd_, &fd_stat) == -1)
     {
         isInit_ = false;
         isSocket_ = false;
