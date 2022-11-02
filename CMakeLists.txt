@@ -14,6 +14,7 @@ endif()
 
 set(LIB_SRC
     leileilei/config.cpp
+    leileilei/fd_manager.cpp
     leileilei/fiber.cpp
     leileilei/hook.cpp
     leileilei/iomanager.cpp
