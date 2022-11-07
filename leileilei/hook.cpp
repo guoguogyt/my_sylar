@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 11:30:30
+ * @LastEditTime: 2022-11-07 11:33:36
  */
 
 #include <dlfcn.h>
@@ -259,7 +259,7 @@ int socket(int domain, int type, int protocol)
     int fd = socket_f(domain, type, protocol);
     if(fd == -1)
         return fd;
-    leileilei::FdMgr->GetInstance()->get(fd, true);
+    leileilei::FdMgr::GetInstance()->get(fd, true);
     return fd;
 }
 
@@ -267,7 +267,7 @@ int connect_with_timeout(int fd, const struct sockaddr* addr, socklen_t addrlen,
 {
     if(!leileilei::is_hook_enable())
         return connect_f(fd, addr, addrlen);
-    leileilei::FdCtx::ptr = leileilei::FdMgr->GetInstance()->get(fd);
+    leileilei::FdCtx::ptr ctx = leileilei::FdMgr::GetInstance()->get(fd);
     if(!ctx || ctx->isClosed())
     {
         errno = EBADF;
@@ -355,7 +355,7 @@ int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
 {
     int fd = do_io(sockfd, accept_f, "accept", leileilei::IOManager::READ, SO_RCVTIMEO, addr, addrlen);
     if(fd >= 0)
-        leileilei::FdMgr->GetInstance()->get(fd, true);
+        leileilei::FdMgr::GetInstance()->get(fd, true);
     return fd;
 }
 
@@ -403,7 +403,7 @@ int close(int fd)
 {
     if(!leileilei::is_hook_enable())
         return close_f(fd);
-    leileilei::FdCtx::ptr ctx = leileilei::FdMgr->GetInstance()->get(fd);
+    leileilei::FdCtx::ptr ctx = leileilei::FdMgr::GetInstance()->get(fd);
     if(ctx)
     {
         // fd关闭，关闭fd上绑定的所有事件
@@ -411,7 +411,7 @@ int close(int fd)
         if(iom)
             iom->cancelAll(fd);
         // 删除fd
-        leileilei::FdMgr->GetInstance()->del(fd);
+        leileilei::FdMgr::GetInstance()->del(fd);
     }
     return close_f(fd);
 }
@@ -511,7 +511,7 @@ int ioctl(int d, unsigned long int request, ...)
     if(FIONBIO == request) {
         bool user_nonblock = !!*(int*)arg;
         leileilei::FdCtx::ptr ctx = leileilei::FdMgr::GetInstance()->get(d);
-        if(!ctx || ctx->isClose() || !ctx->isSocket()) {
+        if(!ctx || ctx->isClosed() || !ctx->isSocket()) {
             return ioctl_f(d, request, arg);
         }
         ctx->setUserNoblock(user_nonblock);
