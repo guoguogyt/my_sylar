@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-27 09:32:16
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 13:48:25
+ * @LastEditTime: 2022-11-07 14:15:49
  */
 #include "leileilei.h"
 #include <sys/types.h>
@@ -45,7 +45,7 @@ void test_sock()
 
     addr.sin_family = AF_INET;
     addr.sin_port = htons(80);
-    inet_pton(AF_INET, "110.242.68.66", &addr.sin_addr.s_addr);
+    inet_pton(AF_INET, "112.80.248.76", &addr.sin_addr.s_addr);
 
     LEI_LOG_DEBUG(g_logger) << "begin connct";
 
@@ -57,7 +57,7 @@ void test_sock()
     
     const char data[] = "GET / HTTP/1.0\r\n\r\n";
     rt = send(sock, data, sizeof(data), 0);
-    LEI_LOG_DEBUG(g_logger) << "send rt=" << rt << "    errno" << errno;
+    LEI_LOG_DEBUG(g_logger) << "send rt=" << rt << "    errno=" << errno;
     if(rt<=0)
         return;
 
@@ -65,7 +65,7 @@ void test_sock()
     buff.resize(4096);
 
     rt =recv(sock, &buff[0], buff.size(), 0);
-    LEI_LOG_DEBUG(g_logger) << "recv rt=" << rt << "    errno" << errno;
+    LEI_LOG_DEBUG(g_logger) << "recv rt=" << rt << "    errno=" << errno;
     if(rt<=0)
         return;
     
@@ -76,7 +76,8 @@ void test_sock()
 int main()
 {
     // test_sleep();
-    test_sock();
+    leileilei::IOManager iom;
+    iom.schedule(test_sock);
     return 0;
 }
 

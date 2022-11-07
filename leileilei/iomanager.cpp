@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-31 16:38:05
+ * @LastEditTime: 2022-11-07 14:17:43
  */
 #include "iomanager.h"
 
@@ -468,6 +468,7 @@ void IOManager::idle()
                 event_counts_--;
             }
         }
+        LEI_LOG_DEBUG(g_logger) << "can get here";
         Fiber::ptr cur_fiber = Fiber::GetThis();
         auto raw_swap = cur_fiber.get();
         cur_fiber.reset();
