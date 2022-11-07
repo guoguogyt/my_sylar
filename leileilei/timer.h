@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-11 08:51:56
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 15:28:41
+ * @LastEditTime: 2022-11-07 11:38:15
  */
 #pragma once
 
@@ -125,7 +125,7 @@ public:
      * @param is_loop 是否是循环定时器
      * @return Timer::ptr 
      */
-    Timer::ptr addConditionTimer(uint64_t time_period, std::weak_ptr<Timer> weak_cond, std::function<void()> cb, bool is_loop = false);
+    Timer::ptr addConditionTimer(uint64_t time_period, std::weak_ptr<void> weak_cond, std::function<void()> cb, bool is_loop = false);
     /**
      * @brief Get the Next Timer object
      * 返回距离最近一个即将执行的定时器的时间间隔

@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-11 08:52:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-02 10:41:36
+ * @LastEditTime: 2022-11-07 11:38:33
  */
 
 #include "timer.h"
@@ -111,7 +111,7 @@ Timer::ptr TimerManager::addTimer(uint64_t time_period, std::function<void()> cb
     return timer;
 }
 
-static void OnTimer(std::weak_ptr<Timer> weak_cond, std::function<void()> cb)
+static void OnTimer(std::weak_ptr<void> weak_cond, std::function<void()> cb)
 {
     std::shared_ptr<void> temp = weak_cond.lock();
     if(temp)
@@ -120,7 +120,7 @@ static void OnTimer(std::weak_ptr<Timer> weak_cond, std::function<void()> cb)
     }
 }
 
-Timer::ptr TimerManager::addConditionTimer(uint64_t time_period, std::weak_ptr<Timer> weak_cond, std::function<void()> cb, bool is_loop)
+Timer::ptr TimerManager::addConditionTimer(uint64_t time_period, std::weak_ptr<void> weak_cond, std::function<void()> cb, bool is_loop)
 {
     return addTimer(time_period, std::bind(&OnTimer, weak_cond, cb), is_loop);
 }
