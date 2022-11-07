@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 15:05:19
+ * @LastEditTime: 2022-11-07 15:28:33
  */
 
 #include <dlfcn.h>
@@ -117,12 +117,12 @@ static ssize_t do_io(int fd, OriginFun fun, const char* hook_fun_name, uint32_t 
          */
         return fun(fd, std::forward<Args>(args)...);
     }
-
+    LEI_LOG_DEBUG(g_logger) << "do_io ----" << hook_fun_name;
     leileilei::FdCtx::ptr ctx = leileilei::FdMgr::GetInstance()->get(fd);
     
     if(!ctx)
         return fun(fd, std::forward<Args>(args)...);
-        
+
     if(ctx->isClosed())
     {
         errno = EBADF;
@@ -309,6 +309,7 @@ int connect_with_timeout(int fd, const struct sockaddr* addr, socklen_t addrlen,
             if(!t || t->cancelled)
                 return ;
             t->cancelled = ETIMEDOUT;
+            LEI_LOG_DEBUG(g_logger) << "in timer cb";
             iom->cancelEvent(fd, leileilei::IOManager::WRITE);
         });
     }
