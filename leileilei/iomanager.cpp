@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 16:18:38
+ * @LastEditTime: 2022-11-07 16:22:03
  */
 #include "iomanager.h"
 
@@ -409,7 +409,7 @@ void IOManager::idle()
         {
             epoll_event& event = events[i];
             // 读到管道fd则不做任何事情
-            if(event.data.fd = pipe_fd_[0])
+            if(event.data.fd == pipe_fd_[0])
             {
                 LEI_LOG_DEBUG(g_logger) << "come to pipe";
                 uint8_t dummy[256];
