@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 15:08:50
+ * @LastEditTime: 2022-11-07 16:16:00
  */
 #include "iomanager.h"
 
@@ -380,10 +380,10 @@ void IOManager::idle()
             if(rt < 0 && errno == EINTR)    {    }
             else
             {
-                // if(rt>0)
-                // {
-                //     LEI_LOG_DEBUG(g_logger) << "occur io event = " << rt;
-                // }
+                if(rt>0)
+                {
+                    LEI_LOG_DEBUG(g_logger) << "occur io event = " << rt;
+                }
                 break;
             }
         }while(true);
