@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 15:30:17
+ * @LastEditTime: 2022-11-07 17:14:53
  */
 
 #include <dlfcn.h>
@@ -165,6 +165,7 @@ retry:
         }
 
         int rt = iom->addEvent(fd, (leileilei::IOManager::Event)event);
+        // 绑定失败直接返回错误
         if(LEILEILEI_UNLIKELY(rt))
         {
             LEI_LOG_ERROR(g_logger) << hook_fun_name << " addEvent("
@@ -176,6 +177,9 @@ retry:
         else
         {
             leileilei::Fiber::YieldToHold();
+            /**
+             * 这里可以由定时器回调函数进入，也可以是由fd绑定的事件进入 
+             */
             if(timer)
                 timer->cancel();
             if(spti->cancelled)
