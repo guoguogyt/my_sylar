@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 11:29:21
+ * @LastEditTime: 2022-11-07 11:30:30
  */
 
 #include <dlfcn.h>
@@ -75,7 +75,7 @@ struct _HookInit
         s_connect_timeout = g_tcp_connect_timeout->getValue();
         g_tcp_connect_timeout->addCallBack([](const int& old_value, const int& new_value){
             LEI_LOG_DEBUG(g_logger) << "tcp connect timeout change from " << old_value << "to " << new_value;
-            s_connect_timeout = new_old;
+            s_connect_timeout = new_value;
         });
     }
 };

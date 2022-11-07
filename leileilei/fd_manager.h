@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-11-02 14:13:28
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-02 15:18:09
+ * @LastEditTime: 2022-11-07 11:31:23
  */
 #pragma once
 
@@ -74,7 +74,7 @@ public:
      * @param auto_create 
      * @return FdCtx::ptr 
      */
-    FdCtx::ptr get(int fd, bool auto_create);
+    FdCtx::ptr get(int fd, bool auto_create = false);
     /**
      * @brief 
      *  删除某个fd
