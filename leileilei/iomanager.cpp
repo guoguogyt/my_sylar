@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 16:16:00
+ * @LastEditTime: 2022-11-07 16:18:38
  */
 #include "iomanager.h"
 
@@ -411,7 +411,7 @@ void IOManager::idle()
             // 读到管道fd则不做任何事情
             if(event.data.fd = pipe_fd_[0])
             {
-                // LEI_LOG_DEBUG(g_logger) << "come to pipe";
+                LEI_LOG_DEBUG(g_logger) << "come to pipe";
                 uint8_t dummy[256];
                 while(read(pipe_fd_[0], dummy, sizeof(dummy)) > 0);
                 continue;
