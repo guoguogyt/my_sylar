@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 16:22:03
+ * @LastEditTime: 2022-11-07 16:41:29
  */
 #include "iomanager.h"
 
@@ -380,10 +380,10 @@ void IOManager::idle()
             if(rt < 0 && errno == EINTR)    {    }
             else
             {
-                if(rt>0)
-                {
-                    LEI_LOG_DEBUG(g_logger) << "occur io event = " << rt;
-                }
+                // if(rt>0)
+                // {
+                //     LEI_LOG_DEBUG(g_logger) << "occur io event = " << rt;
+                // }
                 break;
             }
         }while(true);
@@ -399,7 +399,7 @@ void IOManager::idle()
            而其他线程在之后竞争到锁，但是定时器队列中的过期定时器已经被取出删除，所以他们的cbs为空
          */
         getExpireCb(cbs);
-        LEI_LOG_DEBUG(g_logger) << "cbs size = "<< cbs.size() << "      next_timeout= " << next_timeout;
+        // LEI_LOG_DEBUG(g_logger) << "cbs size = "<< cbs.size() << "      next_timeout= " << next_timeout;
         if(!cbs.empty())
         {
             schedule(cbs.begin(), cbs.end());
@@ -411,7 +411,7 @@ void IOManager::idle()
             // 读到管道fd则不做任何事情
             if(event.data.fd == pipe_fd_[0])
             {
-                LEI_LOG_DEBUG(g_logger) << "come to pipe";
+                // LEI_LOG_DEBUG(g_logger) << "come to pipe";
                 uint8_t dummy[256];
                 while(read(pipe_fd_[0], dummy, sizeof(dummy)) > 0);
                 continue;
