@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 11:33:36
+ * @LastEditTime: 2022-11-07 15:05:19
  */
 
 #include <dlfcn.h>
@@ -121,8 +121,8 @@ static ssize_t do_io(int fd, OriginFun fun, const char* hook_fun_name, uint32_t 
     leileilei::FdCtx::ptr ctx = leileilei::FdMgr::GetInstance()->get(fd);
     
     if(!ctx)
-        fun(fd, std::forward<Args>(args)...);
-    
+        return fun(fd, std::forward<Args>(args)...);
+        
     if(ctx->isClosed())
     {
         errno = EBADF;
