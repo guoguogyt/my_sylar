@@ -4,15 +4,17 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 11:24:05
+ * @LastEditTime: 2022-11-07 11:29:21
  */
 
 #include <dlfcn.h>
+#include "config.h"
+#include "fd_manager.h"
+#include "fiber.h"
 #include "hook.h"
 #include "iomanager.h"
 #include "log.h"
-#include "fiber.h"
-#include "config.h"
+
 
 static leileilei::Logger::ptr g_logger = LEI_GET_LOGGER("system");
 
@@ -70,9 +72,9 @@ struct _HookInit
     _HookInit()
     {
         for_hook_init();
-        s_connect_timeout = g_tcp_connect_timeout.getValue();
-        g_tcp_connect_timeout->addCallBack([](const int& old_value, const int& new_old){
-            LEI_LOG_DEBUG(g_logger) << "tcp connect timeout change from " << old_value << "to " << new_value;\
+        s_connect_timeout = g_tcp_connect_timeout->getValue();
+        g_tcp_connect_timeout->addCallBack([](const int& old_value, const int& new_value){
+            LEI_LOG_DEBUG(g_logger) << "tcp connect timeout change from " << old_value << "to " << new_value;
             s_connect_timeout = new_old;
         });
     }
