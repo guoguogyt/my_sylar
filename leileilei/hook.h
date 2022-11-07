@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:12:58
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-02 14:12:43
+ * @LastEditTime: 2022-11-03 14:02:08
  */
 
 #pragma once
@@ -54,65 +54,84 @@ typedef int (*nanosleep_fun)(const struct timespec *req, struct timespec *rem);
 extern nanosleep_fun nanosleep_f;
 
 
-// // socket       error -1
-// typedef int (*socket_fun)(int domain, int type, int protocol);
-// extern socket_fun socket_f;
-// // connnect     success 0           error -1
-// typedef int (*connect_fun)(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
-// extern connect_fun connect_f;
-// // accept    success nonnegative integer            error -1
-// typedef int (*accept_fun)(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
-// extern accept_fun accept_f;
+// socket       error -1
+typedef int (*socket_fun)(int domain, int type, int protocol);
+extern socket_fun socket_f;
+// connnect     success 0           error -1
+typedef int (*connect_fun)(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+extern connect_fun connect_f;
+// accept    success nonnegative integer            error -1
+typedef int (*accept_fun)(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+extern accept_fun accept_f;
 
 
-// // read         error -1
-// typedef ssize_t (*read_fun)(int fd, void *buf, size_t count);
-// extern read_fun read_f;
-// typedef ssize_t (*readv_fun)(int fd, const struct iovec *iov, int iovcnt);
-// extern readv_fun readv_f;
+// read         error -1
+typedef ssize_t (*read_fun)(int fd, void *buf, size_t count);
+extern read_fun read_f;
+typedef ssize_t (*readv_fun)(int fd, const struct iovec *iov, int iovcnt);
+extern readv_fun readv_f;
 
-// typedef ssize_t (*recv_fun)(int sockfd, void *buf, size_t len, int flags);
-// extern recv_fun recv_f;
+typedef ssize_t (*recv_fun)(int sockfd, void *buf, size_t len, int flags);
+extern recv_fun recv_f;
 
-// typedef ssize_t (*recvfrom_fun)(int sockfd, void *buf, size_t len, int flags, struct sockaddr *src_addr, socklen_t *addrlen);
-// extern recvfrom_fun recvfrom_f;
+typedef ssize_t (*recvfrom_fun)(int sockfd, void *buf, size_t len, int flags, struct sockaddr *src_addr, socklen_t *addrlen);
+extern recvfrom_fun recvfrom_f;
 
-// typedef ssize_t (*recvmsg_fun)(int sockfd, struct msghdr *msg, int flags);
-// extern recvmsg_fun recvmsg_f;
+typedef ssize_t (*recvmsg_fun)(int sockfd, struct msghdr *msg, int flags);
+extern recvmsg_fun recvmsg_f;
 
-// //write
-// typedef ssize_t (*write_fun)(int fd, const void *buf, size_t count);
-// extern write_fun write_f;
+//write
+typedef ssize_t (*write_fun)(int fd, const void *buf, size_t count);
+extern write_fun write_f;
 
-// typedef ssize_t (*writev_fun)(int fd, const struct iovec *iov, int iovcnt);
-// extern writev_fun writev_f;
+typedef ssize_t (*writev_fun)(int fd, const struct iovec *iov, int iovcnt);
+extern writev_fun writev_f;
 
-// typedef ssize_t (*send_fun)(int s, const void *msg, size_t len, int flags);
-// extern send_fun send_f;
+typedef ssize_t (*send_fun)(int s, const void *msg, size_t len, int flags);
+extern send_fun send_f;
 
-// typedef ssize_t (*sendto_fun)(int s, const void *msg, size_t len, int flags, const struct sockaddr *to, socklen_t tolen);
-// extern sendto_fun sendto_f;
+typedef ssize_t (*sendto_fun)(int s, const void *msg, size_t len, int flags, const struct sockaddr *to, socklen_t tolen);
+extern sendto_fun sendto_f;
 
-// typedef ssize_t (*sendmsg_fun)(int s, const struct msghdr *msg, int flags);
-// extern sendmsg_fun sendmsg_f;
+typedef ssize_t (*sendmsg_fun)(int s, const struct msghdr *msg, int flags);
+extern sendmsg_fun sendmsg_f;
 
-// typedef int (*close_fun)(int fd);
-// extern close_fun close_f;
+typedef int (*close_fun)(int fd);
+extern close_fun close_f;
 
-// //
-// typedef int (*fcntl_fun)(int fd, int cmd, ... /* arg */ );
-// extern fcntl_fun fcntl_f;
+/**
+ * @brief 
+ * fcntl函数有5种功能： 
+1. 复制一个现有的描述符(cmd=F_DUPFD). 
+2. 获得／设置文件描述符标记(cmd=F_GETFD或F_SETFD). 
+3. 获得／设置文件状态标记(cmd=F_GETFL或F_SETFL). 
+4. 获得／设置异步I/O所有权(cmd=F_GETOWN或F_SETOWN). 
+5. 获得／设置记录锁(cmd=F_GETLK , F_SETLK或F_SETLKW).
+ */
+typedef int (*fcntl_fun)(int fd, int cmd, ... /* arg */ );
+extern fcntl_fun fcntl_f;
 
-// typedef int (*ioctl_fun)(int d, unsigned long int request, ...);
-// extern ioctl_fun ioctl_f;
+/**
+ * @brief 
+ * ioctl是设备驱动程序中对设备的I/O通道进行管理的函数。所谓对I/O通道进行管理，就是对设备的一些特性进行控制，例如串口的传输波特率、马达的转速等等。
+　　ioctl函数是文件结构中的一个属性分量，就是说如果你的驱动程序提供了对ioctl的支持，用户就可以在用户程序中使用ioctl函数来控制设备的I/O通道。
+　　用户程序所作的只是通过命令码(cmd)告诉驱动程序它想做什么，至于怎么解释这些命令和怎么实现这些命令，这都是驱动程序要做的事情。
+ */
+typedef int (*ioctl_fun)(int d, unsigned long int request, ...);
+extern ioctl_fun ioctl_f;
 
-// typedef int (*getsockopt_fun)(int sockfd, int level, int optname, void *optval, socklen_t *optlen);
-// extern getsockopt_fun getsockopt_f;
 
-// typedef int (*setsockopt_fun)(int sockfd, int level, int optname, const void *optval, socklen_t optlen);
-// extern setsockopt_fun setsockopt_f;
+typedef int (*getsockopt_fun)(int sockfd, int level, int optname, void *optval, socklen_t *optlen);
+extern getsockopt_fun getsockopt_f;
 
-// extern int connect_with_timeout(int fd, const struct sockaddr* addr, socklen_t addrlen, uint64_t timeout_ms);
+/**
+ * @brief 
+ * 可以设置socket读写超时
+ */
+typedef int (*setsockopt_fun)(int sockfd, int level, int optname, const void *optval, socklen_t optlen);
+extern setsockopt_fun setsockopt_f;
+
+extern int connect_with_timeout(int fd, const struct sockaddr* addr, socklen_t addrlen, uint64_t timeout_ms);
 
 
 }
