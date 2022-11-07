@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-27 09:32:16
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 14:15:49
+ * @LastEditTime: 2022-11-07 16:09:12
  */
 #include "leileilei.h"
 #include <sys/types.h>
@@ -45,7 +45,7 @@ void test_sock()
 
     addr.sin_family = AF_INET;
     addr.sin_port = htons(80);
-    inet_pton(AF_INET, "112.80.248.76", &addr.sin_addr.s_addr);
+    inet_pton(AF_INET, "112.80.248.75", &addr.sin_addr.s_addr);
 
     LEI_LOG_DEBUG(g_logger) << "begin connct";
 

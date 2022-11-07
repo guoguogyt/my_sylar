@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:13:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 15:28:33
+ * @LastEditTime: 2022-11-07 15:30:17
  */
 
 #include <dlfcn.h>
@@ -309,7 +309,7 @@ int connect_with_timeout(int fd, const struct sockaddr* addr, socklen_t addrlen,
             if(!t || t->cancelled)
                 return ;
             t->cancelled = ETIMEDOUT;
-            LEI_LOG_DEBUG(g_logger) << "in timer cb";
+            // LEI_LOG_DEBUG(g_logger) << "in timer cb";
             iom->cancelEvent(fd, leileilei::IOManager::WRITE);
         });
     }
