@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 14:30:55
+ * @LastEditTime: 2022-11-07 15:08:50
  */
 #include "iomanager.h"
 
@@ -380,10 +380,10 @@ void IOManager::idle()
             if(rt < 0 && errno == EINTR)    {    }
             else
             {
-                if(rt>0)
-                {
-                    LEI_LOG_DEBUG(g_logger) << "occur io event = " << rt;
-                }
+                // if(rt>0)
+                // {
+                //     LEI_LOG_DEBUG(g_logger) << "occur io event = " << rt;
+                // }
                 break;
             }
         }while(true);
@@ -405,14 +405,13 @@ void IOManager::idle()
             schedule(cbs.begin(), cbs.end());
             cbs.clear();
         }
-        LEI_LOG_DEBUG(g_logger) << "1 can get here";
         for(int i=0; i<rt; i++)
         {
             epoll_event& event = events[i];
             // 读到管道fd则不做任何事情
             if(event.data.fd = pipe_fd_[0])
             {
-                LEI_LOG_DEBUG(g_logger) << "come to pipe";
+                // LEI_LOG_DEBUG(g_logger) << "come to pipe";
                 uint8_t dummy[256];
                 while(read(pipe_fd_[0], dummy, sizeof(dummy)) > 0);
                 continue;
@@ -467,7 +466,6 @@ void IOManager::idle()
                 event_counts_--;
             }
         }
-        LEI_LOG_DEBUG(g_logger) << "2 can get here";
         Fiber::ptr cur_fiber = Fiber::GetThis();
         auto raw_swap = cur_fiber.get();
         cur_fiber.reset();
