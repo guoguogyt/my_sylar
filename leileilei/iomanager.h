@@ -4,9 +4,9 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:13
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-13 11:03:55
+ * @LastEditTime: 2022-12-13 11:06:32
  */
-#pragma once
+#pragma
 
 #include "scheduler.h"
 #include "timer.h"
