@@ -1,11 +1,11 @@
 #pragma once
 
 
-#define LEI_LITTLE_ENDIAN 1
-#define LEI_BIG_ENDIAN 2
+// #define LEI_LITTLE_ENDIAN 1
+// #define LEI_BIG_ENDIAN 2
 
-#include <byteswap.h>
-#include <stdint.h>
+// #include <byteswap.h>
+// #include <stdint.h>
 
 namespace leileilei
 {
