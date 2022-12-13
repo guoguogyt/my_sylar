@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-11-24 15:54:07
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-13 15:22:40
+ * @LastEditTime: 2022-12-13 15:36:44
  */
 #include "address.h"
 #include "log.h"
@@ -378,10 +378,10 @@ socklen_t IPv4Address::getAddrLen() const
 std::ostream& IPv4Address::insert(std::ostream& os) const 
 {
     uint32_t addr = byteswapOnLittleEndian(addr_.sin_addr.s_addr);
-    os << ((addr_>>24) & 0xff) << "."
-        << ((addr_>>16) & 0xff) << "."
-        << ((addr_>>8) & 0xff) << "."
-        << (addr_ & 0xff);
+    os << ((addr>>24) & 0xff) << "."
+        << ((addr>>16) & 0xff) << "."
+        << ((addr>>8) & 0xff) << "."
+        << (addr & 0xff);
     os << ":" << byteswapOnLittleEndian(addr_.sin_port);
     return os;
 }
@@ -430,7 +430,7 @@ IPv6Address::ptr IPv6Address::Create(const char* address, uint16_t port)
 {
     IPv6Address::ptr rt(new IPv6Address);
     rt->addr_.sin6_port = byteswapOnLittleEndian(port);
-    int result = inet_ntop(AF_INET6, address, &rt->addr_.sin6_addr);
+    int result = inet_pton(AF_INET6, address, &rt->addr_.sin6_addr);
     if(result <= 0)
     {
         LEI_LOG_ERROR(g_logger) << "IPv6Address::Create(" << address << ", "
@@ -447,12 +447,12 @@ IPv6Address::IPv6Address()
     addr_.sin6_family = AF_INET6;
 }
 
-IPv6Address(const sockaddr_in6& address)
+IPv6Address::IPv6Address(const sockaddr_in6& address)
 {
     addr_ = address;
 }
 
-IPv6Address::IPv6Address(const uint8_t address[16], uint16_t port = 0)
+IPv6Address::IPv6Address(const uint8_t address[16], uint16_t port)
 {
     memset(&addr_, 0, sizeof(addr_));
     addr_.sin6_family = AF_INET6;
@@ -462,12 +462,12 @@ IPv6Address::IPv6Address(const uint8_t address[16], uint16_t port = 0)
 
 const sockaddr* IPv6Address::getAddr() const
 {
-    return (sockaddr*)addr_;
+    return (sockaddr*)&addr_;
 }
 
 sockaddr* IPv6Address::getAddr() 
 {
-    return (sockaddr*)addr_;
+    return (sockaddr*)&addr_;
 }
 
 socklen_t IPv6Address::getAddrLen() const
@@ -546,6 +546,8 @@ void IPv6Address::setPort(uint16_t v)
 {
     addr_.sin6_port = byteswapOnLittleEndian(v);
 }
+
+static const size_t MAX_PATH_LEN = sizeof(((sockaddr_un*)0)->sun_path) - 1;
 
 UnixAddress::UnixAddress()
 {
@@ -658,7 +660,7 @@ sockaddr* UnknownAddress::getAddr()
     return (sockaddr*)&addr_;
 }
 
-socklen_t UnknownAddress::getAddrLen() 
+socklen_t UnknownAddress::getAddrLen() const
 {
     return sizeof(addr_);
 }
