@@ -38,7 +38,7 @@ void test_iface()
     if(!v)
     { 
         LEI_LOG_ERROR(g_logger) << "GetInterfaceAddresses fail";
-        return
+        return;
     }
 
     for(auto& i:results)
