@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-11-24 15:53:58
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-13 14:56:41
+ * @LastEditTime: 2022-12-13 15:46:12
  */
 #pragma once
 
@@ -234,7 +234,7 @@ public:
     /**
      * 虚的析构函数(会被继承) 
      */
-    virtual ~Address();
+    virtual ~Address() {};
 
     /**
      * @brief 返回协议族
