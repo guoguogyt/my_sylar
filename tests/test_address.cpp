@@ -1,6 +1,6 @@
 #include "leileilei.h"
 
-leileilei::Logger::ptr g_logger = leileilei::LEI_GET_LOGGER("system");
+leileilei::Logger::ptr g_logger = LEI_GET_LOGGER("system");
 
 void test()
 {
