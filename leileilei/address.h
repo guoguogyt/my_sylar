@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-11-24 15:53:58
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-13 14:38:10
+ * @LastEditTime: 2022-12-13 14:51:55
  */
 #pragma once
 
@@ -202,7 +202,7 @@ public:
      * @param protocol 协议,IPPROTO_TCP、IPPROTO_UDP
      * @return Address::ptr 
      */
-    static std::shared_ptr<IPAddress> LookupAny(const std::string& host, int family = AF_INET, int type = 0, int protocol = 0);
+    static Address::ptr LookupAny(const std::string& host, int family = AF_INET, int type = 0, int protocol = 0);
     /**
      * @brief 通过host地址返回任意一个满足条件的IPAddress
      * @param host 域名，服务器名称，例：www.baidu.com
@@ -211,7 +211,7 @@ public:
      * @param protocol 协议,IPPROTO_TCP、IPPROTO_UDP
      * @return Address::ptr 
      */
-    static IPAddress::ptr LookupAnyIPAddress(const std::string& host, int family = AF_INET, int type = 0, int protocol = 0); 
+    static std::shared_ptr<IPAddress> LookupAnyIPAddress(const std::string& host, int family = AF_INET, int type = 0, int protocol = 0); 
 
     /**
      * @brief 返回本机所有网卡的<网卡名，地址，子网掩码位数>
@@ -229,7 +229,7 @@ public:
      * @return true 
      * @return false 
      */
-    static bool GetInterfaceAddresses(std::multimap<std::string, std::pair<Address::ptr, uint32_t> >& result, const std::string& iface, int family = AF_INET);
+    static bool GetInterfaceAddresses(std::vector<std::pair<Address::ptr, uint32_t> >& result, const std::string& iface, int family = AF_INET);
 
     /**
      * 虚的析构函数(会被继承) 
@@ -363,7 +363,7 @@ public:
     IPAddress::ptr networdAddress(uint32_t prefix_len) override;
     IPAddress::ptr subnetMask(uint32_t prefix_len) override;
     uint32_t getPort() const override;
-    void set(uint16_t v) override;
+    void setPort(uint16_t v) override;
 private:
     sockaddr_in addr_;
 };

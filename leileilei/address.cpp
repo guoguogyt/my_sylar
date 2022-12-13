@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-11-24 15:54:07
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-12 18:37:43
+ * @LastEditTime: 2022-12-13 14:52:17
  */
 #include "address.h"
 #include "log.h"
@@ -53,10 +53,10 @@ Address::ptr Address::Create(const sockaddr* addr, socklen_t addrlen)
             result.reset(new IPv4Address(*((const sockaddr_in*)addr)));
             break;
         case AF_INET6:
-            reset.reset(new IPv6Address(*((const sockaddr_in6*)addr)));
+            result.reset(new IPv6Address(*((const sockaddr_in6*)addr)));
             break;
         default:
-            reset.reset(new UnknownAddress(*addr));
+            result.reset(new UnknownAddress(*addr));
     }
     return result;
 }
@@ -133,7 +133,7 @@ bool Address::Lookup(std::vector<Address::ptr>& result, const std::string& host,
     return !result.empty();
 }
 
-Address::ptr Address::LookupAny(const std::string& host, int family = AF_INET, int type = 0, int protocol = 0) 
+Address::ptr Address::LookupAny(const std::string& host, int family, int type, int protocol) 
 {
     std::vector<Address::ptr> result;
     if(Lookup(result, host, family, type, protocol))
@@ -144,7 +144,7 @@ Address::ptr Address::LookupAny(const std::string& host, int family = AF_INET, i
     return nullptr;
 }
 
-IPAddress::ptr Address::LookupAnyIPAddress(const std::string& host, int family = AF_INET, int type = 0, int protocol = 0)  
+IPAddress::ptr Address::LookupAnyIPAddress(const std::string& host, int family, int type, int protocol)  
 {
     std::vector<Address::ptr> result;
     if(Lookup(result, host, family, type, protocol))
@@ -192,7 +192,7 @@ bool Address::GetInterfaceAddresses(std::multimap<std::string, std::pair<Address
                 case AF_INET6:
                     {
                         addr = Create(next->ifa_addr, sizeof(sockaddr_in6));
-                        uint32_t netmask = ((sockaddr_in6*)next->ifa_netmask)->sin_addr.sin_addr;
+                        uint32_t netmask = ((sockaddr_in6*)next->ifa_netmask)->sin6_addr.s6_addr;
                         prefix_len = CountBytes(netmask);
                     }
                     break;
@@ -216,7 +216,7 @@ bool Address::GetInterfaceAddresses(std::multimap<std::string, std::pair<Address
     return !result.empty();
 }
 
-bool Address::GetInterfaceAddresses(std::multimap<std::string, std::pair<Address::ptr, uint32_t> >& result, const std::string& iface, int family) 
+bool Address::GetInterfaceAddresses(std::vector<std::pair<Address::ptr, uint32_t> >& result, const std::string& iface, int family) 
 {
     if(iface.empty() || iface == "*")
     {
@@ -417,7 +417,7 @@ uint32_t IPv4Address::getPort() const
     return byteswapOnLittleEndian(addr_.sin_port);
 }
 
-void IPv4Address::set(uint16_t v) 
+void IPv4Address::setPort(uint16_t v) 
 {
     addr_.sin_port = byteswapOnLittleEndian(v);
 }
