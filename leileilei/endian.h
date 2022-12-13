@@ -4,8 +4,8 @@
 #define LEI_LITTLE_ENDIAN 1
 #define LEI_BIG_ENDIAN 2
 
-// #include <byteswap.h>
-// #include <stdint.h>
+#include <byteswap.h>
+#include <stdint.h>
 
 namespace leileilei
 {
@@ -49,11 +49,11 @@ namespace leileilei
 //     return (T)bswap_16((uint16_t)value);
 // }
 
-#if BYTE_ORDER == BIG_ENDIAN
-#define LEI_BYTE_ORDER LEI_BIG_ENDIAN
-#else
-#define LEI_BYTE_ORDER LEI_LITTLE_ENDIAN
-#endif
+// #if BYTE_ORDER == BIG_ENDIAN
+// #define LEI_BYTE_ORDER LEI_BIG_ENDIAN
+// #else
+// #define LEI_BYTE_ORDER LEI_LITTLE_ENDIAN
+// #endif
 
 // // 当前机器是大端
 // #if LEI_BYTE_ORDER == LEI_BIG_ENDIAN
