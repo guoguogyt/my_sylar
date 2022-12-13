@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-31 16:43:44
+ * @LastEditTime: 2022-12-13 10:48:26
  */
 
 #include "scheduler.h"
@@ -13,7 +13,7 @@
 namespace leileilei
 {
 
-leileilei::Logger::ptr g_logger = LEI_GET_LOGGER("system");
+static leileilei::Logger::ptr g_logger = LEI_GET_LOGGER("system");
 
 // 当前线程执行的协程调度器
 static thread_local Scheduler* s_schedule = nullptr;
