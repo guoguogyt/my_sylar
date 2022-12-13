@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-11-24 15:54:07
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-13 14:52:17
+ * @LastEditTime: 2022-12-13 15:01:25
  */
 #include "address.h"
 #include "log.h"
@@ -138,7 +138,7 @@ Address::ptr Address::LookupAny(const std::string& host, int family, int type, i
     std::vector<Address::ptr> result;
     if(Lookup(result, host, family, type, protocol))
     {
-        return resultp[0];
+        return result[0];
     }
     LEI_LOG_DEBUG(g_logger) << "this host:"<< host <<" no available address";
     return nullptr;
@@ -192,8 +192,12 @@ bool Address::GetInterfaceAddresses(std::multimap<std::string, std::pair<Address
                 case AF_INET6:
                     {
                         addr = Create(next->ifa_addr, sizeof(sockaddr_in6));
-                        uint32_t netmask = ((sockaddr_in6*)next->ifa_netmask)->sin6_addr.s6_addr;
-                        prefix_len = CountBytes(netmask);
+                        in6_addr& netmask = ((sockaddr_in6*)next->ifa_netmask)->sin6_addr;
+                        prefix_len = 0;
+                        for(int i=0; i<16; i++)
+                        {
+                            prefix_len += CountBytes(netmask.s6_addr[i]);
+                        }
                     }
                     break;
                 default:

@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-11-24 15:53:58
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-13 14:51:55
+ * @LastEditTime: 2022-12-13 14:56:41
  */
 #pragma once
 
@@ -436,7 +436,7 @@ public:
     UnknownAddress(const sockaddr& addr);
     const sockaddr* getAddr() const override;
     sockaddr* getAddr() override;
-    socklen_t getAddrLen() override;
+    socklen_t getAddrLen() const override;
     std::ostream& insert(std::ostream& os) const override;
 private:
     sockaddr addr_;
