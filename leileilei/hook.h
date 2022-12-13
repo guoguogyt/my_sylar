@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-10-26 16:12:58
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-13 11:47:53
+ * @LastEditTime: 2022-12-13 11:50:05
  */
 
 #pragma once
@@ -41,10 +41,8 @@ namespace leileilei
     C++比C出道晚，但是增加了很多优秀的功能，函数重载就是其中之一。
     由于C++需要支持重载，单纯的函数名无法区分出具体的函数，所以在编译阶段就需要将形参列表作为附加项增加到函数符号中。
  */
- #ifdef __cplusplus
 extern "C"
 {
-#endif
 // sleep  参数是秒
 typedef unsigned int (*sleep_fun)(unsigned int seconds);
 extern sleep_fun sleep_f;
@@ -135,6 +133,5 @@ extern setsockopt_fun setsockopt_f;
 
 extern int connect_with_timeout(int fd, const struct sockaddr* addr, socklen_t addrlen, uint64_t timeout_ms);
 
-#ifdef __cplusplus
+
 }
-#endif
