@@ -13,7 +13,7 @@
 namespace leileilei
 {
 
-leileilei::Logger::ptr g_logger = LEI_GET_LOGGER("system");
+static leileilei::Logger::ptr g_logger = LEI_GET_LOGGER("system");
 
 // 当前线程执行的协程调度器
 static thread_local Scheduler* s_schedule = nullptr;
