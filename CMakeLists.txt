@@ -13,6 +13,7 @@ if(Boost_FOUND)
 endif()
 
 set(LIB_SRC
+    leileilei/address.cpp
     leileilei/config.cpp
     leileilei/fd_manager.cpp
     leileilei/fiber.cpp
