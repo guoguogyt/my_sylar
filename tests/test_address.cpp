@@ -56,6 +56,6 @@ void test_ipv4()
 
 int main(int argc, char* argv[])
 {
-
+    test_ipv4();
     return 0;
 }
