@@ -52,6 +52,7 @@ void test_ipv4()
     auto addr = leileilei::IPv4Address::Create("127.0.0.1");
     if(addr)
         LEI_LOG_DEBUG(g_logger) << addr->toString();
+    LEI_LOG_DEBUG(g_logger) << addr->addr_.sin_addr.s_addr;
 }
 
 int main(int argc, char* argv[])
