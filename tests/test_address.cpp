@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: leileilei
+ * @Date: 2022-12-13 15:57:10
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2022-12-15 09:16:48
+ */
 #include "leileilei.h"
 
 leileilei::Logger::ptr g_logger = LEI_GET_LOGGER("system");
@@ -53,7 +61,7 @@ void test_ipv4()
     if(addr)
         LEI_LOG_DEBUG(g_logger) << addr->toString();
     LEI_LOG_DEBUG(g_logger) << "s_addr" << ((sockaddr_in*)addr->getAddr())->sin_addr.s_addr;
-    LEI_LOG_DEBUG(g_logger) << "byteswapOnLittleEndian" << byteswapOnLittleEndian(((sockaddr_in*)addr->getAddr())->sin_addr.s_addr);
+    LEI_LOG_DEBUG(g_logger) << "byteswapOnLittleEndian" << leileilei::byteswapOnLittleEndian(((sockaddr_in*)addr->getAddr())->sin_addr.s_addr);
 }
 
 int main(int argc, char* argv[])
