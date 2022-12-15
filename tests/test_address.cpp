@@ -52,7 +52,8 @@ void test_ipv4()
     auto addr = leileilei::IPv4Address::Create("127.0.0.1");
     if(addr)
         LEI_LOG_DEBUG(g_logger) << addr->toString();
-    LEI_LOG_DEBUG(g_logger) << ((sockaddr_in*)addr->getAddr())->sin_addr.s_addr;
+    LEI_LOG_DEBUG(g_logger) << "s_addr" << ((sockaddr_in*)addr->getAddr())->sin_addr.s_addr;
+    LEI_LOG_DEBUG(g_logger) << "byteswapOnLittleEndian" << byteswapOnLittleEndian(((sockaddr_in*)addr->getAddr())->sin_addr.s_addr);
 }
 
 int main(int argc, char* argv[])
