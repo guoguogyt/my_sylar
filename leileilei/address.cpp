@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-11-24 15:54:07
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-13 15:36:44
+ * @LastEditTime: 2022-12-15 09:25:24
  */
 #include "address.h"
 #include "log.h"
@@ -378,6 +378,7 @@ socklen_t IPv4Address::getAddrLen() const
 std::ostream& IPv4Address::insert(std::ostream& os) const 
 {
     uint32_t addr = byteswapOnLittleEndian(addr_.sin_addr.s_addr);
+    // 0xff 为8个1   1111 1111
     os << ((addr>>24) & 0xff) << "."
         << ((addr>>16) & 0xff) << "."
         << ((addr>>8) & 0xff) << "."
