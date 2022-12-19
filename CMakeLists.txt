@@ -22,6 +22,7 @@ set(LIB_SRC
     leileilei/log.cpp
     leileilei/mutex.cpp
     leileilei/scheduler.cpp
+    leileilei/socket.cpp
     leileilei/thread.cpp
     leileilei/timer.cpp
     leileilei/util.cpp
@@ -88,3 +89,7 @@ target_link_libraries(test_hook ${LIBS})
 add_executable(test_address ./tests/test_address.cpp)
 add_dependencies(test_address leileilei)
 target_link_libraries(test_address ${LIBS})
+
+add_executable(test_socket ./tests/test_socket.cpp)
+add_dependencies(test_socket leileilei)
+target_link_libraries(test_socket ${LIBS})
