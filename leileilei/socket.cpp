@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-15 10:17:08
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-19 15:26:54
+ * @LastEditTime: 2022-12-19 15:30:41
  */
 #include "socket.h"
 #include "iomanager.h"
@@ -283,7 +283,6 @@ bool Socket::connect(const Address::ptr addr, uint64_t timeout_ms)
     }
 
     isConnect_ = true;
-    LEI_LOG_DEBUG(g_logger) << "connect-111111";
     getRemoteAddress();
     LEI_LOG_DEBUG(g_logger) << "connect-222222";
     getlocalAddress();
@@ -476,17 +475,17 @@ Address::ptr Socket::getlocalAddress()
             break;
     }
 
-    socklen_t length = result->getAddrLen();
-    if(getsockname(sock_, result->getAddr(), &length))
+    socklen_t addrlen = result->getAddrLen();
+    if(getsockname(sock_, result->getAddr(), &addrlen))
     {
         LEI_LOG_ERROR(g_logger) << "getsockname error sock=" << sock_
             << " errno=" << errno << " errstr=" << strerror(errno);
         return Address::ptr(new UnknownAddress(family_));
     }
-    if(family_ == AF_INET)
+    if(family_ == AF_UNIX)
     {
         UnixAddress::ptr addr = std::dynamic_pointer_cast<UnixAddress>(result);
-        addr->setAddrLen(length);
+        addr->setAddrLen(addrlen);
     }
     localAddress_ = result;
     return localAddress_;
