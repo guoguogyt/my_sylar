@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-15 10:17:08
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-19 09:10:40
+ * @LastEditTime: 2022-12-19 11:29:21
  */
 #include "socket.h"
 #include "iomanager.h"
@@ -55,7 +55,7 @@ Socket::ptr Socket::CreateTCPIPv6Socket()
 
 Socket::ptr Socket::CreateUDPIPv6Socket()
 {
-    Socket::ptr sock(new Socket(IPV6, UDP, 0));
+    Socket::ptr sock(new Socket(IPv6, UDP, 0));
     sock->newSock();
     sock->isConnect_ = true;
     return sock;    
@@ -94,7 +94,7 @@ int64_t Socket::getSendTimeout()
     return -1;    
 }
 
-void Socket::setSendTimeout()
+void Socket::setSendTimeout(uint64_t v)
 {
     struct timeval tv{int(v / 1000), int(v % 1000 * 1000)};
     setOption(SOL_SOCKET, SO_SNDTIMEO, tv);
@@ -108,7 +108,7 @@ int64_t Socket::getRecvTimeout()
     return -1;   
 }
 
-void Socket::setRecvTimeout()
+void Socket::setRecvTimeout(uint64_t v)
 {
     struct timeval tv{int(v / 1000), int(v % 1000 * 1000)};
     setOption(SOL_SOCKET, SO_RCVTIMEO, tv);
@@ -192,7 +192,7 @@ bool Socket::bind(const Address::ptr addr)
             return true;
     }
 
-    if(::bind(sock_, addr->getAddr()), addr->getAddrLen())
+    if(::bind(sock_, addr->getAddr(), addr->getAddrLen()))
     {
         LEI_LOG_ERROR(g_logger) << "bind error errrno=" << errno
             << " errstr=" << strerror(errno);
@@ -234,7 +234,7 @@ Socket::ptr Socket::accept()
     int newsock = ::accept(sock_, nullptr, nullptr);
     if(newsock == -1)
     {
-        LEI_LOG_ERROR(g_logger) << "accept(" << m_sock << ") errno="
+        LEI_LOG_ERROR(g_logger) << "accept(" << sock_ << ") errno="
             << errno << " errstr=" << strerror(errno);
         return nullptr;
     }
@@ -326,7 +326,7 @@ int Socket::send(const iovec* buffer, size_t length, int flags)
     {
         msghdr msg;
         memset(&msg, 0, sizeof(msg));
-        msg.msg_iov = buffer;
+        msg.msg_iov = (iovec*)buffer;
         msg.msg_iovlen = length;
         return ::sendmsg(sock_, &msg, flags);
     }
@@ -346,7 +346,7 @@ int Socket::sendTo(const iovec* buffer, size_t length, const Address::ptr to, in
     {
         msghdr msg;
         memset(&msg, 0, sizeof(msg));
-        msg.msg_iov = buffer;
+        msg.msg_iov = (iovec*)buffer;
         msg.msg_iovlen = length;
         msg.msg_name = to->getAddr();
         msg.msg_namelen = to->getAddrLen();
@@ -393,7 +393,7 @@ int Socket::recvFrom(iovec* buffer, size_t length, Address::ptr from, int flags)
         memset(&msg, 0, sizeof(msg));
         msg.msg_iov = buffer;
         msg.msg_iovlen = length;
-        msg.msg_name = form->getAddr();
+        msg.msg_name = from->getAddr();
         msg.msg_namelen = from->getAddrLen();
         return ::recvmsg(sock_, &msg, flags);
     }
@@ -479,12 +479,12 @@ Address::ptr Socket::getlocalAddress()
     {
         LEI_LOG_ERROR(g_logger) << "getsockname error sock=" << sock_
             << " errno=" << errno << " errstr=" << strerror(errno);
-        return Address::ptr(new UnknownAddress(m_family));
+        return Address::ptr(new UnknownAddress(family_));
     }
     if(family_ == AF_INET)
     {
         UnixAddress::ptr addr = std::dynamic_pointer_cast<UnixAddress>(result);
-        addr->setAddrLen(addrlen);
+        addr->setAddrLen(length);
     }
     localAddress_ = result;
     return localAddress_;

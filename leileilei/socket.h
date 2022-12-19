@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-15 10:17:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-19 09:20:39
+ * @LastEditTime: 2022-12-19 11:26:38
  */
 #pragma once
 
@@ -115,7 +115,7 @@ public:
     /**
      * @brief 设置发送超时时间(毫秒)
      */
-    void setSendTimeout();
+    void setSendTimeout(uint64_t v);
 
     /**
      * @brief 获取接收超时时间(毫秒)
@@ -125,7 +125,7 @@ public:
     /**
      * @brief 设置接收超时时间(毫秒)
      */
-    void setRecvTimeout();
+    void setRecvTimeout(uint64_t v);
 
     /**
      * @brief 获取socket    参照getsockopt
