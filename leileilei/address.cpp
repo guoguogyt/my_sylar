@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-11-24 15:54:07
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-19 15:19:02
+ * @LastEditTime: 2022-12-19 15:23:33
  */
 #include "address.h"
 #include "log.h"
@@ -114,7 +114,7 @@ bool Address::Lookup(std::vector<Address::ptr>& result, const std::string& host,
 
     LEI_LOG_DEBUG(g_logger) << "111111";
     int error = getaddrinfo(node.c_str(), service, &hints, &results);
-
+    LEI_LOG_DEBUG(g_logger) << "22222";
     if(error)
     {
         LEI_LOG_ERROR(g_logger) << "Address::Lookup getaddress(" << host << ", "
@@ -130,9 +130,7 @@ bool Address::Lookup(std::vector<Address::ptr>& result, const std::string& host,
         result.push_back(Create(next->ai_addr, (socklen_t)next->ai_addrlen));
         next = next->ai_next;
     }
-    LEI_LOG_DEBUG(g_logger) << "22222";
     freeaddrinfo(results);
-    LEI_LOG_DEBUG(g_logger) << "33333";
     LEI_LOG_DEBUG(g_logger) << "Lookup end";
     return !result.empty();
 }

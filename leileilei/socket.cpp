@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-15 10:17:08
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-19 11:29:21
+ * @LastEditTime: 2022-12-19 15:25:12
  */
 #include "socket.h"
 #include "iomanager.h"
@@ -252,7 +252,7 @@ bool Socket::connect(const Address::ptr addr, uint64_t timeout_ms)
         if(LEILEILEI_UNLIKELY(!isValid()))
             return false;
     }
-
+    LEI_LOG_DEBUG(g_logger) << "connect-111111";
     if(LEILEILEI_UNLIKELY(addr->getFamily() != family_))
     {
         LEI_LOG_ERROR(g_logger) << "connect sock.family("
@@ -273,6 +273,7 @@ bool Socket::connect(const Address::ptr addr, uint64_t timeout_ms)
     }
     else
     {
+        LEI_LOG_DEBUG(g_logger) << "connect-222222";
         if(::connect_with_timeout(sock_, addr->getAddr(), addr->getAddrLen(), timeout_ms))
         {
             LEI_LOG_ERROR(g_logger) << "sock=" << sock_ << " connect(" << addr->toString()
@@ -284,8 +285,10 @@ bool Socket::connect(const Address::ptr addr, uint64_t timeout_ms)
     }
 
     isConnect_ = true;
+    LEI_LOG_DEBUG(g_logger) << "connect-333333";
     getRemoteAddress();
     getlocalAddress();
+    LEI_LOG_DEBUG(g_logger) << "connect-444444";
     return true;
 }
 
