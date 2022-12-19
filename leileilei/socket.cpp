@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-15 10:17:08
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-19 15:30:41
+ * @LastEditTime: 2022-12-19 16:59:13
  */
 #include "socket.h"
 #include "iomanager.h"
@@ -284,9 +284,7 @@ bool Socket::connect(const Address::ptr addr, uint64_t timeout_ms)
 
     isConnect_ = true;
     getRemoteAddress();
-    LEI_LOG_DEBUG(g_logger) << "connect-222222";
     getlocalAddress();
-    LEI_LOG_DEBUG(g_logger) << "connect-333333";
     return true;
 }
 

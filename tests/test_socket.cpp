@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-19 09:22:38
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-19 15:17:59
+ * @LastEditTime: 2022-12-19 17:01:20
  */
 #include "leileilei.h"
 
@@ -22,7 +22,7 @@ void test_socket()
     addr->setPort(80);
     LEI_LOG_DEBUG(g_logger) << "addr=" << addr->toString();
 
-    if(sock->connect(addr))
+    if(!sock->connect(addr))
     {
         LEI_LOG_ERROR(g_logger) << "connect " << addr->toString() << " fail";
         return; 
