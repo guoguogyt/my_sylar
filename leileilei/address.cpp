@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-11-24 15:54:07
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-19 15:07:01
+ * @LastEditTime: 2022-12-19 15:12:23
  */
 #include "address.h"
 #include "log.h"
@@ -131,6 +131,7 @@ bool Address::Lookup(std::vector<Address::ptr>& result, const std::string& host,
     }
 
     freeaddrinfo(results);
+    LEI_LOG_DEBUG(g_logger) << "Lookup end";
     return !result.empty();
 }
 
