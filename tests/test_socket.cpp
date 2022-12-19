@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-19 09:22:38
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-19 15:08:06
+ * @LastEditTime: 2022-12-19 15:17:59
  */
 #include "leileilei.h"
 
@@ -12,9 +12,7 @@ static leileilei::Logger::ptr g_logger = LEI_GET_LOGGER("system");
 
 void test_socket()
 {
-    LEI_LOG_DEBUG(g_logger) << "come to test_socket";
     leileilei::IPAddress::ptr addr = leileilei::Address::LookupAnyIPAddress("www.baidu.com");
-    LEI_LOG_DEBUG(g_logger) << "break pointer";
     if(addr)
         LEI_LOG_DEBUG(g_logger) << "get address: " << addr->toString();
     else
