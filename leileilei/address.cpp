@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-11-24 15:54:07
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-15 09:25:24
+ * @LastEditTime: 2022-12-19 15:07:01
  */
 #include "address.h"
 #include "log.h"
@@ -63,6 +63,7 @@ Address::ptr Address::Create(const sockaddr* addr, socklen_t addrlen)
 
 bool Address::Lookup(std::vector<Address::ptr>& result, const std::string& host, int family, int type, int protocol) 
 {
+    LEI_LOG_DEBUG(g_logger) << "come to Lookup";
     addrinfo hints, *results, *next;
     hints.ai_flags = 0;
     hints.ai_family = family;
@@ -146,6 +147,7 @@ Address::ptr Address::LookupAny(const std::string& host, int family, int type, i
 
 IPAddress::ptr Address::LookupAnyIPAddress(const std::string& host, int family, int type, int protocol)  
 {
+    LEI_LOG_DEBUG(g_logger) << "come to LookupAnyIPAddress";
     std::vector<Address::ptr> result;
     if(Lookup(result, host, family, type, protocol))
     {

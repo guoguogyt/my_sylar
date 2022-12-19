@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-16 16:21:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-13 10:57:31
+ * @LastEditTime: 2022-12-19 11:48:07
  */
 
 #include "scheduler.h"
@@ -82,7 +82,7 @@ void Scheduler::stop()
     // 当线程池中只有一个线程，且这个线程为主线程时，的停止判断
     if(rootFiebr_ && thread_counts_==0 && (rootFiebr_->getState() == Fiber::TERM || rootFiebr_->getState() == Fiber::INIT))
     {
-        LEI_LOG_DEBUG(g_logger) << this << "    stopped";
+        LEI_LOG_DEBUG(g_logger) << this << " 当线程池中只有一个线程，且这个线程为主线程, 尝试停止调度器";
         stopping_ = true;
         if(canStop())   return;
     }
