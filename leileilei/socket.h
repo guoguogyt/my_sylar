@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-15 10:17:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-15 15:00:03
+ * @LastEditTime: 2022-12-19 09:20:39
  */
 #pragma once
 
@@ -34,7 +34,7 @@ public:
     {
         TCP = SOCK_STREAM,
         UDP = SOCK_DGRAM
-    ;}
+    };
 
     /**
      * @brief Socket协议簇
