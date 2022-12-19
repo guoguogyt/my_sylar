@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-19 09:22:38
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-19 11:15:26
+ * @LastEditTime: 2022-12-19 11:36:26
  */
 #include "leileilei.h"
 
@@ -84,7 +84,7 @@ void test2()
         if(i && (i%batch) == 0)
         {
             uint64_t ts2 = leileilei::GetCurrentUS();
-            LEI_LOG_DEBUG(g_looger) << "i=" << i << " used: " << ((ts2 - ts) * 1.0 / batch) << " us";
+            LEI_LOG_DEBUG(g_logger) << "i=" << i << " used: " << ((ts2 - ts) * 1.0 / batch) << " us";
             ts = ts2;
         }
     }
