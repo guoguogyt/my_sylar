@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-19 09:22:38
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-19 17:01:20
+ * @LastEditTime: 2022-12-20 08:54:09
  */
 #include "leileilei.h"
 
@@ -93,6 +93,7 @@ void test2()
 int main(int argc, char* argv[])
 {
     leileilei::IOManager iom;
-    iom.schedule(&test_socket);
+    // iom.schedule(&test_socket);
+    iom.schedule(&test2);
     return 0;
 }

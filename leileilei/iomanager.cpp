@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-09-26 10:54:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-11-07 16:41:29
+ * @LastEditTime: 2022-12-19 17:07:34
  */
 #include "iomanager.h"
 
@@ -263,7 +263,7 @@ bool IOManager::cancelAll(int fd)
     FdContext::MutexType::Lock lock2(fct->mutex);
     if(LEILEILEI_UNLIKELY(!fct->events))
     {
-        LEI_LOG_ERROR(g_logger) << "fd[" << fd << "] not exit any event!";
+        LEI_LOG_DEBUG(g_logger) << "fd[" << fd << "] not exit any event!";
         return false;
     }
 
