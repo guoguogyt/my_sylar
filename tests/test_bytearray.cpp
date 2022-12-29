@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-29 15:14:38
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-29 16:35:19
+ * @LastEditTime: 2022-12-29 16:41:29
  */
 
 
@@ -54,6 +54,7 @@ void test()
     XX(uint64_t, 100, writeUint64, readUint64, 1);
 #undef XX
 
+    LEI_LOG_DEBUG(g_logger) << "test two";
 
 #define XX(type, len, write_fun, read_fun, base_len) {\
     std::vector<type> vec; \
