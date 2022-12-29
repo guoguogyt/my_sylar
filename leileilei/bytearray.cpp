@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-20 09:24:10
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-29 16:46:42
+ * @LastEditTime: 2022-12-29 16:49:22
  */
 
 #include "bytearray.h"
@@ -522,7 +522,7 @@ void ByteArray::setPosition(size_t v)
 bool ByteArray::writeToFile(const std::string& name) const
 {
     std::ofstream ofs;
-    LEI_LOG_DEBUG(g_logger) << "filename = " << name;
+    // LEI_LOG_DEBUG(g_logger) << "filename = " << name;
     ofs.open(name, std::ios::trunc | std::ios::binary);
     if(!ofs)
     {
