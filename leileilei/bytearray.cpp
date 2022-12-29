@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-20 09:24:10
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-29 15:17:00
+ * @LastEditTime: 2022-12-29 15:43:50
  */
 
 #include "bytearray.h"
@@ -15,6 +15,7 @@
 #include <sstream>
 #include <string.h>
 #include <iomanip>
+#include <cmath>
 
 namespace leileilei
 {
@@ -629,7 +630,7 @@ uint64_t ByteArray::getReadBuffers(std::vector<iovec>& buffers, uint64_t len) co
         else
         {
             iov.iov_base = cur->ptr + npos;
-            iov_len = ncap;
+            iov.iov_len = ncap;
             len -= ncap;
             cur = cur->next;
             ncap = cur->size;
@@ -685,10 +686,10 @@ uint64_t ByteArray::getWriteBuffers(std::vector<iovec>& buffers, uint64_t len)
     addCapacity(len);
     uint64_t size = len;
 
-    size_t npos = m_position % m_baseSize;
-    size_t ncap = m_cur->size - npos;
+    size_t npos = position_ % baseSize_;
+    size_t ncap = cur_->size - npos;
     struct iovec iov;
-    Node* cur = m_cur;
+    Node* cur = cur_;
     while(len > 0) {
         if(ncap >= len) {
             iov.iov_base = cur->ptr + npos;
