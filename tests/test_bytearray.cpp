@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-29 15:14:38
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-29 16:10:25
+ * @LastEditTime: 2022-12-29 16:35:19
  */
 
 
@@ -76,7 +76,7 @@ void test()
                     << " size=" << ba->getSize(); \
     ba->setPosition(0); \
     LEILEILEI_ASSERT(ba->writeToFile("/tmp/" #type "_" #len "-" #read_fun ".dat")); \
-    sylar::ByteArray::ptr ba2(new sylar::ByteArray(base_len * 2)); \
+    leileilei::ByteArray::ptr ba2(new leileilei::ByteArray(base_len * 2)); \
     LEILEILEI_ASSERT(ba2->readFromFile("/tmp/" #type "_" #len "-" #read_fun ".dat")); \
     ba2->setPosition(0); \
     LEILEILEI_ASSERT(ba->toString() == ba2->toString()); \
