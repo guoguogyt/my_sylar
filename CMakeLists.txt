@@ -98,3 +98,7 @@ target_link_libraries(test_socket ${LIBS})
 add_executable(test_bytearray ./tests/test_bytearray.cpp)
 add_dependencies(test_bytearray leileilei)
 target_link_libraries(test_bytearray ${LIBS})
+
+add_executable(test_string ./tests/test_string.cpp)
+add_dependencies(test_string leileilei)
+target_link_libraries(test_string ${LIBS})
