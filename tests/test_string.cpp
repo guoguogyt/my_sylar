@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-30 13:49:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-30 15:27:00
+ * @LastEditTime: 2022-12-30 15:28:06
  */
 
 #include "leileilei.h"
@@ -21,12 +21,12 @@ void test()
     std::string s2 = "3.213";
     std::string s3 = "10.12031";
 
-    LEI_LOG_DEBUG(g_logger) << "IntToString--" << IntToString(a);
-    LEI_LOG_DEBUG(g_logger) << "StringToInt--" << StringToInt(s1);
-    LEI_LOG_DEBUG(g_logger) << "FloatToString--" << FloatToString(b);
-    LEI_LOG_DEBUG(g_logger) << "StringToFloat--" << StringToFloat(s2);
-    LEI_LOG_DEBUG(g_logger) << "DoubleToString--" << DoubleToString(c);
-    LEI_LOG_DEBUG(g_logger) << "StringToDouble--" << StringToDouble(s3);
+    LEI_LOG_DEBUG(g_logger) << "IntToString--" << leileilei::IntToString(a);
+    LEI_LOG_DEBUG(g_logger) << "StringToInt--" << leileilei::StringToInt(s1);
+    LEI_LOG_DEBUG(g_logger) << "FloatToString--" << leileilei::FloatToString(b);
+    LEI_LOG_DEBUG(g_logger) << "StringToFloat--" << leileilei::StringToFloat(s2);
+    LEI_LOG_DEBUG(g_logger) << "DoubleToString--" << leileilei::DoubleToString(c);
+    LEI_LOG_DEBUG(g_logger) << "StringToDouble--" << leileilei::StringToDouble(s3);
 }
 
 int main(int argc, char* argv[])
