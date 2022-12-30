@@ -4,9 +4,11 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:14:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-28 14:05:45
+ * @LastEditTime: 2022-12-30 14:44:54
  */
 #include "util.h"
+#include <string>
+#include <string.h>
 
 namespace leileilei
 {
@@ -140,5 +142,47 @@ uint64_t GetCurrentUS()
     gettimeofday(&tv, NULL);
     return tv.tv_sec * 1000 * 1000ul + tv.tv_usec;
 }
+
+std::string IntToString(int value)
+{
+    return std::to_string(value);
+}
+
+int StringToInt(std::string s)
+{
+    return atoi(s.c_str());
+}
+
+std::string FloatToString(float value)
+{
+    return std::to_string(value);
+}
+
+float StringToFloat(std::string s)
+{
+    return atol(s.c_str());
+}   
+
+std::string DoubleToString(double value)
+{
+    return std::to_string(value);
+}
+
+double StringToDouble(std::string s)
+{
+    return atoll(s.c_str());
+}
+
+double FormatFouble(double value, int format)
+{
+
+}
+
+bool SplitString(std::vector<std::string>& vec, std::string s, std::string spot)
+{
+
+}
+
+
 
 }

@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:13:59
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-10-12 11:33:14
+ * @LastEditTime: 2022-12-30 14:10:20
  */
 #pragma once
 
@@ -59,5 +59,57 @@ uint64_t GetCurrentMS();
  * @return uint64_t 
  */
 uint64_t GetCurrentUS();
+
+
+/**
+ * @brief int to string
+ * 
+ */
+std::string IntToString(int value);
+/**
+ * @brief string to int
+ * 
+ */
+int StringToInt(std::string s);
+
+/**
+ * @brief float to string
+ * 
+ */
+std::string FloatToString(float value);
+/**
+ * @brief string to float 
+ * 
+ */
+float StringToFloat(std::string s);
+
+/**
+ * @brief double to string
+ * 
+ */
+std::string DoubleToString(double value);
+/**
+ * @brief string to double
+ * 
+ */
+double StringToDouble(std::string s);
+
+/**
+ * @brief 将double截断 
+ * @param value double值
+ * @param format 小数点后保留几位
+ * @return double 
+ */
+double FormatFouble(double value, int format);
+
+/**
+ * @brief 将输入的字符串按照指定的字符进行分割
+ * @param vec 存储分割之后的字符串
+ * @param s 要被分割的字符串
+ * @param spot 分隔符
+ * @return true 
+ * @return false 
+ */
+bool SplitString(std::vector<std::string>& vec, std::string s, std::string spot = " ");
 
 }
