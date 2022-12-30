@@ -4,9 +4,10 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:14:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-30 14:44:54
+ * @LastEditTime: 2022-12-30 15:10:17
  */
 #include "util.h"
+#include <stdlib.h>
 #include <string>
 #include <string.h>
 
