@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:13:59
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-30 14:10:20
+ * @LastEditTime: 2023-01-03 14:11:28
  */
 #pragma once
 
@@ -110,6 +110,13 @@ double FormatFouble(double value, int format);
  * @return true 
  * @return false 
  */
-bool SplitString(std::vector<std::string>& vec, std::string s, std::string spot = " ");
+bool SplitString(std::vector<std::string>& vec, std::string s, std::string& pattern = " ");
+
+
+void TrimLeft(std::string& s);
+
+void TrimRight(std::string& s);
+
+void TrimAll(std::string& s);
 
 }

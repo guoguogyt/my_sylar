@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:14:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2023-01-03 09:54:36
+ * @LastEditTime: 2023-01-03 14:14:44
  */
 #include "util.h"
 #include <stdio.h>
@@ -187,11 +187,48 @@ double FormatFouble(double value, int format)
     return atof(ss.str().c_str());
 }
 
-bool SplitString(std::vector<std::string>& vec, std::string s, std::string spot)
+bool SplitString(std::vector<std::string>& vec, std::string s, std::string& pattern)
+{
+    if(vec.empty())
+        LEI_LOG_WARN(g_logger) << "vec is not NULL, system will clear it";
+    
+    vec.clear();
+    
+    std::string::size_type pos;
+    s += pattern;//扩展字符串以方便操作
+    int size = s.size();
+    for (int i = 0; i < size; i++)
+    {
+        pos = s.find(pattern, i);
+        if (pos < size)
+        {
+            /**
+             *  原型：string substr ( size_t pos = 0, size_t n = npos ) const;
+                功能：获得子字符串。
+                参数说明：pos为起始位置（默认为0），n为结束位置（默认为npos）
+                返回值：子字符串
+             */
+            std::string sub = s.substr(i, pos - i);
+            vec.push_back(sub);
+            LEI_LOG_DEBUG(g_logger) << "vec-" << sub;
+            i = pos + pattern.size() - 1;
+        }
+    }
+}
+
+void TrimLeft(std::string& s)
 {
 
 }
 
+void TrimRight(std::string& s)
+{
 
+}
+
+void TrimAll(std::string& s)
+{
+
+}
 
 }
