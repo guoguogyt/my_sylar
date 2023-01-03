@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:14:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2023-01-03 14:14:44
+ * @LastEditTime: 2023-01-03 14:28:37
  */
 #include "util.h"
 #include <stdio.h>
@@ -187,7 +187,7 @@ double FormatFouble(double value, int format)
     return atof(ss.str().c_str());
 }
 
-bool SplitString(std::vector<std::string>& vec, std::string s, std::string& pattern)
+bool SplitString(std::vector<std::string>& vec, std::string s, std::string pattern)
 {
     if(vec.empty())
         LEI_LOG_WARN(g_logger) << "vec is not NULL, system will clear it";
