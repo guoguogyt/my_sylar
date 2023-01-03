@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-30 13:49:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-12-30 15:28:06
+ * @LastEditTime: 2023-01-03 09:52:17
  */
 
 #include "leileilei.h"
@@ -27,6 +27,8 @@ void test()
     LEI_LOG_DEBUG(g_logger) << "StringToFloat--" << leileilei::StringToFloat(s2);
     LEI_LOG_DEBUG(g_logger) << "DoubleToString--" << leileilei::DoubleToString(c);
     LEI_LOG_DEBUG(g_logger) << "StringToDouble--" << leileilei::StringToDouble(s3);
+
+    LEI_LOG_DEBUG(g_logger) << "FormatFouble--" << leileilei::FormatFouble(c,2);
 }
 
 int main(int argc, char* argv[])

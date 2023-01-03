@@ -4,12 +4,14 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:14:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2023-01-03 08:36:14
+ * @LastEditTime: 2023-01-03 09:54:36
  */
 #include "util.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <string.h>
+#include <sstream>
 
 namespace leileilei
 {
@@ -176,7 +178,13 @@ double StringToDouble(std::string s)
 
 double FormatFouble(double value, int format)
 {
-
+    std::stringstream ss;
+    ss << "%." << format << "f";
+    char buff[1024];
+    sprintf(buff, ss.str().c_str(), value);
+    ss.str("");
+    ss << buff;
+    return atof(ss.str().c_str());
 }
 
 bool SplitString(std::vector<std::string>& vec, std::string s, std::string spot)
