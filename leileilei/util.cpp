@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:14:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2023-01-03 14:28:37
+ * @LastEditTime: 2023-01-05 10:00:13
  */
 #include "util.h"
 #include <stdio.h>
@@ -218,7 +218,12 @@ bool SplitString(std::vector<std::string>& vec, std::string s, std::string patte
 
 void TrimLeft(std::string& s)
 {
-
+    int index = 0;
+    while(index<s.size() && s[index] == ' ')
+    {
+        index++;
+    }
+    s.erase(0, index);
 }
 
 void TrimRight(std::string& s)

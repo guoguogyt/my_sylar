@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-30 13:49:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2023-01-03 14:19:02
+ * @LastEditTime: 2023-01-05 10:01:24
  */
 
 #include "leileilei.h"
@@ -33,6 +33,9 @@ void test()
     std::string s4 = "Hello Word! \n find something   ";
     std::vector<std::string> vec;
     leileilei::SplitString(vec, s4, " ");
+
+    std::string s5 = "    4 index";
+    LEI_LOG_DEBUG(g_logger) << "TrimRight--" << leileilei::TrimLeft(s5);
 }
 
 int main(int argc, char* argv[])
