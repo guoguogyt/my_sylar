@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:14:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2023-01-05 10:17:24
+ * @LastEditTime: 2023-01-05 10:22:07
  */
 #include "util.h"
 #include <stdio.h>
@@ -229,11 +229,13 @@ void TrimLeft(std::string& s)
 void TrimRight(std::string& s)
 {
     int index = s.size() - 1;
+    int step = 0;
     while(index >=0 && s[index] == ' ')
     {
         index--;
+        step++;
     }
-    s.erase(s.size()-index-1, index);
+    s.erase(s.size()-index-1, step);
 }
 
 void TrimAll(std::string& s)
