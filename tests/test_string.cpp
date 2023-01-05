@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-30 13:49:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2023-01-05 10:01:24
+ * @LastEditTime: 2023-01-05 10:07:41
  */
 
 #include "leileilei.h"
@@ -35,7 +35,8 @@ void test()
     leileilei::SplitString(vec, s4, " ");
 
     std::string s5 = "    4 index";
-    LEI_LOG_DEBUG(g_logger) << "TrimRight--" << leileilei::TrimLeft(s5);
+    leileilei::TrimLeft(s5);
+    LEI_LOG_DEBUG(g_logger) << "TrimRight--" << s5;
 }
 
 int main(int argc, char* argv[])
