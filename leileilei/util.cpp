@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:14:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2023-01-05 10:34:37
+ * @LastEditTime: 2023-01-05 10:38:53
  */
 #include "util.h"
 #include <stdio.h>
@@ -233,8 +233,8 @@ void TrimRight(std::string& s)
     {
         index--;
     }
-    s.erase(index);
-    LEI_LOG_DEBUG(g_logger) << "TrimRight--" << s << "---end,begin=" << index;
+    s.erase(index+1);
+    LEI_LOG_DEBUG(g_logger) << "TrimRight--" << s << "---end,begin=" << index+1;
 }
 
 void TrimAll(std::string& s)
