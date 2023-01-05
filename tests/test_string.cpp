@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-12-30 13:49:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2023-01-05 10:07:41
+ * @LastEditTime: 2023-01-05 10:19:01
  */
 
 #include "leileilei.h"
@@ -37,6 +37,13 @@ void test()
     std::string s5 = "    4 index";
     leileilei::TrimLeft(s5);
     LEI_LOG_DEBUG(g_logger) << "TrimRight--" << s5;
+
+    std::string s6 = "   glkl     ";
+    leileilei::TrimRight(s6);
+    LEI_LOG_DEBUG(g_logger) << "TrimRight--" << s6 << "---end";
+    std::string s7 = "      ";
+    leileilei::TrimRight(s7);
+    LEI_LOG_DEBUG(g_logger) << "TrimRight--" << s7 << "---end";
 }
 
 int main(int argc, char* argv[])
