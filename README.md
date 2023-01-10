@@ -92,6 +92,35 @@ git status
 
 
 
+#### ragel安装
+
+网址：http://www.colm.net/open-source/ragel/
+
+先安装colm
+
+```
+输入 tar xvf colm-0.13.0.7.tar.gz，解压colm
+输入 cd colm-0.13.0.7，进入源码目录
+输入 yum install libtool gcc g++ autoconf automake，安装编译所需组件
+输入 ./configure，执行配置操作
+输入 make，编译源代码
+输入 make install，将colm安装到系统上
+```
+
+在安装ragel
+
+```
+输入 tar xvf ragel-6.10.tar.gz，解压ragel
+输入 cd ragel-6.10，进入源码目录
+输入 ./configure，执行配置操作
+输入 make，编译源代码
+输入 make install，将Ragel安装到系统上
+```
+
+
+
+
+
 
 
 

@@ -4,7 +4,7 @@
  * @Author: leileilei
  * @Date: 2022-08-01 11:13:59
  * @LastEditors: sueRimn
- * @LastEditTime: 2023-01-03 14:28:32
+ * @LastEditTime: 2023-01-05 10:50:14
  */
 #pragma once
 
@@ -112,11 +112,22 @@ double FormatFouble(double value, int format);
  */
 bool SplitString(std::vector<std::string>& vec, std::string s, std::string pattern = " ");
 
-
+/**
+ * @brief 去除字符串左端的空格
+ * @param s 
+ */
 void TrimLeft(std::string& s);
 
+/**
+ * @brief 去除字符串右端的空格
+ * @param s 
+ */
 void TrimRight(std::string& s);
 
+/**
+ * @brief 去除字符串两端的空格
+ * @param s 
+ */
 void TrimAll(std::string& s);
 
 }
